@@ -18,5 +18,6 @@
 	  <modules>
 	  	<module>hmx-core</module>
 		<module>hmx-user</module>
+		<module>hmx_admin</module>
 	  </modules>
 </project>
