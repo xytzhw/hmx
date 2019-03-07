@@ -9,8 +9,7 @@ spring:
     application:
         name: admin
     datasource:
-        name: hmx
-        url: jdbc:mysql://localhost:3306/hmx
+        url: jdbc:mysql://47.106.117.240:3306/hmx_schema
         username: root
         password: 1234
         # 使用druid数据源
