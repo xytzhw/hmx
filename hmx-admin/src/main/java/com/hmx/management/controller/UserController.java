@@ -1,23 +1,25 @@
 package com.hmx.management.controller;
 
-import com.hmx.management.entity.User;
-import com.hmx.management.mapper.UserMapper;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.hmx.user.entity.HmxUser;
+import com.hmx.user.service.HmxUserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 
-@Controller
+@RestController
+@ResponseBody
 public class UserController
 {
-    @Resource
-    private UserMapper userMapper;
+    @Autowired
+    private HmxUserService hmxUserService;
 
-    @RequestMapping(value="/getUser",method = RequestMethod.GET)
+    @GetMapping("/getUser")
     public String getUser(@RequestParam("id") Integer id) {
-        User user=userMapper.getUser(id);
+        HmxUser user=hmxUserService.info(id);
         System.out.println(user);
         return "hello";
     }

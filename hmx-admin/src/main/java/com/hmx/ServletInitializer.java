@@ -1,4 +1,4 @@
-package com.hmx.management;
+package com.hmx;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
