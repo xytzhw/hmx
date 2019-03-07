@@ -1,0 +1,35 @@
+server:
+  port: 8080
+  servlet:
+    jsp:
+      init-parameters:
+        development: true
+
+spring:
+    application:
+        name: admin
+    datasource:
+        name: hmx
+        url: jdbc:mysql://localhost:3306/hmx
+        username: root
+        password: 1234
+        # 使用druid数据源
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    mvc:
+      view:
+        prefix: /WEB-INF/views/
+        suffix: .jsp
+#        filters: stat
+#        maxActive: 20
+#        initialSize: 1
+#        maxWait: 60000
+#        minIdle: 1
+#        timeBetweenEvictionRunsMillis: 60000
+#        minEvictableIdleTimeMillis: 300000
+#        validationQuery: select 'x'
+#        testWhileIdle: true
+#        testOnBorrow: false
+#        testOnReturn: false
+#        poolPreparedStatements: true
+#        maxOpenPreparedStatements: 20
