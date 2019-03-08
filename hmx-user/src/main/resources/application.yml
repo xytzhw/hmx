@@ -14,4 +14,11 @@ spring:
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
     
+#黄梅戏短信接入配置
+SMSSendUrl: http://jk.106api.cn/smsUTF8.aspx
+SMSUserName: hmx008
+SMSPassword: F11A3E1A905E68D15C8FCA6DFD022630
+SMSGwid: b89c4aec
+SMSVerificationTemplate: "【黄梅戏资源库】您的验证码是code，请在一分钟内进行验证!"
+
     

@@ -44,17 +44,24 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
 				<scope>test</scope>
+				<!-- 取消内置tomcat启动  -->
+<!-- 				<exclusions> -->
+<!-- 			        <exclusion> -->
+<!-- 			          <groupId>org.springframework.boot</groupId> -->
+<!-- 			          <artifactId>spring-boot-starter-tomcat</artifactId> -->
+<!-- 			        </exclusion> -->
+<!-- 		        </exclusions> -->
 			</dependency>
-			
+	        <dependency>
+	            <groupId>javax.servlet</groupId>
+	            <artifactId>javax.servlet-api</artifactId>
+<!-- 	            <scope>provided</scope> -->
+	        </dependency>
 			<dependency>
 				<groupId>io.projectreactor</groupId>
 				<artifactId>reactor-test</artifactId>
 				<scope>test</scope>
 			</dependency>
-	        <dependency>
-	            <groupId>javax.servlet</groupId>
-	            <artifactId>javax.servlet-api</artifactId>
-	        </dependency>
 	        <!-- 
 		    <dependency>
 			      <groupId>org.springframework.security</groupId>
