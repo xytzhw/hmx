@@ -9,7 +9,9 @@ import org.springframework.util.StringUtils;
 
 
 import com.hmx.user.service.HmxUserService;
+import com.hmx.utils.logger.LogHelper;
 import com.hmx.utils.result.PageBean;
+import com.hmx.utils.secret.MD5Util;
 import com.hmx.user.entity.HmxUser;
 import com.hmx.user.dto.HmxUserDto;
 import com.hmx.user.entity.HmxUserExample;
@@ -221,6 +223,33 @@ import com.hmx.user.dao.HmxUserMapper;
 		return hmxUserMapper.selectByExample(hmxUserExample);
 	}
 	
+//	@Override
+//	public HmxUser login(HmxUser hmxUser) {
+//
+//		HmxUserExample example = new HmxUserExample();
+//
+//		Criteria userCriteria = example.createCriteria();
+//
+//		if (!StringUtils.isEmpty(hmxUser.getUserPhone())) {
+//			userCriteria.addCriterion("user_phone=" + hmxUser.getUserPhone());
+//		} else if (!StringUtils.isEmpty(hmxUser.getUserName())) {
+//			userCriteria.addCriterion("user_name=" + hmxUser.getUserName());
+//		}
+//		// md5加密密码(加盐方式)
+//		String pwdMd5 = MD5Util.encode(hmxUser.getPassword());
+//
+//		userCriteria.andPasswordEqualTo(pwdMd5);
+//		userCriteria.andStateEqualTo(0);
+//		List<HmxUser> users = hmxUserMapper.selectByExample(example);
+//
+//		if (users != null && users.size() == 1) {
+//
+//			LogHelper.logger().debug("登录成功");
+//
+//			return users.get(0);
+//		}
+//		return null;
+//	}
 }
  
  

@@ -59,4 +59,6 @@ public interface HmxUserService {
 	 */
 	List<HmxUser> list( HmxUserDto hmxUserDto );
 	
+//	HmxUser login(HmxUser hmxUser);
+	
 }
