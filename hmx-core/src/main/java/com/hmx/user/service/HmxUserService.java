@@ -58,7 +58,11 @@ public interface HmxUserService {
 	 * @return List<HmxUser> 符合条件的list集合
 	 */
 	List<HmxUser> list( HmxUserDto hmxUserDto );
-	
-//	HmxUser login(HmxUser hmxUser);
+	/**
+	 * 用户登录
+	 * @param hmxUser
+	 * @return
+	 */
+	HmxUser login(HmxUser hmxUser);
 	
 }

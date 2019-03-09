@@ -33,6 +33,10 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-test</artifactId>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-aop</artifactId>
+			</dependency>
 			<!-- web <scope>test</scope> 添加此属性会导致HttpServletRequest获取不到-->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
