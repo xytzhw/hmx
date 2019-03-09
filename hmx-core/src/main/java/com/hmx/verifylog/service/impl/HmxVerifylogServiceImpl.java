@@ -184,7 +184,14 @@ import com.hmx.verifylog.dao.HmxVerifylogMapper;
 		}
 		return hmxVerifylogMapper.selectByExample(hmxVerifylogExample);
 	}
-	
+	/**
+     * 查询用户最新一条验证码记录
+     * @param verifyObject
+     * @return
+     */
+    public HmxVerifylog selectNewVerifylog(String verifyObject){
+    	return hmxVerifylogMapper.selectNewVerifylog(verifyObject);
+    }
 }
  
  

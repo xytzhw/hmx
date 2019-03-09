@@ -300,5 +300,10 @@ createid = #{createid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
    
+   <select id="selectUserInfoByUserPhone" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List" /> 
+   from hmx_user 
+   where user_phone=#{userPhone} and state=0
+   </select>
    
 </mapper>

@@ -252,6 +252,14 @@ import com.hmx.user.dao.HmxUserMapper;
 		}
 		return null;
 	}
+	/**
+     * 用户手机号查询用户信息
+     * @param userPhone
+     * @return
+     */
+    public HmxUser selectUserInfoByUserPhone(String userPhone){
+    	return hmxUserMapper.selectUserInfoByUserPhone(userPhone);
+    }
 }
  
  

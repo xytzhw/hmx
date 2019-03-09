@@ -64,5 +64,11 @@ public interface HmxUserService {
 	 * @return
 	 */
 	HmxUser login(HmxUser hmxUser);
+	/**
+     * 用户手机号查询用户信息
+     * @param userPhone
+     * @return
+     */
+    HmxUser selectUserInfoByUserPhone(String userPhone);
 	
 }

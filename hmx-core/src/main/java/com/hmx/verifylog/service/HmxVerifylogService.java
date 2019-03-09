@@ -59,4 +59,10 @@ public interface HmxVerifylogService {
 	 */
 	List<HmxVerifylog> list( HmxVerifylogDto hmxVerifylogDto );
 	
+	/**
+     * 查询用户最新一条验证码记录
+     * @param verifyObject
+     * @return
+     */
+    HmxVerifylog selectNewVerifylog(String verifyObject);
 }

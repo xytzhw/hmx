@@ -227,6 +227,12 @@ add_time = #{addTime,jdbcType=TIMESTAMP},
 is_verify = #{isVerify,jdbcType=INTEGER}
     where verify_log_id = #{verifyLogId,jdbcType=INTEGER}
   </update>
-   
-   
+   <!-- 获取最新一条验证码记录  -->
+   <select id="selectNewVerifylog" resultMap="BaseResultMap">
+   select <include refid="Base_Column_List" /> 
+	from hmx_verifylog  
+	where verify_object=#{verifyObject}
+	ORDER BY verify_log_id desc
+	LIMIT 1
+   </select>
 </mapper>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hmx.annotations.NeedLogin;
 import com.hmx.user.entity.HmxUser;
 import com.hmx.user.service.HmxUserService;
+import com.hmx.utils.enums.IsVerify;
 import com.hmx.utils.http.HttpUtils;
 import com.hmx.utils.logger.LogHelper;
 import com.hmx.utils.random.RandomHelper;
@@ -56,21 +57,48 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/user/add")
-	public ResultBean addUser(@ModelAttribute HmxUser hmxUser,HttpServletRequest request){
+	public ResultBean addUser(@ModelAttribute HmxUser hmxUser,String verifyCode,HttpServletRequest request){
 		String password = hmxUser.getPassword();
 		String userPhone = hmxUser.getUserPhone();
 		if(StringUtils.isEmpty(userPhone)){
-			return new ResultBean().setCode(Config.FAIL_CODE).setContent("手机号不能为空");
+			return new ResultBean().setCode(Config.FAIL_FIELD_EMPTY).setContent("手机号不能为空");
 		}
 		if(StringUtils.isEmpty(password)){
-			return new ResultBean().setCode(Config.FAIL_CODE).setContent("密码不能为空");
+			return new ResultBean().setCode(Config.FAIL_FIELD_EMPTY).setContent("密码不能为空");
 		}
-		hmxUser.setPassword(MD5Util.encode(password));
-		Boolean flag = hmxUserService.insert(hmxUser);
-		if(!flag){
-			return new ResultBean().setCode(Config.FAIL_CODE).setContent("注册用户失败");
+		if(StringUtils.isEmpty(verifyCode)){
+			return new ResultBean().setCode(Config.FAIL_FIELD_EMPTY).setContent("验证码不能为空");
 		}
-		return new ResultBean().setCode(Config.SUCCESS_CODE).setContent("注册用户成功");
+		try {
+			HmxUser isHmxUser = hmxUserService.selectUserInfoByUserPhone(userPhone);
+			if(isHmxUser != null){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("该手机号已经被注册");
+			}
+			HmxVerifylog hmxVerifylog = hmxVerifylogService.selectNewVerifylog(userPhone);
+			if(hmxVerifylog == null){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("您还没有发送验证码");
+			}
+			String oldVerifyCode = hmxVerifylog.getVerifyCode();
+			if(hmxVerifylog.getIsVerify() == IsVerify.已使用.getState()){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("验证码已被使用");
+			}
+			if(!verifyCode.equals(oldVerifyCode)){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("验证码错误");
+			}
+			hmxUser.setPassword(MD5Util.encode(password));
+			Boolean flag = hmxUserService.insert(hmxUser);
+			if(!flag){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("注册用户失败");
+			}
+			HmxVerifylog hmxVerifylogUpdate = new HmxVerifylog();
+			hmxVerifylogUpdate.setVerifyLogId(hmxVerifylog.getVerifyLogId());
+			hmxVerifylogUpdate.setIsVerify(IsVerify.已使用.getState());
+			hmxVerifylogService.update(hmxVerifylogUpdate);
+			return new ResultBean().setCode(Config.SUCCESS_CODE).setContent("注册用户成功");
+		} catch (Exception e) {
+			LogHelper.logger().error("注册失败", e);
+			return new ResultBean().setCode(Config.FAIL_CODE).setContent("注册失败" + e.getMessage());
+		}
 	}
 	/**
 	 * 发送验证码
@@ -85,6 +113,10 @@ public class UserController {
 		}
 		String code = RandomHelper.getRandomNum(6);
 		try {
+			HmxUser isHmxUser = hmxUserService.selectUserInfoByUserPhone(userPhone);
+			if(isHmxUser != null){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("该手机号已经被注册");
+			}
 			boolean flag = SMSSendOut.SMSSending(userPhone, code);
 			if(!flag){
 				return new ResultBean().setCode(Config.FAIL_CODE).setContent("发送验证码失败");
