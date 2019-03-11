@@ -151,6 +151,9 @@ public class UserController {
 				return new ResultBean().setCode(Config.FAIL_FIELD_EMPTY).setContent("用户密码不能为空");
 			}
 			HmxUser user = hmxUserService.login(hmxUser);
+			if(user == null){
+				return new ResultBean().setCode(Config.FAIL_CODE).setContent("登录账号或密码错误");
+			}
 			String ip = HttpUtils.getIp(request);
 			LoginUser simpleUser = new LoginUser();
 			simpleUser.setIp(ip);

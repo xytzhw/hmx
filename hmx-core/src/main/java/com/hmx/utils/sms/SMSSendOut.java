@@ -2,9 +2,13 @@ package com.hmx.utils.sms;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
 
 @Component
 public class SMSSendOut {
@@ -20,6 +24,8 @@ public class SMSSendOut {
 	@Value("${SMSVerificationTemplate}")
 	private String SMSVerificationTemplate;
 
+	@Autowired
+    private Gson gson;
 	/**
 	 * 
 	 * @param phones
@@ -36,11 +42,12 @@ public class SMSSendOut {
 			e.printStackTrace();
 		}
 		//拼接参数
-        String postData = "type=send&username="+SMSUserName+"&password="+SMSPassword+"&gwid="+SMSGwid+"&mobile="+phones+"&message="+content+"";
+        String postData = "type=send&username="+SMSUserName+"&password="+SMSPassword+"&gwid="+SMSGwid+"&mobile="+phones+"&message="+content+"&rece=json";
         //发送并把结果赋给result,返回一个XML信息,解析xml 信息判断
         String result=SMSHelper.sendPost(SMSSendUrl, postData);
-        if(result.indexOf("success") != -1){
-    	    return true;
+        Map<String,String> resultMap = gson.fromJson(result, Map.class);
+        if("success".equals(resultMap.get("returnstatus"))){
+        	return true;
         }
 	    return false;
 	}
