@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>hmx-admin</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 		  <parent>
 			    <groupId>com.hmx</groupId>
 			    <artifactId>hmx-project-master</artifactId>
 			    <version>0.0.1-SNAPSHOT</version>
 		  </parent>
-		  
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -18,10 +17,10 @@
   			<version>0.0.1-SNAPSHOT</version>
   		</dependency>
   		<!-- mysql数据库组件 -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>mysql</groupId>-->
+			<!--<artifactId>mysql-connector-java</artifactId>-->
+		<!--</dependency>-->
 		<!-- mybatis -->
 		<dependency>
             <groupId>org.mybatis.spring.boot</groupId>
@@ -30,35 +29,17 @@
         </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>compile</scope>
-		</dependency> -->
-		<!--禁用内置tomcat  web <scope>test</scope> 添加此属性会导致HttpServletRequest获取不到-->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!-- 禁用内置tomcat-->
-			
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -79,11 +60,11 @@
 			<version>1.1.10</version>
 		</dependency>
 		<!--jsp-->
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<scope>compile</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.tomcat.embed</groupId>-->
+			<!--<artifactId>tomcat-embed-jasper</artifactId>-->
+			<!--<scope>compile</scope>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>
 			<artifactId>jstl-api</artifactId>
@@ -98,6 +79,32 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
+		  <!---->
+		  <dependency>
+			  <groupId>org.springframework.boot</groupId>
+			  <artifactId>spring-boot-starter-data-jpa</artifactId>
+		  </dependency>
+          <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-security</artifactId>
+          </dependency>
+		  <dependency>
+			  <groupId>org.springframework.boot</groupId>
+			  <artifactId>spring-boot-starter-freemarker</artifactId>
+		  </dependency>
+		  <dependency>
+			  <groupId>org.thymeleaf.extras</groupId>
+			  <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		  </dependency>
+		  <dependency>
+			  <groupId>org.springframework.security</groupId>
+			  <artifactId>spring-security-test</artifactId>
+			  <scope>test</scope>
+		  </dependency>
+		  <dependency>
+			  <groupId>org.springframework.security</groupId>
+			  <artifactId>spring-security-taglibs</artifactId>
+		  </dependency>
 	</dependencies>  
 		<build>
 			<finalName>hmx-admin</finalName>
@@ -106,10 +113,9 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-maven-plugin</artifactId>
 					<configuration>
-						<mainClass>com.hmx</mainClass>
+						<mainClass>com.hmx.ManagementApplication</mainClass>
 					</configuration>
 				</plugin>
 			</plugins>
 		</build>
-
 </project>

@@ -38,5 +38,3 @@ public interface HmxUserMapper{
      * @return
      */
     HmxUser selectUserInfoByUserPhone(String userPhone);
-
-}

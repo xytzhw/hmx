@@ -1,0 +1,71 @@
+<style>
+    .form-control {
+        margin: 15px 0px;
+    }
+
+    .form-control-feedback {
+        margin: 15px 0px;
+    }
+
+    .control-label {
+        margin: 15px 0px;
+    }
+
+    .row {
+        width: 100%;
+    }
+</style>
+<form id="formUpdate" class="form-horizontal">
+    <input id="userId" type="hidden" value="${user.id!}">
+    <div class="form-group" style="margin-top:15px">
+        <div class="row">
+            <label class="control-label col-sm-1" for="usernameAdd">账号</label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="usernameAdd" id="usernameAdd" value="${user.username!}">
+            </div>
+            <label class="control-label col-sm-1" for="nameAdd">姓名</label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="nameAdd" id="nameAdd" value="${user.name!}">
+            </div>
+        </div>
+        <div class="row">
+            <label class="control-label col-sm-1" for="cellPhoneAdd">手机号</label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="cellPhoneAdd" id="cellPhoneAdd" value="${user.cellPhone!}">
+            </div>
+            <label class=" control-label col-sm-1" for="role">角色</label>
+                <div class="col-lg-4">
+                    <select class="form-control" name="role" id="role">
+                        <option value="">请选择</option>
+                        <#list roleModel as item>
+                            <option value="${item.id!}">${item.detail!}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+        <div class="row">
+            <label class="control-label col-sm-1" for="organization">组织机构</label>
+            <div class="col-lg-4">
+                <select class="form-control" name="organization" id="organization">
+                    <option value="">请选择</option>
+                    <#list organizationzModel as item>
+                        <#if user.organizationId?? && user.organizationId.id == item.id>
+                                <option value="${item.id}" selected>${item.name}</option>
+                            <#else>
+                                <option value="${item.id}">${item.name}</option>
+                        </#if>
+                    </#list>
+                </select>
+            </div>
+        </div>
+    </div>
+        <div class="col-lg-10" style="text-align:right">
+            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
+                    onclick="updateUser()">提交
+            </button>
+        </div>
+    </div>
+</form>
+
+<script src="lib/bootStrap/js/bootstrapValidator.js"></script>
+<script src="js/system/user/eidt.js"></script>
