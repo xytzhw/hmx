@@ -1,9 +1,5 @@
 server:
   port: 8081
-  servlet:
-    jsp:
-      init-parameters:
-        development: true
 
 spring:
     application:
@@ -15,10 +11,17 @@ spring:
         # 使用druid数据源
         #type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-    mvc:
-      view:
-        prefix: /WEB-INF/views/
-        suffix: .jsp
+    freemarker:
+      allow-request-override: false
+      cache: false
+      check-template-location: true
+      charset: UTF-8
+      content-type: text/html
+      expose-request-attributes: false
+      expose-session-attributes: false
+      expose-spring-macro-helpers: false
+      suffix: .html
+
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
 #        filters: stat

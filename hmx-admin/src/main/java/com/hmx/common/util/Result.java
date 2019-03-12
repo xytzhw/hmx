@@ -2,11 +2,6 @@ package com.hmx.common.util;
 
 import java.io.Serializable;
 
-/**
- * @author shi
- * @create 2018-06-06  16:00
- * @description 标准返回值
- **/
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 2797695294117691139L;
     private int status;//返回状态
