@@ -19,6 +19,9 @@ spring:
       view:
         prefix: /WEB-INF/views/
         suffix: .jsp
+    jmx:
+      enabled: false
+    
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
 #黄梅戏短信接入配置

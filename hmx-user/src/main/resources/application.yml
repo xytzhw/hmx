@@ -10,6 +10,8 @@ spring:
     max-wait: 10000
     min-idle: 5
     initial-size: 5
+  jmx:
+    enabled: false
         
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
