@@ -9,7 +9,8 @@ import org.apache.ibatis.annotations.Param;
 /**
  * Dao interface
  */
-public interface HmxUserMapper{
+public interface HmxUserMapper
+{
 
     int countByExample(HmxUserExample example);
 
@@ -32,9 +33,12 @@ public interface HmxUserMapper{
     int updateByPrimaryKeySelective(HmxUser record);
 
     int updateByPrimaryKey(HmxUser record);
+
     /**
      * 用户手机号查询用户信息
+     *
      * @param userPhone
      * @return
      */
     HmxUser selectUserInfoByUserPhone(String userPhone);
+}

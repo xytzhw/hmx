@@ -21,51 +21,51 @@ import com.hmx.user.dao.HmxUserMapper;
  * Service implementation class
  *
  */
- @Service
- public class HmxUserServiceImpl implements HmxUserService{
- 
- 	@Autowired
+@Service
+public class HmxUserServiceImpl implements HmxUserService{
+
+	@Autowired
 	private HmxUserMapper hmxUserMapper;
-	
-	
+
+
 	/**
-	 * @Method: insert 
+	 * @Method: insert
 	 * @Description: 添加
 	 * @param hmxUser 要添加的对象
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public Boolean insert( HmxUser hmxUser ) {
 		return hmxUserMapper.insertSelective( hmxUser ) > 0;
 	}
-		
+
 	/**
-	 * @Method: deleteByIdArray 
+	 * @Method: deleteByIdArray
 	 * @Description: 批量删除
 	 * @param ids 将要删除的对象主键字符串 例如:1,5,10,12
 	 * @return true 删除成功  false 删除失败
 	 */
-	 @Override
-	 @Transactional
-	 public Boolean deleteByIdArray(String ids) {
-	 	List<Integer> idArray = new ArrayList<Integer>();
+	@Override
+	@Transactional
+	public Boolean deleteByIdArray(String ids) {
+		List<Integer> idArray = new ArrayList<Integer>();
 		String[] arrayStr = null ;
 		try{
 			if( ids == null || ids == "" ){
 				return false;
 			}
-			
+
 			if( ids.length() > 0 ){
 				arrayStr = ids.split(",");
 			}
-			
+
 			for(String strid: arrayStr){
 				Integer id = Integer.parseInt(strid);
 				idArray.add(id);
 			}
 			HmxUserExample hmxUserExample = new HmxUserExample();
 			hmxUserExample.or().andIdIn( idArray );
-			
+
 			int ret = hmxUserMapper.deleteByExample( hmxUserExample );
 			return ret > 0;
 		}catch( Exception e ){
@@ -73,9 +73,9 @@ import com.hmx.user.dao.HmxUserMapper;
 		}
 		return false;
 	}
-	
+
 	/**
-	 * @Method: update 
+	 * @Method: update
 	 * @Description: 修改
 	 * @param hmxUser 要修改的对象
 	 * @return true 修改成功  false 修改失败
@@ -84,10 +84,10 @@ import com.hmx.user.dao.HmxUserMapper;
 	public Boolean update(HmxUser hmxUser) {
 		return hmxUserMapper.updateByPrimaryKeySelective( hmxUser ) > 0;
 	}
-	
-	
+
+
 	/**
-	 * @Method: info 
+	 * @Method: info
 	 * @Description: 根据自增主键查询对象信息
 	 * @param hmxUser 根据自增对象查询信息
 	 * @return HmxUser 查询的对象
@@ -95,125 +95,125 @@ import com.hmx.user.dao.HmxUserMapper;
 	public HmxUser info (Integer hmxUserId) {
 		return hmxUserMapper.selectByPrimaryKey( hmxUserId );
 	}
-	
+
 	/**
-	 * @Method: getPage 
+	 * @Method: getPage
 	 * @Description: 分页查询
 	 * @param page 分页参数
 	 * @param hmxUserDto 查询条件
 	 * @return PageBean<HmxUser> 查询到的分页值
 	 */
 	public PageBean<HmxUser> getPage(PageBean<HmxUser> page,HmxUserDto hmxUserDto) {
-		
+
 		HmxUserExample hmxUserExample = new HmxUserExample();
-		
+
 		hmxUserExample.setOffset(page.getStartOfPage());
 		hmxUserExample.setLimit(page.getPageSize());
-		
+
 		Criteria where = hmxUserExample.createCriteria();
-		
-  		if ( hmxUserDto.getId() != null && hmxUserDto.getId() != 0 ) {
+
+		if ( hmxUserDto.getId() != null && hmxUserDto.getId() != 0 ) {
 			where.andIdEqualTo( hmxUserDto.getId() );
 		}
-  		if ( StringUtils.isEmpty( hmxUserDto.getUserName() ) ) {
+		if ( StringUtils.isEmpty( hmxUserDto.getUserName() ) ) {
 			where.andUserNameEqualTo( hmxUserDto.getUserName() );
 		}
-  		if ( StringUtils.isEmpty( hmxUserDto.getUserAliase() ) ) {
+		if ( StringUtils.isEmpty( hmxUserDto.getUserAliase() ) ) {
 			where.andUserAliaseEqualTo( hmxUserDto.getUserAliase() );
 		}
-  		if ( StringUtils.isEmpty( hmxUserDto.getUserPhone() ) ) {
+		if ( StringUtils.isEmpty( hmxUserDto.getUserPhone() ) ) {
 			where.andUserPhoneEqualTo( hmxUserDto.getUserPhone() );
 		}
-  		if ( StringUtils.isEmpty( hmxUserDto.getPassword() ) ) {
+		if ( StringUtils.isEmpty( hmxUserDto.getPassword() ) ) {
 			where.andPasswordEqualTo( hmxUserDto.getPassword() );
 		}
-  		if ( hmxUserDto.getGender() != null && hmxUserDto.getGender() != 0 ) {
+		if ( hmxUserDto.getGender() != null && hmxUserDto.getGender() != 0 ) {
 			where.andGenderEqualTo( hmxUserDto.getGender() );
 		}
-  		if ( StringUtils.isEmpty( hmxUserDto.getHeadPic() ) ) {
+		if ( StringUtils.isEmpty( hmxUserDto.getHeadPic() ) ) {
 			where.andHeadPicEqualTo( hmxUserDto.getHeadPic() );
 		}
-  		if ( hmxUserDto.getCreateTime() != null ) {
-  			where.andCreateTimeEqualTo( hmxUserDto.getCreateTime() );
-  		}
-  		if ( hmxUserDto.getNewTime() != null ) {
-  			where.andNewTimeEqualTo( hmxUserDto.getNewTime() );
-  		}
-  		if ( hmxUserDto.getState() != null && hmxUserDto.getState() != 0 ) {
+		if ( hmxUserDto.getCreateTime() != null ) {
+			where.andCreateTimeEqualTo( hmxUserDto.getCreateTime() );
+		}
+		if ( hmxUserDto.getNewTime() != null ) {
+			where.andNewTimeEqualTo( hmxUserDto.getNewTime() );
+		}
+		if ( hmxUserDto.getState() != null && hmxUserDto.getState() != 0 ) {
 			where.andStateEqualTo( hmxUserDto.getState() );
 		}
-  		if ( hmxUserDto.getVersion() != null && hmxUserDto.getVersion() != 0 ) {
+		if ( hmxUserDto.getVersion() != null && hmxUserDto.getVersion() != 0 ) {
 			where.andVersionEqualTo( hmxUserDto.getVersion() );
 		}
-  		if ( hmxUserDto.getCreateid() != null && hmxUserDto.getCreateid() != 0 ) {
+		if ( hmxUserDto.getCreateid() != null && hmxUserDto.getCreateid() != 0 ) {
 			where.andCreateidEqualTo( hmxUserDto.getCreateid() );
 		}
-		
+
 		Integer count = hmxUserMapper.countByExample( hmxUserExample );
-			
+
 		boolean haveData = page.setTotalNum((int)(long)count);
-			
+
 		if(!haveData){
 			return page;
 		}
-			
+
 		List<HmxUser> data = hmxUserMapper.selectByExample( hmxUserExample );
-		
+
 		page.setPage(data);
-		
+
 		return page;
 	}
-	
-	
+
+
 	/**
-	 * @Method: list 
+	 * @Method: list
 	 * @Description: 查询某个条件下的所有数据
 	 * @param hmxUserDto 查询参数
 	 * @return List<HmxUser> 符合条件的list集合
 	 */
 	public List<HmxUser> list( HmxUserDto hmxUserDto ) {
-	
+
 		HmxUserExample hmxUserExample = new HmxUserExample();
-		
+
 		Criteria where = hmxUserExample.createCriteria();
-		
-  		if ( hmxUserDto.getId() != null && hmxUserDto.getId() != 0 ) {
+
+		if ( hmxUserDto.getId() != null && hmxUserDto.getId() != 0 ) {
 			where.andIdEqualTo( hmxUserDto.getId() );
 		}
-  		if ( !StringUtils.isEmpty( hmxUserDto.getUserName() ) ) {
+		if ( !StringUtils.isEmpty( hmxUserDto.getUserName() ) ) {
 			where.andUserNameEqualTo( hmxUserDto.getUserName() );
 		}
-  		if ( !StringUtils.isEmpty( hmxUserDto.getUserAliase() ) ) {
+		if ( !StringUtils.isEmpty( hmxUserDto.getUserAliase() ) ) {
 			where.andUserAliaseEqualTo( hmxUserDto.getUserAliase() );
 		}
-  		if ( !StringUtils.isEmpty( hmxUserDto.getUserPhone() ) ) {
+		if ( !StringUtils.isEmpty( hmxUserDto.getUserPhone() ) ) {
 			where.andUserPhoneEqualTo( hmxUserDto.getUserPhone() );
 		}
-  		if ( !StringUtils.isEmpty( hmxUserDto.getPassword() ) ) {
+		if ( !StringUtils.isEmpty( hmxUserDto.getPassword() ) ) {
 			where.andPasswordEqualTo( hmxUserDto.getPassword() );
 		}
-  		if ( hmxUserDto.getGender() != null && hmxUserDto.getGender() != 0 ) {
+		if ( hmxUserDto.getGender() != null && hmxUserDto.getGender() != 0 ) {
 			where.andGenderEqualTo( hmxUserDto.getGender() );
 		}
-  		if ( !StringUtils.isEmpty( hmxUserDto.getHeadPic() ) ) {
+		if ( !StringUtils.isEmpty( hmxUserDto.getHeadPic() ) ) {
 			where.andHeadPicEqualTo( hmxUserDto.getHeadPic() );
 		}
-  		if ( hmxUserDto.getCreateTime() != null ) {
-  			where.andCreateTimeEqualTo( hmxUserDto.getCreateTime() );
-  		}
-  		if ( hmxUserDto.getNewTime() != null ) {
-  			where.andNewTimeEqualTo( hmxUserDto.getNewTime() );
-  		}
-  		if ( hmxUserDto.getState() != null && hmxUserDto.getState() != 0 ) {
+		if ( hmxUserDto.getCreateTime() != null ) {
+			where.andCreateTimeEqualTo( hmxUserDto.getCreateTime() );
+		}
+		if ( hmxUserDto.getNewTime() != null ) {
+			where.andNewTimeEqualTo( hmxUserDto.getNewTime() );
+		}
+		if ( hmxUserDto.getState() != null && hmxUserDto.getState() != 0 ) {
 			where.andStateEqualTo( hmxUserDto.getState() );
 		}
-  		if ( hmxUserDto.getVersion() != null && hmxUserDto.getVersion() != 0 ) {
+		if ( hmxUserDto.getVersion() != null && hmxUserDto.getVersion() != 0 ) {
 			where.andVersionEqualTo( hmxUserDto.getVersion() );
 		}
-  		if ( hmxUserDto.getCreateid() != null && hmxUserDto.getCreateid() != 0 ) {
+		if ( hmxUserDto.getCreateid() != null && hmxUserDto.getCreateid() != 0 ) {
 			where.andCreateidEqualTo( hmxUserDto.getCreateid() );
 		}
-		
+
 		if( hmxUserDto.getLimit() != null ){
 			hmxUserExample.setLimit( hmxUserDto.getLimit() );
 		}
@@ -222,7 +222,7 @@ import com.hmx.user.dao.HmxUserMapper;
 		}
 		return hmxUserMapper.selectByExample(hmxUserExample);
 	}
-	
+
 	/**
 	 * 用户登录
 	 */
@@ -253,13 +253,12 @@ import com.hmx.user.dao.HmxUserMapper;
 		return null;
 	}
 	/**
-     * 用户手机号查询用户信息
-     * @param userPhone
-     * @return
-     */
-    public HmxUser selectUserInfoByUserPhone(String userPhone){
-    	return hmxUserMapper.selectUserInfoByUserPhone(userPhone);
-    }
+	 * 用户手机号查询用户信息
+	 * @param userPhone
+	 * @return
+	 */
+	public HmxUser selectUserInfoByUserPhone(String userPhone){
+		return hmxUserMapper.selectUserInfoByUserPhone(userPhone);
+	}
 }
- 
  

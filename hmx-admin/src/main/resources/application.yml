@@ -21,7 +21,6 @@ spring:
       expose-session-attributes: false
       expose-spring-macro-helpers: false
       suffix: .html
-
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
 
