@@ -1,6 +1,8 @@
 package com.hmx.category.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.hmx.category.entity.HmxCategory;
 import com.hmx.utils.result.PageBean;
 import com.hmx.category.dto.HmxCategoryDto;
@@ -58,5 +60,11 @@ public interface HmxCategoryService {
 	 * @return List<HmxCategory> 符合条件的list集合
 	 */
 	List<HmxCategory> list( HmxCategoryDto hmxCategoryDto );
+	
+	/**
+     * 获取首页分类以及内容信息
+     * @return
+     */
+    List<Map<String,Object>> selectCategoryAndContentList();
 	
 }

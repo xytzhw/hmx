@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class HmxCategoryContent{
     private Integer categoryContentId;
+    private Integer categoryId;
     private String categoryTitle;
     private String categoryContent;
     private Integer contentType;
@@ -23,9 +24,13 @@ public class HmxCategoryContent{
 		super();
 	}
 
-    public HmxCategoryContent(Integer categoryContentId, String categoryTitle, String categoryContent, Integer contentType, String contentImages, Integer movieId, Integer musicId, Integer browseNum, Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
+    
+    public HmxCategoryContent(Integer categoryContentId, Integer categoryId, String categoryTitle,
+			String categoryContent, Integer contentType, String contentImages, Integer movieId, Integer musicId,
+			Integer browseNum, Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
 		super();
 		this.categoryContentId = categoryContentId;
+		this.categoryId = categoryId;
 		this.categoryTitle = categoryTitle;
 		this.categoryContent = categoryContent;
 		this.contentType = contentType;
@@ -39,8 +44,19 @@ public class HmxCategoryContent{
 		this.version = version;
 		this.createid = createid;
 	}
-	
-    public Integer getCategoryContentId() {
+
+
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
+	}
+
+
+	public Integer getCategoryContentId() {
 		return categoryContentId;
 	}
 	

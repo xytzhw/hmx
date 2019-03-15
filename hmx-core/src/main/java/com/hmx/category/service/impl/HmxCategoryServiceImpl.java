@@ -1,6 +1,7 @@
 package com.hmx.category.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -201,6 +202,14 @@ import com.hmx.category.dao.HmxCategoryMapper;
 		}
 		return hmxCategoryMapper.selectByExample(hmxCategoryExample);
 	}
+	
+	/**
+     * 获取首页分类以及内容信息
+     * @return
+     */
+    public List<Map<String,Object>> selectCategoryAndContentList(){
+    	return hmxCategoryMapper.selectCategoryAndContentList();
+    }
 	
 }
  

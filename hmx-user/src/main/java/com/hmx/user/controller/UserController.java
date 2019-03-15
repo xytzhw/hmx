@@ -1,11 +1,9 @@
 package com.hmx.user.controller;
 
 
-
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -34,6 +32,7 @@ import com.hmx.verifylog.service.HmxVerifylogService;
 
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
@@ -45,7 +44,7 @@ public class UserController {
 	@Autowired
 	private JwtUtil jwtUtil;
 	
-	@GetMapping("/user/{id}")
+	@GetMapping("/{id}")
 	@NeedLogin
 	public ResultBean getUserInfo(@PathVariable Integer id){
 		HmxUser user = hmxUserService.info(id);
@@ -56,7 +55,7 @@ public class UserController {
 	 * @param hmxUser
 	 * @return
 	 */
-	@PostMapping("/user/add")
+	@PostMapping("/add")
 	public ResultBean addUser(@ModelAttribute HmxUser hmxUser,String verifyCode,HttpServletRequest request){
 		String password = hmxUser.getPassword();
 		String userPhone = hmxUser.getUserPhone();
@@ -105,7 +104,7 @@ public class UserController {
 	 * @param hmxUser
 	 * @return
 	 */
-	@PostMapping("/user/send")
+	@PostMapping("/send")
 	public ResultBean smsSend(@ModelAttribute HmxUser hmxUser){
 		String userPhone = hmxUser.getUserPhone();
 		if(StringUtils.isEmpty(userPhone)){
@@ -139,7 +138,7 @@ public class UserController {
 	 * @param request
 	 * @return
 	 */
-	@PostMapping("/user/login")
+	@PostMapping("/login")
 	public ResultBean login(@ModelAttribute HmxUser hmxUser,HttpServletRequest request){
 		try {
 			String password = hmxUser.getPassword();

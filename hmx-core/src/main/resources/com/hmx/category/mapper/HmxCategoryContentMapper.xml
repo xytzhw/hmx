@@ -4,6 +4,7 @@
 
   <resultMap id="BaseResultMap" type="com.hmx.category.entity.HmxCategoryContent" >
     <id column="category_content_id" property="categoryContentId" jdbcType="INTEGER" />
+    <result column="category_id" property="categoryId" jdbcType="INTEGER" />
   	<result column="category_title" property="categoryTitle" jdbcType="VARCHAR" />
   	<result column="category_content" property="categoryContent" jdbcType="VARCHAR" />
   	<result column="content_type" property="contentType" jdbcType="INTEGER" />
@@ -78,7 +79,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    category_content_id,category_title,category_content,content_type,content_images,movie_id,music_id,browse_num,create_time,new_time,state,version,createid
+    category_content_id,category_id,category_title,category_content,content_type,content_images,movie_id,music_id,browse_num,create_time,new_time,state,version,createid
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hmx.category.entity.HmxCategoryContentExample" >
@@ -129,8 +130,8 @@
   
   
   <insert id="insert" parameterType="com.hmx.category.entity.HmxCategoryContent" keyProperty="categoryContentId" useGeneratedKeys="true">
-    insert into hmx_category_content  (category_content_id,category_title,category_content,content_type,content_images,movie_id,music_id,browse_num,create_time,new_time,state,version,createid)
-    values (#{categoryContentId,jdbcType=INTEGER}, #{categoryTitle,jdbcType=VARCHAR}, #{categoryContent,jdbcType=VARCHAR}, #{contentType,jdbcType=INTEGER}, #{contentImages,jdbcType=VARCHAR}, #{movieId,jdbcType=INTEGER}, #{musicId,jdbcType=INTEGER}, #{browseNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{newTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createid,jdbcType=INTEGER})
+    insert into hmx_category_content  (category_content_id,category_id,category_title,category_content,content_type,content_images,movie_id,music_id,browse_num,create_time,new_time,state,version,createid)
+    values (#{categoryContentId,jdbcType=INTEGER},#{categoryId,jdbcType=INTEGER}, #{categoryTitle,jdbcType=VARCHAR}, #{categoryContent,jdbcType=VARCHAR}, #{contentType,jdbcType=INTEGER}, #{contentImages,jdbcType=VARCHAR}, #{movieId,jdbcType=INTEGER}, #{musicId,jdbcType=INTEGER}, #{browseNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{newTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createid,jdbcType=INTEGER})
   </insert>
   
   
@@ -139,6 +140,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="categoryContentId != null" >
         category_content_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
       </if>
       <if test="categoryTitle != null" >
         category_title,
@@ -180,6 +184,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="categoryContentId != null" >
         #{categoryContentId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
       </if>
       <if test="categoryTitle != null" >
         #{categoryTitle,jdbcType=VARCHAR},
@@ -223,6 +230,7 @@
   <update  id="updateByExample" parameterType="map" >
     update hmx_category_content 
     set category_content_id = #{categoryContentId,jdbcType=INTEGER},
+category_id = #{categoryId,jdbcType=INTEGER},
 category_title = #{categoryTitle,jdbcType=VARCHAR},
 category_content = #{categoryContent,jdbcType=VARCHAR},
 content_type = #{contentType,jdbcType=INTEGER},
@@ -252,6 +260,9 @@ createid = #{createid,jdbcType=INTEGER}
     <set >
       <if test="categoryContentId != null" >
         category_content_id = #{categoryContentId,jdbcType=INTEGER} ,
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER} ,
       </if>
       <if test="categoryTitle != null" >
         category_title = #{categoryTitle,jdbcType=VARCHAR} ,
@@ -297,6 +308,7 @@ createid = #{createid,jdbcType=INTEGER}
   <update id="updateByPrimaryKey" parameterType="com.hmx.category.entity.HmxCategoryContent" >
     update hmx_category_content
     set category_content_id = #{categoryContentId,jdbcType=INTEGER},
+category_id = #{categoryId,jdbcType=INTEGER},
 category_title = #{categoryTitle,jdbcType=VARCHAR},
 category_content = #{categoryContent,jdbcType=VARCHAR},
 content_type = #{contentType,jdbcType=INTEGER},

@@ -4,6 +4,8 @@ package com.hmx.category.dao;
 import com.hmx.category.entity.HmxCategory;
 import com.hmx.category.entity.HmxCategoryExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -32,5 +34,9 @@ public interface HmxCategoryMapper{
     int updateByPrimaryKeySelective(HmxCategory record);
 
     int updateByPrimaryKey(HmxCategory record);
-
+    /**
+     * 获取首页分类以及内容信息
+     * @return
+     */
+    List<Map<String,Object>> selectCategoryAndContentList();
 }

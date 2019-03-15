@@ -113,6 +113,9 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
   		if ( hmxCategoryContentDto.getCategoryContentId() != null && hmxCategoryContentDto.getCategoryContentId() != 0 ) {
 			where.andCategoryContentIdEqualTo( hmxCategoryContentDto.getCategoryContentId() );
 		}
+  		if ( hmxCategoryContentDto.getCategoryId() != null && hmxCategoryContentDto.getCategoryId() != 0 ) {
+			where.andCategoryIdEqualTo( hmxCategoryContentDto.getCategoryId() );
+		}
   		if ( StringUtils.isEmpty( hmxCategoryContentDto.getCategoryTitle() ) ) {
 			where.andCategoryTitleEqualTo( hmxCategoryContentDto.getCategoryTitle() );
 		}
@@ -180,6 +183,9 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
 		
   		if ( hmxCategoryContentDto.getCategoryContentId() != null && hmxCategoryContentDto.getCategoryContentId() != 0 ) {
 			where.andCategoryContentIdEqualTo( hmxCategoryContentDto.getCategoryContentId() );
+		}
+  		if ( hmxCategoryContentDto.getCategoryId() != null && hmxCategoryContentDto.getCategoryId() != 0 ) {
+			where.andCategoryIdEqualTo( hmxCategoryContentDto.getCategoryId() );
 		}
   		if ( !StringUtils.isEmpty( hmxCategoryContentDto.getCategoryTitle() ) ) {
 			where.andCategoryTitleEqualTo( hmxCategoryContentDto.getCategoryTitle() );

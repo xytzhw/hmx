@@ -264,5 +264,22 @@ createid = #{createid,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
    
-   
+   <select id="selectCategoryAndContentList" resultMap="selectCategoryAndContentListResultMap">
+   select c.category_id,c.category_id as 'categoryId',
+          c.category_name as 'categoryName',c.sort as 'sort' 
+    from hmx_category c 
+	where c.is_close=0 and c.state=0 
+	ORDER BY c.sort
+   </select>
+   <resultMap type="Map" id="selectCategoryAndContentListResultMap">
+   		<collection property="contentList" column="category_id" ofType="ArrayList" select="selectContentListByCategoryId"/>
+   </resultMap>
+   <select id="selectContentListByCategoryId" resultType="Map">
+   select cc.category_content_id as 'categoryContentId',
+          cc.category_title as 'categoryTitle',cc.content_type as 'contentType',
+          cc.content_images as 'contentImages',cc.create_time as 'createTime'
+    from hmx_category_content cc 
+    where cc.category_id=#{category_id} and cc.state=0
+	ORDER BY cc.create_time desc
+   </select>
 </mapper>
