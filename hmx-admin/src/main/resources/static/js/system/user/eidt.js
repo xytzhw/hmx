@@ -20,11 +20,12 @@ function updateUser() {
 function getParameter() {
     var params = {
         id: $("#userId").val(),
-        username: $("#usernameAdd").val(),
-        name: $("#nameAdd").val(),
-        cellPhone: $("#cellPhoneAdd").val(),
+        userName: $("#userName").val(),
+        userAliase: $("#userAliase").val(),
+        userPhone: $("#cellPhoneAdd").val(),
         role: $("#role").val(),
-        organization: $("#organization").val()
+        gender: $("#gender").val(),
+        type: $("#type").val(),
     };
     return params;
 }

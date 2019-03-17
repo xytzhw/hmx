@@ -1,7 +1,9 @@
 package com.hmx.common.filter;
 
+import com.hmx.user.dao.HmxUserMapper;
 import com.hmx.user.dao.PermissionMapper;
 import com.hmx.user.dao.UserModelMapper;
+import com.hmx.user.entity.HmxUser;
 import com.hmx.user.entity.po.Permission;
 import com.hmx.user.entity.po.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +22,18 @@ import java.util.List;
 @Service
 public class CustomerUserService implements UserDetailsService {
     @Autowired
-    UserModelMapper userDao;
+    HmxUserMapper hmxUserMapper;
     @Autowired
     PermissionMapper permissionDao;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel user = null;
-        user = userDao.findUserByName(username);
-        user = user !=null ? user : userDao.findUserBycellPhone(username);
-        if (user != null && user.getValid()) {
+    public UserDetails loadUserByUsername(String userPhone) throws UsernameNotFoundException {
+        HmxUser hmxUser = null;
+        hmxUser = hmxUserMapper.selectUserInfoByUserPhone(userPhone);
+//        hmxUser = hmxUser !=null ? hmxUser : userDao.findUserBycellPhone(username);
+        if (hmxUser != null && hmxUser.getState() == 0) {
             //查询相关url资源权限
-            List<Permission> permissions = permissionDao.findPermissionByUserId(user.getId());
+            List<Permission> permissions = permissionDao.findPermissionByUserId(hmxUser.getId());
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             for (Permission permission : permissions) {
                 if (permission != null && permission.getName() != null) {
@@ -39,9 +41,9 @@ public class CustomerUserService implements UserDetailsService {
                     grantedAuthorities.add(grantedAuthority);
                 }
             }
-            return new User(user.getUsername(), user.getPassword(), grantedAuthorities);
+            return new User(hmxUser.getUserPhone(), hmxUser.getPassword(), grantedAuthorities);
         } else {
-            throw new UsernameNotFoundException(username + " do not exist!");
+            throw new UsernameNotFoundException(userPhone + " do not exist!");
 
         }
     }

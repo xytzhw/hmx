@@ -17,12 +17,13 @@ public class HmxUser{
     private Integer state;
     private Integer version;
     private Integer createid;
+	private Integer type;
 
     public HmxUser() {
 		super();
 	}
 
-    public HmxUser(Integer id, String userName, String userAliase, String userPhone, String password, Integer gender, String headPic, Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
+    public HmxUser(Integer id, String userName, String userAliase, String userPhone, String password, Integer gender, String headPic, Date createTime, Date newTime, Integer state, Integer version, Integer createid, Integer type) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -36,6 +37,7 @@ public class HmxUser{
 		this.state = state;
 		this.version = version;
 		this.createid = createid;
+		this.type = type;
 	}
 	
     public Integer getId() {
@@ -133,5 +135,12 @@ public class HmxUser{
 	public void setCreateid(Integer createid){
 		this.createid = createid;
 	}
-	
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 }

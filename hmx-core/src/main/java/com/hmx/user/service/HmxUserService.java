@@ -4,6 +4,8 @@ import java.util.List;
 import com.hmx.user.entity.HmxUser;
 import com.hmx.utils.result.PageBean;
 import com.hmx.user.dto.HmxUserDto;
+import com.hmx.utils.result.Result;
+
 /**
  *  HmxUserService interface
  *
@@ -70,5 +72,8 @@ public interface HmxUserService {
      * @return
      */
     HmxUser selectUserInfoByUserPhone(String userPhone);
+
+	//增加或者修改用户信息
+	Result<Object> addOrUpdateUser(HmxUserDto hmxUserDto);
 	
 }

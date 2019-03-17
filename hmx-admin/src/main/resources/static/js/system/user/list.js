@@ -45,32 +45,54 @@ function TableInit() {
                 //分页方式：client客户端分页，server服务端分页（*）
                 sidePagination: "server",
                 columns: [{
-                    field: 'id',
-                    title: '序号',
+                    title: '序列',
                     halign: 'center',
-                    align: 'center'
+                    align: 'center',
+                    formatter: function (value,row,index) {
+                        return index+1;
+                    }
+                },{
+                    field: 'id',
+                    title: '主键',
+                    halign: 'center',
+                    align: 'center',
+                    visible: false
                 }, {
-                    field: 'name',
+                    field: 'userName',
                     title: '姓名',
                     halign: 'center',
                     align: 'center'
                 }, {
-                    field: 'username',
-                    title: '账号',
+                    field: 'userAliase',
+                    title: '别名',
                     halign: 'center',
                     align: 'center'
                 }, {
-                    field: 'cellPhone',
+                    field: 'userPhone',
                     title: '手机号',
                     halign: 'center',
                     align: 'center'
                 }, {
-                    field: 'organizationId',
-                    title: '组织机构',
+                    field: 'gender',
+                    title: '性别',
+                    halign: 'center',
+                    align: 'center'
+                    // formatter: function (value, row, index) {
+                    //     return row.organizationId.name;
+                    // }
+                }, {
+                    field: 'type',
+                    title: '用户类别',
                     halign: 'center',
                     align: 'center',
                     formatter: function (value, row, index) {
-                        return row.organizationId.name;
+                        if(value == 1){
+                            return '后台用户';
+                        }else if(value == 2){
+                            return '前端用户';
+                        }else{
+                            return '两者都是';
+                        }
                     }
                 }, {
                     title: '操作',
@@ -104,8 +126,9 @@ function TableInit() {
 
 function getSearchParams() {
     var params = {
-        name: $("#name").val(),
-        cellPhone: $("#cellPhone").val()
+        userName: $("#name").val(),
+        userPhone: $("#cellPhone").val(),
+        type:$("#type").val()
     }
     return params;
 }

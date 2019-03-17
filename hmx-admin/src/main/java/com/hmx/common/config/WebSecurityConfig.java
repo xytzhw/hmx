@@ -2,7 +2,7 @@ package com.hmx.common.config;
 
 
 import com.hmx.common.filter.JkFilterSecurityInterceptor;
-import com.hmx.common.util.MD5Util;
+import com.hmx.utils.secret.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

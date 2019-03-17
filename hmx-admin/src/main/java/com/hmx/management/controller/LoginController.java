@@ -3,9 +3,7 @@ package com.hmx.management.controller;
 import com.hmx.common.util.Result;
 import com.hmx.data.LoginButtonData;
 
-import com.hmx.user.dao.UserModelMapper;
 import com.hmx.user.entity.HmxUser;
-import com.hmx.user.entity.po.UserModel;
 import com.hmx.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,8 +26,7 @@ import java.util.Set;
 
 @Controller
 public class LoginController {
-    @Autowired
-    private UserModelMapper userDao;
+
 
     @Autowired
     private LoginService loginService;
@@ -37,7 +34,7 @@ public class LoginController {
 
     @RequestMapping("/")
     public ModelAndView index(HttpServletRequest request){
-        UserModel userModel = (UserModel) request.getSession().getAttribute("userInfo");
+        HmxUser userModel = (HmxUser) request.getSession().getAttribute("userInfo");
         ModelAndView mv = new ModelAndView();
         mv.addObject("userLogin",userModel);
         mv.setViewName("/index");
@@ -81,9 +78,9 @@ public class LoginController {
     @ResponseBody
     public Result<List<LoginButtonData>> loginButton(HttpServletRequest request){
         Result<List<LoginButtonData>> result = new Result<List<LoginButtonData>>();
-        UserModel userModel = (UserModel) request.getSession().getAttribute("userInfo");
+        HmxUser hmxUser = (HmxUser) request.getSession().getAttribute("userInfo");
         result.setStatus(10000);
-        result.setData(loginService.loginButton(userModel.getId()));
+        result.setData(loginService.loginButton(hmxUser.getId()));
         return result;
     }
 
