@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-heading">查询条件</div>
+    <div class="panel-body">
+        <form id="formSearch" class="form-horizontal">
+            <div class="form-group" style="margin-top:15px">
+                <label class="control-label col-sm-1" for="title">标题</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="title">
+                </div>
+                <label class="control-label col-sm-1" for="type">类型</label>
+                <div class="col-sm-3">
+                    <select class="form-control" id="type">
+                        <option value="">请选择</option>
+                        <option>黄梅史话</option>
+                        <option>剧目资料</option>
+                        <option>音乐资料</option>
+                        <option>团体机构</option>
+                        <option>艺术教育</option>
+                        <option>艺术研究</option>
+                        <option>名家功臣</option>
+                        <option>图片资料</option>
+                        <option>荣誉成果</option>
+                        <option>重大活动</option>
+                        <option>音乐影视</option>
+                        <option>掌上黄梅</option>
+                    </select>
+                </div>
+                <div class="col-sm-4" style="text-align:left;">
+                    <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
+                            onclick="searchList()">查询
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="toolbar" class="btn-group" style="float: right;margin: 10px 0;">
+    <button id="btn_add" type="button" class="btn btn-default" onclick="openEidt()">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+    </button>
+</div>
+<table id="articleList"></table>
+</div>
+<script src="js/article/list.js"></script>
+

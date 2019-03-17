@@ -1,5 +1,6 @@
 package com.hmx.common.config;
 
+import com.hmx.user.dao.HmxUserMapper;
 import com.hmx.user.dao.UserModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +36,7 @@ public class SimpleLoginSuccessHandler extends AbstractAuthenticationTargetUrlRe
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Autowired
-    private UserModelMapper userDao;
+    private HmxUserMapper hmxUserMapper;
 
     /* (non-Javadoc)
      * @see org.springframework.security.web.authentication.AuthenticationSuccessHandler#onAuthenticationSuccess(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.security.core.Authentication)
@@ -48,7 +49,7 @@ public class SimpleLoginSuccessHandler extends AbstractAuthenticationTargetUrlRe
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication() .getPrincipal();
         String username = userDetails.getUsername();
         if (username != null && !username.isEmpty()){
-            request.getSession().setAttribute("userInfo",userDao.findUserByName(username));
+            request.getSession().setAttribute("userInfo",hmxUserMapper.selectUserInfoByUserPhone(username));
         }
         this.defaultTargetUrl = determineTargetUrl(request,response);
         if(this.forwardToDestination){

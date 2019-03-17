@@ -1,10 +1,13 @@
 package com.hmx.management.controller.user;
 
 
-import com.hmx.common.util.Result;
+import com.hmx.user.dao.HmxUserMapper;
 import com.hmx.user.dao.RoleMapper;
-import com.hmx.user.dao.UserModelMapper;
+import com.hmx.user.dto.HmxUserDto;
+import com.hmx.user.entity.HmxUser;
 import com.hmx.user.entity.po.UserModel;
+import com.hmx.user.service.HmxUserService;
+import com.hmx.utils.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -23,13 +26,14 @@ import java.util.Map;
 @RequestMapping(value = "/system/userManage")
 public class UserModelController {
     @Autowired
-    private UserModelMapper userDao;
+    private HmxUserMapper hmxUserMapper;
 
     @Autowired
     private RoleMapper roleDao;
 
     @Autowired
-    private UserModelMapper userService;
+    private HmxUserService hmxUserService;
+
     
     /**
      *@Author: shi
@@ -55,12 +59,9 @@ public class UserModelController {
     @RequestMapping(value = "/eidt")
     public ModelAndView eidt(HttpServletRequest request, Integer id){
         ModelAndView mv = new ModelAndView();
-        UserModel userModelLogin = (UserModel) request.getSession().getAttribute("userInfo");
-//        if(userModelLogin.getOrganizationId() != null){
-//            mv.addObject("organizationzModel",userService.getSubInOrganization(userModelLogin.getOrganizationId()));
-//        }
+        HmxUser userModelLogin = (HmxUser) request.getSession().getAttribute("userInfo");
         mv.addObject("roleModel",roleDao.findAll());
-        mv.addObject("user",id == null ? new UserModel() : userDao.selectByPrimaryKey(id));
+        mv.addObject("user",id == null ? new HmxUser() : hmxUserMapper.selectByPrimaryKey(id));
         mv.setViewName("/system/user/eidt");
         return mv;
     }
@@ -74,15 +75,22 @@ public class UserModelController {
      */
     @RequestMapping(value = "/getLists")
     @ResponseBody
-    public Map<String, Object> getLists(UserModel userModel, Pageable pageable, HttpServletRequest request) {
+    public Map<String, Object> getLists(HmxUser userModel, Pageable pageable, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
-        UserModel userModelLogin = (UserModel) request.getSession().getAttribute("userInfo");
-        if(userModelLogin.getOrganizationId() != null){
-            userModel.setOrganizationId(userModelLogin.getOrganizationId());
-            List<UserModel> modelPage = userService.findAll(pageable.getPageNumber(),pageable.getPageSize());
-            result.put("rows", modelPage);
-            result.put("total", modelPage.size());
+        HmxUser userModelLogin = (HmxUser) request.getSession().getAttribute("userInfo");
+        Map<String,Object> map = new HashMap<>();
+        map.put("currPage",pageable.getPageNumber());
+        map.put("pageSize",pageable.getPageSize());
+        String username=userModel.getUserName();
+        String cellPhone=userModel.getUserPhone();
+        if(username != null && !"".equals(username)){
+            map.put("userName",username);
+        }else if(cellPhone != null && !"".equals(cellPhone)){
+            map.put("userPhone",cellPhone);
         }
+        List<HmxUser> modelPage = hmxUserMapper.findAll(map);
+        result.put("rows", modelPage);
+        result.put("total", modelPage.size());
         return result;
     }
 
@@ -102,18 +110,12 @@ public class UserModelController {
         return result;
     }
 
-    /**
-     *@Author: shi
-     *@Description:  新增或修改用户
-     *@param: userData
-     *@return 
-     *@Date: 10:44 2018/7/23
-     */
-//    @RequestMapping(value = "/addOrUpdateUser")
-//    @ResponseBody
-//    public Result<Object> addOrUpdateUser(UserData userData){
-//        return userService.addOrUpdateUser(userData);
-//    }
+
+    @RequestMapping(value = "/addOrUpdateUser")
+    @ResponseBody
+    public Result<Object> addOrUpdateUser(HmxUserDto hmxUserDto){
+        return hmxUserService.addOrUpdateUser(hmxUserDto);
+    }
 
     /**
      *@Author: shi

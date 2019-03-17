@@ -2,6 +2,8 @@ package com.hmx.user.service.impl;
 
 import java.util.List;
 import java.util.ArrayList;
+
+import com.hmx.utils.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -259,6 +261,77 @@ public class HmxUserServiceImpl implements HmxUserService{
 	 */
 	public HmxUser selectUserInfoByUserPhone(String userPhone){
 		return hmxUserMapper.selectUserInfoByUserPhone(userPhone);
+	}
+
+	@Override
+	public Result<Object> addOrUpdateUser(HmxUserDto hmxUserDto) {
+		Result<Object> result = new Result<>();
+		HmxUser model = null;
+		Boolean flag = false;
+		//如果是新用户，判断账户和手机号是否重复
+		if (hmxUserDto.getId() == null) {
+			HmxUser userModelName = hmxUserMapper.findUserByName(hmxUserDto.getUserName());
+			//判断账号是否重复
+			if (userModelName != null) {
+				result.setStatus(2001);
+				result.setMsg("用户名已存在！");
+				return result;
+			}
+			//判断手机号是否重复
+			HmxUser userModelPhone = hmxUserMapper.findUserBycellPhone(hmxUserDto.getUserPhone());
+			if (userModelPhone != null) {
+				result.setStatus(20002);
+				result.setMsg("手机号已存在！");
+				return result;
+			}
+			model = new HmxUser();
+			//初始密码手机号后六位
+			model.setPassword(MD5Util.encode(hmxUserDto.getUserPhone().substring(5,11)));
+			flag = true;
+		} else {
+			model = hmxUserMapper.selectByPrimaryKey(hmxUserDto.getId());
+			if (!model.getUserName().equals(hmxUserDto.getUserName())) {
+				HmxUser userModelName = hmxUserMapper.findUserByName(hmxUserDto.getUserName());
+				//判断账号是否重复
+				if (userModelName != null) {
+					result.setStatus(20001);
+					result.setMsg("用户名已存在！");
+					return result;
+				}
+			}
+			if (!model.getUserPhone().equals(hmxUserDto.getUserPhone())) {
+				//判断手机号是否重复
+				HmxUser userModelPhone = hmxUserMapper.findUserBycellPhone(hmxUserDto.getUserPhone());
+				if (userModelPhone != null) {
+					result.setStatus(20002);
+					result.setMsg("手机号已存在！");
+					return result;
+				}
+			}
+		}
+		model.setId(hmxUserDto.getId());
+		model.setUserName(hmxUserDto.getUserName());
+		model.setUserPhone(hmxUserDto.getUserPhone());
+		model.setState(0);
+		model.setType(hmxUserDto.getType());
+		model.setGender(hmxUserDto.getGender());
+		model.setUserAliase(hmxUserDto.getUserAliase());
+		if(flag){
+			hmxUserMapper.insert(model);
+		}else {
+			hmxUserMapper.updateByPrimaryKeySelective(model);
+		}
+		result.setStatus(10000);
+		result.setMsg("操作成功");
+		//加入用户组
+//		UserRoleModel userRoleModel = userRoleDao.findUserByUserId(model.getId());
+//		if (userRoleModel == null) {
+//			userRoleModel = new UserRoleModel();
+//		}
+//		userRoleModel.setUserId(model.getId());
+//		userRoleModel.setRoleId(userData.getRole().getId());
+//		userRoleDao.saveAndFlush(userRoleModel);
+		return result;
 	}
 }
  
