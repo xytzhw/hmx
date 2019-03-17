@@ -15,6 +15,8 @@ import com.alibaba.druid.util.StringUtils;
 import com.hmx.category.dto.HmxCategoryDto;
 import com.hmx.category.entity.HmxCategory;
 import com.hmx.category.service.HmxCategoryService;
+import com.hmx.utils.enums.DataState;
+import com.hmx.utils.enums.IsClose;
 import com.hmx.utils.result.Config;
 import com.hmx.utils.result.PageBean;
 import com.hmx.utils.result.ResultBean;
@@ -125,6 +127,27 @@ public class CategoryController {
 			resultBean.setCode(Config.SUCCESS_CODE).setContent("查询分类列表成功");
 		}
 		resultBean.put("categoryPage", page);
+		model.addAttribute("resultBean", resultBean);
+		return "hello";
+	}
+	/**
+	 * 查询所有分类信息列表
+	 * @param hmxCategoryDto
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/categoryAll")
+	public String categoryAll(HmxCategoryDto hmxCategoryDto,Model model){
+		ResultBean resultBean = new ResultBean();
+		hmxCategoryDto.setState(DataState.正常.getState());
+		hmxCategoryDto.setIsClose(IsClose.开放.getState());
+		List<HmxCategory> hmxCategoryList = hmxCategoryService.list(hmxCategoryDto);
+		if(hmxCategoryList == null || hmxCategoryList.size() <= 0){
+			resultBean.setCode(Config.FAIL_CODE).setContent("没有查找到分类信息");
+		}else{
+			resultBean.setCode(Config.SUCCESS_CODE).setContent("没有查找到分类信息");
+		}
+		resultBean.put("hmxCategoryList", hmxCategoryList);
 		model.addAttribute("resultBean", resultBean);
 		return "hello";
 	}
