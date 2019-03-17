@@ -3,12 +3,16 @@ package com.hmx.category.service.impl;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.hmx.category.service.HmxCategoryService;
+import com.hmx.utils.enums.DataState;
 import com.hmx.utils.result.PageBean;
 import com.hmx.category.entity.HmxCategory;
 import com.hmx.category.dto.HmxCategoryDto;
@@ -175,7 +179,7 @@ import com.hmx.category.dao.HmxCategoryMapper;
   		if ( hmxCategoryDto.getSort() != null && hmxCategoryDto.getSort() != 0 ) {
 			where.andSortEqualTo( hmxCategoryDto.getSort() );
 		}
-  		if ( hmxCategoryDto.getIsClose() != null && hmxCategoryDto.getIsClose() != 0 ) {
+  		if ( hmxCategoryDto.getIsClose() != null) {
 			where.andIsCloseEqualTo( hmxCategoryDto.getIsClose() );
 		}
   		if ( hmxCategoryDto.getCreateTime() != null ) {
@@ -184,7 +188,7 @@ import com.hmx.category.dao.HmxCategoryMapper;
   		if ( hmxCategoryDto.getNewTime() != null ) {
   			where.andNewTimeEqualTo( hmxCategoryDto.getNewTime() );
   		}
-  		if ( hmxCategoryDto.getState() != null && hmxCategoryDto.getState() != 0 ) {
+  		if ( hmxCategoryDto.getState() != null) {
 			where.andStateEqualTo( hmxCategoryDto.getState() );
 		}
   		if ( hmxCategoryDto.getVersion() != null && hmxCategoryDto.getVersion() != 0 ) {
@@ -210,7 +214,126 @@ import com.hmx.category.dao.HmxCategoryMapper;
     public List<Map<String,Object>> selectCategoryAndContentList(){
     	return hmxCategoryMapper.selectCategoryAndContentList();
     }
-	
+    /**
+     * 分类添加
+     * @param hmxCategoryDto
+     * @return
+     */
+    public Map<String,Object> categoryAdd(HmxCategoryDto hmxCategoryDto){
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	resultMap.put("flag", false);
+    	try {
+    		HmxCategoryDto categoryDto = new HmxCategoryDto();
+    		categoryDto.setCategoryName(hmxCategoryDto.getCategoryName());
+    		categoryDto.setState(DataState.正常.getState());
+    		if(selectIsCategoryName(categoryDto)){
+    			resultMap.put("content", "分类名已经被占用了");
+    			return resultMap;
+    		}
+    		if(hmxCategoryDto.getSort() == null ){
+    			hmxCategoryDto.setSort(selectCategoryMaxSort()+1);
+    		}
+    		Date date = new Date();
+    		hmxCategoryDto.setCreateTime(date);
+    		hmxCategoryDto.setNewTime(date);
+    		if(!insert(hmxCategoryDto)){
+    			resultMap.put("content", "添加分类失败");
+    			return resultMap;
+    		}
+    		resultMap.put("flag", true);
+    		resultMap.put("content", "添加分类成功");
+    		return resultMap;
+		} catch (Exception e) {
+			resultMap.put("content", "添加分类失败");
+			return resultMap;
+		}
+    }
+    
+    /**
+     * 分类在首页显示模块排序
+     * @return
+     */
+    public int selectCategoryMaxSort(){
+    	return hmxCategoryMapper.selectCategoryMaxSort();
+    }
+    /**
+     * 分类编辑更新
+     * @param hmxCategoryDto
+     * @return
+     */
+    public Map<String,Object> categoryUpdate(HmxCategoryDto hmxCategoryDto){
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	resultMap.put("flag", false);
+    	try {
+    		HmxCategoryDto categoryDto = new HmxCategoryDto();
+    		categoryDto.setCategoryName(hmxCategoryDto.getCategoryName());
+    		categoryDto.setState(DataState.正常.getState());
+    		categoryDto.setCategoryId(hmxCategoryDto.getCategoryId());
+    		if(selectIsCategoryName(categoryDto)){
+    			resultMap.put("content", "分类名已经被占用了");
+    			return resultMap;
+    		}
+    		Date date = new Date();
+    		hmxCategoryDto.setNewTime(date);
+    		if(!update(hmxCategoryDto)){
+    			resultMap.put("content", "更新分类信息失败");
+    			return resultMap;
+    		}
+    		resultMap.put("flag", true);
+    		resultMap.put("content", "更新分类信息成功");
+    		return resultMap;
+		} catch (Exception e) {
+			resultMap.put("content", "更新分类信息失败");
+			return resultMap;
+		}
+    }
+    /**
+     * 查询分类名是否重复
+     * @return
+     */
+    public boolean selectIsCategoryName(HmxCategoryDto hmxCategoryDto){
+    	Map<String,Object> parameter = new HashMap<String,Object>();
+    	if(!StringUtils.isEmpty(hmxCategoryDto.getCategoryName())){
+    		parameter.put("categoryName", hmxCategoryDto.getCategoryName());
+    	}
+    	if(hmxCategoryDto.getCategoryId() != null){
+    		parameter.put("categoryId", hmxCategoryDto.getCategoryId());
+    	}
+    	if(hmxCategoryDto.getState() != null){
+    		parameter.put("state", hmxCategoryDto.getState());
+    	}
+    	return hmxCategoryMapper.selectIsCategoryName(parameter)>0;
+    }
+    /**
+     * 分类列表
+     * @param parameter
+     */
+    public PageBean<Map<String,Object>> selectCategoryTable(PageBean<Map<String,Object>> page,HmxCategoryDto hmxCategoryDto){
+    	Map<String,Object> parameter = new HashMap<String,Object>();
+    	parameter.put("offset", page.getStartOfPage());
+    	parameter.put("limit", page.getPageSize());
+    	parameter.put("state", DataState.正常.getState());
+    	if(!StringUtils.isEmpty(hmxCategoryDto.getCategoryName())){
+    		parameter.put("categoryName", hmxCategoryDto.getCategoryName());
+    	}
+    	if(hmxCategoryDto.getBeginDate() != null){
+    		parameter.put("beginDate", hmxCategoryDto.getBeginDate());
+    	}
+    	if(hmxCategoryDto.getEndDate() != null){
+    		parameter.put("endDate", hmxCategoryDto.getEndDate());
+    	}
+    	if(hmxCategoryDto.getIsClose() != null){
+    		parameter.put("isClose", hmxCategoryDto.getIsClose());
+    	}
+    	Integer count = hmxCategoryMapper.countCategoryTable(parameter);
+	    Boolean haveData = page.setTotalNum((int)(long)count);
+	    if(!haveData){
+			return page;
+		}
+	    List<Map<String,Object>> data = hmxCategoryMapper.selectCategoryTable(parameter);
+	    page.setPage(data);
+    	return page;
+    }
 }
  
  
