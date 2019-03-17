@@ -1,6 +1,6 @@
 package com.hmx.management.controller;
 
-import com.hmx.common.util.Result;
+import com.hmx.utils.result.Result;
 import com.hmx.data.LoginButtonData;
 
 import com.hmx.user.entity.HmxUser;
