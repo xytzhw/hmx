@@ -66,5 +66,33 @@ public interface HmxCategoryService {
      * @return
      */
     List<Map<String,Object>> selectCategoryAndContentList();
-	
+    
+    /**
+     * 分类添加
+     * @param hmxCategoryDto
+     * @return
+     */
+    Map<String,Object> categoryAdd(HmxCategoryDto hmxCategoryDto);
+    
+    /**
+     * 分类在首页显示模块排序
+     * @return
+     */
+    int selectCategoryMaxSort();
+    /**
+     * 分类编辑更新
+     * @param hmxCategoryDto
+     * @return
+     */
+    Map<String,Object> categoryUpdate(HmxCategoryDto hmxCategoryDto);
+    /**
+     * 查询分类名是否重复
+     * @return
+     */
+    boolean selectIsCategoryName(HmxCategoryDto hmxCategoryDto);
+    /**
+     * 分类列表
+     * @param parameter
+     */
+    PageBean<Map<String,Object>> selectCategoryTable(PageBean<Map<String,Object>> page,HmxCategoryDto hmxCategoryDto);
 }

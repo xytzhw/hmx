@@ -242,6 +242,9 @@ createid = #{createid,jdbcType=INTEGER}
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER} ,
       </if>
+      <if test="version == null" >
+        version = version+1 ,
+      </if>
       <if test="createid != null" >
         createid = #{createid,jdbcType=INTEGER} ,
       </if>
@@ -263,7 +266,8 @@ version = #{version,jdbcType=INTEGER},
 createid = #{createid,jdbcType=INTEGER}
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
-   
+  
+   <!-- 首页分类查询  ↓-->
    <select id="selectCategoryAndContentList" resultMap="selectCategoryAndContentListResultMap">
    select c.category_id,c.category_id as 'categoryId',
           c.category_name as 'categoryName',c.sort as 'sort' 
@@ -282,4 +286,91 @@ createid = #{createid,jdbcType=INTEGER}
     where cc.category_id=#{category_id} and cc.state=0
 	ORDER BY cc.create_time desc
    </select>
+   <!-- ↑ -->
+   
+   <!-- 查询分类名是否重复 ↓ -->
+   <select id="selectIsCategoryName" resultType="Integer">
+   select count(*) 
+   from hmx_category 
+   <where> 
+   	<trim suffixOverrides="and">
+   	   <if test="categoryName != null">
+	    category_name=#{categoryName} and 
+	   </if>
+	   <if test="categoryId != null">
+	    category_id &lt;&gt; #{categoryId} and 
+	   </if>
+	   <if test="state != null">
+	    state=#{state} and 
+	   </if>
+	</trim>
+   </where> 
+   </select>
+   <!-- ↑ -->
+   
+   <!-- 分类在首页显示模块排序 ↓ -->
+   <select id="selectCategoryMaxSort" resultType="Integer">
+   select IFNULL(max(sort),0) from hmx_category where state=0
+   </select>
+   <!-- ↑ -->
+   
+   <!-- 分类列表信息查询 ↓ -->
+   <select id="selectCategoryTable" resultType="Map">
+   select category_id as 'categoryId',category_name as 'categoryName',
+          sort as 'sort',is_close as 'isClose',create_time as 'createTime',
+          new_time as 'newTime',createid as 'createid' 
+    from hmx_category
+	<where>
+		<trim suffixOverrides="and">
+		  <if test="state != null">
+		   state=#{state} and 
+		  </if>
+		  <if test="beginDate != null">
+		   create_time &gt;= #{beginDate} and 
+		  </if>
+		  <if test="endDate != null">
+		   create_time &lt;= #{endDate} and 
+		  </if>
+		  <if test="isClose">
+		   is_close = #{isClose} and 
+		  </if>
+		  <if test="categoryName != null">
+		   category_name like concat("%",#{categoryName},"%") and 
+		  </if>
+		</trim>
+	</where>
+	ORDER BY sort
+		<if test="limit != null" >
+	      <if test="offset != null" >
+	        limit ${offset}, ${limit}
+	      </if>
+	      <if test="offset == null" >
+	        limit ${limit}
+	      </if>
+	    </if>
+   </select>
+   <select id="countCategoryTable" resultType="Integer">
+   select count(*) 
+    from hmx_category
+	<where>
+		<trim suffixOverrides="and">
+		  <if test="state != null">
+		   state=#{state} and 
+		  </if>
+		  <if test="beginDate != null">
+		   create_time &gt;= #{beginDate} and 
+		  </if>
+		  <if test="endDate != null">
+		   create_time &lt;= #{endDate} and 
+		  </if>
+		  <if test="isClose">
+		   is_close = #{isClose} and 
+		  </if>
+		  <if test="categoryName != null">
+		   category_name like concat("%",#{categoryName},"%") and 
+		  </if>
+		</trim>
+	</where>
+   </select>
+   <!-- ↑ -->
 </mapper>

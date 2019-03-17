@@ -39,4 +39,20 @@ public interface HmxCategoryMapper{
      * @return
      */
     List<Map<String,Object>> selectCategoryAndContentList();
+    /**
+     * 分类在首页显示模块排序
+     * @return
+     */
+    int selectCategoryMaxSort();
+    /**
+     * 查询分类名是否重复
+     * @return
+     */
+    int selectIsCategoryName(Map<String,Object> parameter);
+    /**
+     * 分类列表
+     * @param parameter
+     */
+    List<Map<String,Object>> selectCategoryTable(Map<String,Object> parameter);
+    int countCategoryTable(Map<String,Object> parameter);
 }
