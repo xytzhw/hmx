@@ -5,32 +5,32 @@ $(function () {
 
 function initTable() {
     var option = {
-        url: '/category/getArticle',
+        url: '/category/categoryTable',
         queryParams: function (params) {
             var param = getSearchParams();
-            param.page = params.pageNumber - 1;
-            param.size = params.pageSize;
+            param.pageNum = params.pageNumber;
+            param.pageSize = params.pageSize;
             return param;
         },//传递参数
         columns: [
             {
-                field: 'id',
+                field: 'categoryId',
                 title: '编号',
                 halign: 'center',
                 align: 'center'
             }, {
-                field: 'type',
-                title: '类型',
+                field: 'categoryName',
+                title: '分类名称',
                 halign: 'center',
                 align: 'center'
             },{
-                field: 'title',
-                title: '标题',
+                field: 'sort',
+                title: '排序方式',
                 halign: 'center',
                 align: 'center',
             }, {
-                field: 'label',
-                title: '标签',
+                field: 'isClose',
+                title: '是否首页展示',
                 halign: 'center',
                 align: 'center'
             },{
@@ -39,9 +39,9 @@ function initTable() {
                 halign: 'center',
                 align: 'center',
                 formatter: function (value, row, index) {
-                    var date = new Date();
-                    date.setTime(row.createTime);
-                    return date.toLocaleString().replace(/\/+/g,'-');
+                    var dateee  = new Date(row.createTime).toJSON();
+                    var date = new Date(+new Date(dateee )+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+                    return date;
                 }
             },{
                 title: '操作',
@@ -71,12 +71,12 @@ function searchList() {
     $("#articleList").bootstrapTable('refresh');
 }
 
-function openEidt(element) {
+function openAdd(element) {
     var id = '';
     if (element != null) {
         id = $(element).parent().parent().find("td").eq(0).text()
     }
-    $.fn.showWindow({title: '相关信息'}, '/category/eidt?id=' + id, function (model) {
+    $.fn.showWindow({title: '相关信息'}, '/category/initAdd', function (model) {
         $("#tradeList").attr("modelValue", model.attr("id"));
     });
 }

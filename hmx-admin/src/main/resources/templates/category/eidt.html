@@ -16,7 +16,7 @@
     }
 </style>
 <form id="formUpdate" class="form-horizontal">
-    <input id="article" type="hidden" value="${article.id!}">
+    <input id="article" type="hidden" value="${category.categoryId!}">
     <div class="form-group" style="margin-top:15px">
         <div class="row">
             <div>
@@ -26,8 +26,8 @@
                 </div>
                 <label class="control-label col-sm-1" for="img">预览</label>
                 <div class="col-lg-4">
-                    <#if article.img??>
-                        <img name="${article.img.id}" src="${article.img.url}" id="imgUrl" style="width: 100%;height: 100px">
+                    <#if category.img??>
+                        <img name="${category.img.id}" src="${category.img.url}" id="imgUrl" style="width: 100%;height: 100px">
                         <#else>
                             <img id="preview" style="width: 100%;height: 100px"  />
                     </#if>
@@ -37,7 +37,7 @@
         <div class="row">
             <label class="control-label col-sm-1" for="name">标题</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" name="name" id="name" value="${article.title!}">
+                <input type="text" class="form-control" name="name" id="name" value="${category.title!}">
             </div>
             <label class="control-label col-sm-1" for="type01">类型</label>
             <div class="col-lg-4">
@@ -61,17 +61,17 @@
             <label class="control-label col-sm-1" for="description">描述</label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="description" id="description"
-                       value="${article.description!}">
+                       value="${category.description!}">
             </div>
             <label class="control-label col-sm-1" for="grade">排序</label>
             <div class="col-lg-4">
-                <input type="number" class="form-control" name="grade" id="grade" value="${article.grade!}">
+                <input type="number" class="form-control" name="grade" id="grade" value="${category.grade!}">
             </div>
         </div>
         <div class="row">
             <label class="control-label col-sm-1">内容</label>
             <div class="col-lg-9" id="editor">
-                <p id="content">${article.content!}</p>
+                <p id="content">${category.content!}</p>
                 <!--<textarea class="form-control" rows="4" name="content" id="content" >${article.content!}</textarea>-->
             </div>
         </div>
@@ -85,6 +85,6 @@
 </form>
 
 <script src="lib/bootStrap/js/bootstrapValidator.js"></script>
-<script src="js/article/wangEditor.min.js"></script>
-<script src="js/article/editor.js"></script>
-<script src="js/article/list.js"></script>
+<script src="js/category/wangEditor.min.js"></script>
+<script src="js/category/editor.js"></script>
+<script src="js/category/list.js"></script>

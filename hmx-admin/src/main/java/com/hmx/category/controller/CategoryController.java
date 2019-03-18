@@ -1,5 +1,6 @@
 package com.hmx.category.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ import com.hmx.utils.result.PageBean;
 import com.hmx.utils.result.ResultBean;
 
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/category")
@@ -29,6 +31,22 @@ public class CategoryController {
 	
 	@Autowired
 	private HmxCategoryService hmxCategoryService;
+
+
+	@RequestMapping("/init")
+	public ModelAndView init() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/category/list");
+		return modelAndView;
+	}
+
+	@RequestMapping("/initAdd")
+	public ModelAndView initAdd() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("category",new HmxCategory());
+		modelAndView.setViewName("/category/eidt");
+		return modelAndView;
+	}
 
 	/**
 	 * 首页分类添加
@@ -111,8 +129,9 @@ public class CategoryController {
 	 * @param model
 	 * @return
 	 */
-	@PostMapping("/categoryTable")
-	public String categoryTable(HmxCategoryDto hmxcategoryDto,PageBean<Map<String,Object>> page,Model model){
+	@GetMapping("/categoryTable")
+	public Map<String,Object> categoryTable(HmxCategoryDto hmxcategoryDto,PageBean<Map<String,Object>> page,Model model){
+		Map<String,Object> map = new HashMap<>();
 		ResultBean resultBean = new ResultBean();
 		page = hmxCategoryService.selectCategoryTable(page, hmxcategoryDto);
 		List<Map<String,Object>> list = page.getPage();
@@ -126,9 +145,9 @@ public class CategoryController {
 		}else{
 			resultBean.setCode(Config.SUCCESS_CODE).setContent("查询分类列表成功");
 		}
-		resultBean.put("categoryPage", page);
-		model.addAttribute("resultBean", resultBean);
-		return "hello";
+		map.put("rows", page.getPage());
+		map.put("total", page.getTotalNum());
+		return map;
 	}
 	/**
 	 * 查询所有分类信息列表
