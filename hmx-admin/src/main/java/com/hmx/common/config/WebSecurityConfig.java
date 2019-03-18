@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/css/**","/js/**","/img/**","/lib/**","/customer/**","/jkHouse/**").permitAll()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
+//                .anyRequest().permitAll()//调试接口改成默认放开所有拦截
                 .and()
                 .formLogin()
                 .loginPage("/login")

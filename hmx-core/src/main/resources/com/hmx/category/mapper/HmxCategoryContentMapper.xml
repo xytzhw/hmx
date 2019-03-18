@@ -323,6 +323,80 @@ version = #{version,jdbcType=INTEGER},
 createid = #{createid,jdbcType=INTEGER}
     where category_content_id = #{categoryContentId,jdbcType=INTEGER}
   </update>
+   <!-- 内容详情 ↓ -->
+   <select id="selectCategoryContentById" resultType="Map">
+   select cc.category_content_id as 'categoryContentId',cc.category_id as 'categoryId',
+       cc.category_title as 'categoryTitle',cc.category_content as 'categoryContent',
+       cc.content_type as 'contentType',cc.content_images as 'contentImages',
+       cc.movie_id as 'movieId',cc.music_id as 'musicId',cc.browse_num as 'browseNum',
+       cc.create_time as 'createTime',c.category_name as 'categoryName'
+	from hmx_category_content cc 
+	LEFT JOIN hmx_category c on c.category_id=cc.category_id
+	where cc.category_content_id = #{categoryContentId} and cc.state=0
+   </select>
+   <!-- ↑ -->
    
-   
+   <!-- 内容列表 ↓ -->
+   <select id="selectCategoryContentTable" resultType="Map">
+   select cc.category_content_id as 'categoryContentId',cc.category_id as 'categoryId',
+       cc.category_title as 'categoryTitle',cc.category_content as 'categoryContent',
+       cc.content_type as 'contentType',cc.content_images as 'contentImages',
+       cc.movie_id as 'movieId',cc.music_id as 'musicId',cc.browse_num as 'browseNum',
+       cc.create_time as 'createTime',c.category_name as 'categoryName'
+	from hmx_category_content cc 
+	LEFT JOIN hmx_category c on c.category_id=cc.category_id
+	<where>
+		<trim suffixOverrides="and">
+			<if test="state != null">
+			   cc.state=#{state} and 
+		    </if>
+		    <if test="beginDate != null">
+		  	   cc.create_time &gt;= #{beginDate} and 
+		  	</if>
+		  	<if test="endDate != null">
+	   		   cc.create_time &lt;= #{endDate} and 
+		    </if>
+		    <if test="categoryId != null">
+			   cc.category_id = #{categoryId} and 
+		    </if>
+		    <if test="categoryTitle != null">
+		       cc.category_title like concat("%",#{categoryTitle},"%") and 
+		    </if>
+		</trim>
+	</where>
+	ORDER BY cc.create_time desc 
+		<if test="limit != null" >
+	      <if test="offset != null" >
+	        limit ${offset}, ${limit}
+	      </if>
+	      <if test="offset == null" >
+	        limit ${limit}
+	      </if>
+	    </if>
+   </select>
+   <select id="countCategoryContentTable" resultType="Integer">
+   select count(*) 
+	from hmx_category_content cc 
+	LEFT JOIN hmx_category c on c.category_id=cc.category_id
+	<where>
+		<trim suffixOverrides="and">
+			<if test="state != null">
+			   cc.state=#{state} and 
+		    </if>
+		    <if test="beginDate != null">
+		  	   cc.create_time &gt;= #{beginDate} and 
+		  	</if>
+		  	<if test="endDate != null">
+	   		   cc.create_time &lt;= #{endDate} and 
+		    </if>
+		    <if test="categoryId != null">
+			   cc.category_id = #{categoryId} and 
+		    </if>
+		    <if test="categoryTitle != null">
+		       cc.category_title like concat("%",#{categoryTitle},"%") and 
+		    </if>
+		</trim>
+	</where>
+   </select>
+   <!-- ↑ -->
 </mapper>

@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8089
 
 spring:
     application:
@@ -25,6 +25,7 @@ mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
 #黄梅戏短信接入配置
 SMSSendUrl: http://jk.106api.cn/smsUTF8.aspx
 SMSUserName: hmx008
