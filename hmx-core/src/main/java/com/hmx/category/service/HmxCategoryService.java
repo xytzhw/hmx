@@ -6,6 +6,9 @@ import java.util.Map;
 import com.hmx.category.entity.HmxCategory;
 import com.hmx.utils.result.PageBean;
 import com.hmx.category.dto.HmxCategoryDto;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  *  HmxCategoryService interface
  *
@@ -72,7 +75,7 @@ public interface HmxCategoryService {
      * @param hmxCategoryDto
      * @return
      */
-    Map<String,Object> categoryAdd(HmxCategoryDto hmxCategoryDto);
+    Map<String,Object> categoryAdd(HmxCategoryDto hmxCategoryDto, HttpServletRequest request);
     
     /**
      * 分类在首页显示模块排序

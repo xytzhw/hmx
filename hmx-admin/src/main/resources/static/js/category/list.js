@@ -48,14 +48,14 @@ function initTable() {
                 halign: 'center',
                 align: 'center',
                 formatter: function (value, row, index) {
-                    var isUpdate = '<a href="javascript:void(0)" class="update"  title="修改" onclick="openEidt(this)">修改</a>';
+                    var isUpdate = '<a href="javascript:void(0)" class="update"  title="修改" onclick="openAdd(this)">修改</a>';
                     var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteArticle(' + row.id + ')">删除</a>';
                     return isUpdate + isDelete;
                 }
             }
         ]
     };
-    $('#articleList').bootstrapTable($.initTableArg(option));
+    $('#tradeList').bootstrapTable($.initTableArg(option));
 } //表格
 
 function getSearchParams() {
@@ -68,7 +68,7 @@ function getSearchParams() {
 
 //列表搜索
 function searchList() {
-    $("#articleList").bootstrapTable('refresh');
+    $("#tradeList").bootstrapTable('refresh');
 }
 
 function openAdd(element) {
@@ -76,7 +76,7 @@ function openAdd(element) {
     if (element != null) {
         id = $(element).parent().parent().find("td").eq(0).text()
     }
-    $.fn.showWindow({title: '相关信息'}, '/category/initAdd', function (model) {
+    $.fn.showWindow({title: '相关信息'}, '/category/initAdd?id=' + id, function (model) {
         $("#tradeList").attr("modelValue", model.attr("id"));
     });
 }

@@ -290,7 +290,7 @@ public class HmxUserServiceImpl implements HmxUserService{
 			flag = true;
 		} else {
 			model = hmxUserMapper.selectByPrimaryKey(hmxUserDto.getId());
-			if (!model.getUserName().equals(hmxUserDto.getUserName())) {
+			if (!hmxUserDto.getUserName().equals(model.getUserName())) {
 				HmxUser userModelName = hmxUserMapper.findUserByName(hmxUserDto.getUserName());
 				//判断账号是否重复
 				if (userModelName != null) {

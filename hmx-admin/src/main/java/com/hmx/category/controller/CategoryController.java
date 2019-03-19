@@ -4,13 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hmx.utils.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.druid.util.StringUtils;
 import com.hmx.category.dto.HmxCategoryDto;
@@ -24,6 +21,8 @@ import com.hmx.utils.result.ResultBean;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/category")
@@ -41,9 +40,9 @@ public class CategoryController {
 	}
 
 	@RequestMapping("/initAdd")
-	public ModelAndView initAdd() {
+	public ModelAndView initAdd(HttpServletRequest request, @RequestParam(value = "id", required = false) Integer categoryId) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("category",new HmxCategory());
+		modelAndView.addObject("category",categoryId == null ? new HmxCategory() : hmxCategoryService.info(categoryId));
 		modelAndView.setViewName("/category/eidt");
 		return modelAndView;
 	}
@@ -51,30 +50,27 @@ public class CategoryController {
 	/**
 	 * 首页分类添加
 	 * @param hmxcategoryDto
-	 * @param model
 	 * @return
 	 */
 	@PostMapping("/add")
-	public String categoryAdd(HmxCategoryDto hmxcategoryDto,Model model){
-		ResultBean resultBean = new ResultBean();
+	public Result<Object> categoryAdd(HmxCategoryDto hmxcategoryDto, HttpServletRequest request){
+		Result<Object> result = new Result<>();
 		boolean flag=true;
 		if(StringUtils.isEmpty(hmxcategoryDto.getCategoryName())){
-			resultBean.setCode(Config.FAIL_FIELD_EMPTY);
-			resultBean.setContent("分类名称不能为空");
+			result.setStatus(Config.FAIL_FIELD_EMPTY);
+			result.setMsg("分类名称不能为空");
 			flag=false;
 		}
 		if(flag){
-			Map<String,Object> resultMap = hmxCategoryService.categoryAdd(hmxcategoryDto);
+			Map<String,Object> resultMap = hmxCategoryService.categoryAdd(hmxcategoryDto,request);
 			flag=Boolean.parseBoolean(resultMap.get("flag").toString());
 			if(!flag){
-				resultBean.setCode(Config.FAIL_CODE);
+				result.setStatus(Config.FAIL_CODE);
 			}else{
-				resultBean.setCode(Config.SUCCESS_CODE);
+				result.setStatus(Config.SUCCESS_CODE);
 			}
-			resultBean.setContent(resultMap.get("content").toString());
 		}
-		model.addAttribute("resultBean", resultBean);
-		return "hello";
+		return result;
 	}
 	/**
 	 * 首页分类信息查找
@@ -101,26 +97,24 @@ public class CategoryController {
 	 * @return
 	 */
 	@PostMapping("/edit")
-	public String categoryUpdate(HmxCategoryDto hmxcategoryDto,Model model){
-		ResultBean resultBean = new ResultBean();
+	public Result<Object> categoryUpdate(HmxCategoryDto hmxcategoryDto,Model model){
+		Result<Object> result = new Result<>();
 		boolean flag=true;
 		if(hmxcategoryDto.getCategoryId() == null){
-			resultBean.setCode(Config.FAIL_FIELD_EMPTY);
-			resultBean.setContent("分类编号不能为空");
+			result.setStatus(Config.FAIL_FIELD_EMPTY);
+			result.setMsg("分类编号不能为空");
 			flag=false;
 		}
 		if(flag){
 			Map<String,Object> resultMap = hmxCategoryService.categoryUpdate(hmxcategoryDto);
 			flag=Boolean.parseBoolean(resultMap.get("flag").toString());
 			if(!flag){
-				resultBean.setCode(Config.FAIL_CODE);
+				result.setStatus(Config.FAIL_CODE);
 			}else{
-				resultBean.setCode(Config.SUCCESS_CODE);
+				result.setStatus(Config.SUCCESS_CODE);
 			}
-			resultBean.setContent(resultMap.get("content").toString());
 		}
-		model.addAttribute("resultBean", resultBean);
-		return "hello";
+		return result;
 	}
 	/**
 	 * 分类列表信息

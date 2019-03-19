@@ -16,75 +16,40 @@
     }
 </style>
 <form id="formUpdate" class="form-horizontal">
-    <input id="article" type="hidden" value="${category.categoryId!}">
+    <input id="categoryId" type="hidden" value="${category.categoryId!}">
     <div class="form-group" style="margin-top:15px">
         <div class="row">
-            <div>
-                <label class="control-label col-sm-1" for="img">首图</label>
-                <div class="col-lg-4">
-                    <input type="file" id="img" onchange="imgPreview(this)">
-                </div>
-                <label class="control-label col-sm-1" for="img">预览</label>
-                <div class="col-lg-4">
-                    <#if category.img??>
-                        <img name="${category.img.id}" src="${category.img.url}" id="imgUrl" style="width: 100%;height: 100px">
-                        <#else>
-                            <img id="preview" style="width: 100%;height: 100px"  />
-                    </#if>
-                </div>
+            <label class="control-label col-sm-1" for="categoryName">分类名称</label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="categoryName" id="categoryName" value="${category.categoryName!}">
+            </div>
+            <label class="control-label col-sm-1" for="isClose">是否首页展示</label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" name="isClose" id="isClose" value="${category.isClose!}">
             </div>
         </div>
         <div class="row">
-            <label class="control-label col-sm-1" for="name">标题</label>
+            <label class="control-label col-sm-1" for="version">版本编号</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" name="name" id="name" value="${category.title!}">
+                <input type="text" class="form-control" name="version" id="version" value="${category.version!}">
             </div>
-            <label class="control-label col-sm-1" for="type01">类型</label>
-            <div class="col-lg-4">
-                <!-- <input type="text" class="form-control" name="type" id="type" value="${article.type!}">-->
-                <select class="form-control" name="type01" id="type01">
-                    <option value="">请选择</option>
-                    <option>食安头条</option>
-                    <option>要情周报</option>
-                    <option>政策法规</option>
-                    <option>政策解读</option>
-                    <option>办事指南</option>
-                    <option>质量评级</option>
-                    <option>维权案例</option>
-                    <option>红榜</option>
-                    <option>黑榜</option>
-                </select>
-            </div>
+        </div>
+    </div>
 
+    <div>
+        <div class="col-lg-10" style="text-align:right">
+            <#if category.categoryName??>
+                    <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
+                            onclick="updateCategory(2)">提交
+                    </button>
+                <#else>
+                    <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
+                            onclick="updateCategory(1)">提交
+                    </button>
+            </#if>
         </div>
-        <div class="row">
-            <label class="control-label col-sm-1" for="description">描述</label>
-            <div class="col-lg-4">
-                <input type="text" class="form-control" name="description" id="description"
-                       value="${category.description!}">
-            </div>
-            <label class="control-label col-sm-1" for="grade">排序</label>
-            <div class="col-lg-4">
-                <input type="number" class="form-control" name="grade" id="grade" value="${category.grade!}">
-            </div>
-        </div>
-        <div class="row">
-            <label class="control-label col-sm-1">内容</label>
-            <div class="col-lg-9" id="editor">
-                <p id="content">${category.content!}</p>
-                <!--<textarea class="form-control" rows="4" name="content" id="content" >${article.content!}</textarea>-->
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-10" style="text-align:right">
-        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
-                onclick="updateArticle()">提交
-        </button>
-    </div>
     </div>
 </form>
 
 <script src="lib/bootStrap/js/bootstrapValidator.js"></script>
-<script src="js/category/wangEditor.min.js"></script>
-<script src="js/category/editor.js"></script>
-<script src="js/category/list.js"></script>
+<script src="js/category/eidt.js"></script>
