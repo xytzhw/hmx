@@ -1,7 +1,11 @@
 package com.hmx.category.service.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 
 import com.hmx.category.service.HmxCategoryContentService;
+import com.hmx.utils.enums.DataState;
 import com.hmx.utils.result.PageBean;
 import com.hmx.category.entity.HmxCategoryContent;
 import com.hmx.category.dto.HmxCategoryContentDto;
@@ -232,7 +237,95 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
 		}
 		return hmxCategoryContentMapper.selectByExample(hmxCategoryContentExample);
 	}
+	/**
+	 * 内容详情添加
+	 * @param hmxCategoryContentDto
+	 * @return
+	 */
+	@Transactional
+	public Map<String,Object> categoryContentAdd(HmxCategoryContentDto hmxCategoryContentDto){
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("flag", false);
+		try {
+			Date date = new Date();
+			hmxCategoryContentDto.setCreateTime(date);
+			hmxCategoryContentDto.setNewTime(date);
+			if(!insert(hmxCategoryContentDto)){
+				resultMap.put("content", "添加内容失败");
+	    		return resultMap;
+			}
+			resultMap.put("flag", true);
+    		resultMap.put("content", "添加内容成功");
+    		return resultMap;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("content", "添加内容失败");
+			return resultMap;
+		}
+	}
 	
+	/**
+	 * 内容详情编辑
+	 * @param hmxCategoryContentDto
+	 * @return
+	 */
+	@Transactional
+	public Map<String,Object> categoryContentUpdate(HmxCategoryContentDto hmxCategoryContentDto){
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("flag", false);
+		try {
+			hmxCategoryContentDto.setNewTime(new Date());
+			if(!update(hmxCategoryContentDto)){
+				resultMap.put("content", "编辑内容失败");
+	    		return resultMap;
+			}
+			resultMap.put("flag", true);
+    		resultMap.put("content", "编辑内容成功");
+    		return resultMap;
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.put("content", "编辑内容失败");
+			return resultMap;
+		}
+	}
+	/**
+     * 查询内容详情
+     * @param categoryContentId
+     * @return
+     */
+    public Map<String,Object> selectCategoryContentById(Integer categoryContentId){
+    	return hmxCategoryContentMapper.selectCategoryContentById(categoryContentId);
+    }
+    /**
+     * 内容列表查询
+     * @return
+     */
+    public PageBean<Map<String,Object>> selectCategoryContentTable(PageBean<Map<String,Object>> page,HmxCategoryContentDto hmxCategoryContentDto){
+    	Map<String,Object> parameter = new HashMap<String,Object>();
+    	parameter.put("offset", page.getStartOfPage());
+    	parameter.put("limit", page.getPageSize());
+    	parameter.put("state", DataState.正常.getState());
+    	if(!StringUtils.isEmpty(hmxCategoryContentDto.getCategoryTitle())){
+    		parameter.put("categoryTitle", hmxCategoryContentDto.getCategoryTitle());
+    	}
+    	if(hmxCategoryContentDto.getBeginDate() != null){
+    		parameter.put("beginDate", hmxCategoryContentDto.getBeginDate());
+    	}
+    	if(hmxCategoryContentDto.getEndDate() != null){
+    		parameter.put("endDate", hmxCategoryContentDto.getEndDate());
+    	}
+    	if(hmxCategoryContentDto.getCategoryId() != null){
+    		parameter.put("categoryId", hmxCategoryContentDto.getCategoryId());
+    	}
+    	Integer count = hmxCategoryContentMapper.countCategoryContentTable(parameter);
+	    Boolean haveData = page.setTotalNum((int)(long)count);
+	    if(!haveData){
+			return page;
+		}
+	    List<Map<String,Object>> data = hmxCategoryContentMapper.selectCategoryContentTable(parameter);
+	    page.setPage(data);
+    	return page;
+    }
 }
  
  

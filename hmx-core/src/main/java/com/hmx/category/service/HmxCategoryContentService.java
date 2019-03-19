@@ -1,6 +1,8 @@
 package com.hmx.category.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.hmx.category.entity.HmxCategoryContent;
 import com.hmx.utils.result.PageBean;
 import com.hmx.category.dto.HmxCategoryContentDto;
@@ -59,4 +61,27 @@ public interface HmxCategoryContentService {
 	 */
 	List<HmxCategoryContent> list( HmxCategoryContentDto hmxCategoryContentDto );
 	
+	/**
+	 * 内容详情添加
+	 * @param hmxCategoryContentDto
+	 * @return
+	 */
+	Map<String,Object> categoryContentAdd(HmxCategoryContentDto hmxCategoryContentDto);
+	/**
+	 * 内容详情编辑
+	 * @param hmxCategoryContentDto
+	 * @return
+	 */
+	Map<String,Object> categoryContentUpdate(HmxCategoryContentDto hmxCategoryContentDto);
+	/**
+     * 查询内容详情
+     * @param categoryContentId
+     * @return
+     */
+    Map<String,Object> selectCategoryContentById(Integer categoryContentId);
+    /**
+     * 内容列表查询
+     * @return
+     */
+    PageBean<Map<String,Object>> selectCategoryContentTable(PageBean<Map<String,Object>> page,HmxCategoryContentDto hmxCategoryContentDto);
 }
