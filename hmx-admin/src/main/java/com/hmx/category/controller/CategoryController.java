@@ -37,8 +37,10 @@ public class CategoryController {
 
 	@RequestMapping("/init")
 	public ModelAndView init() {
+		List<HmxCategory> hmxCategoryList = hmxCategoryService.list(new HmxCategoryDto());
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/category/list");
+		modelAndView.addObject("category",hmxCategoryList);
 		return modelAndView;
 	}
 

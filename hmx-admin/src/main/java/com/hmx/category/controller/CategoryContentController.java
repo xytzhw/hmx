@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hmx.category.dto.HmxCategoryDto;
+import com.hmx.category.entity.HmxCategory;
+import com.hmx.category.entity.HmxCategoryContent;
+import com.hmx.category.service.HmxCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,7 @@ import com.hmx.category.service.HmxCategoryContentService;
 import com.hmx.utils.result.Config;
 import com.hmx.utils.result.PageBean;
 import com.hmx.utils.result.ResultBean;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/categoryContent")
@@ -26,6 +31,30 @@ public class CategoryContentController {
 	
 	@Autowired
 	private HmxCategoryContentService hmxCategoryContentService;
+
+	@Autowired
+	private HmxCategoryService hmxCategoryService;
+
+
+	@RequestMapping("/init")
+	public ModelAndView init() {
+		ModelAndView modelAndView = new ModelAndView();
+		List<HmxCategory> hmxCategoryList = hmxCategoryService.list(new HmxCategoryDto());
+		modelAndView.setViewName("/categoryContent/list");
+		modelAndView.addObject("category",hmxCategoryList);
+		return modelAndView;
+	}
+
+	@RequestMapping("/editInit")
+	public ModelAndView editInit(Integer id) {
+		ModelAndView modelAndView = new ModelAndView();
+		List<HmxCategory> hmxCategoryList = hmxCategoryService.list(new HmxCategoryDto());
+		HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.selectCategoryContentById(id);
+		modelAndView.setViewName("/categoryContent/eidt");
+		modelAndView.addObject("category",hmxCategoryList);
+		modelAndView.addObject("hmxCategoryContent",hmxCategoryContent);
+		return modelAndView;
+	}
 
 	/**
 	 * 分类内容添加
@@ -105,7 +134,7 @@ public class CategoryContentController {
 			flag=false;
 		}
 		if(flag){
-			Map<String,Object> resultMap = hmxCategoryContentService.selectCategoryContentById(categoryContentId);
+			HmxCategoryContent resultMap = hmxCategoryContentService.selectCategoryContentById(categoryContentId);
 			if(resultMap == null){
 				resultBean.setCode(Config.FAIL_CODE).setContent("查询内容详情失败");
 			}else{

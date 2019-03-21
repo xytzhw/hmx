@@ -39,7 +39,7 @@ public interface HmxCategoryContentMapper{
      * @param categoryContentId
      * @return
      */
-    Map<String,Object> selectCategoryContentById(Integer categoryContentId);
+    HmxCategoryContent selectCategoryContentById(Integer categoryContentId);
     /**
      * 内容列表查询
      * @param parameter
