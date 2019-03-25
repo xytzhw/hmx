@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.hmx.user.entity.HmxUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,9 @@ import com.hmx.category.dto.HmxCategoryDto;
 import com.hmx.category.entity.HmxCategoryExample;
 import com.hmx.category.entity.HmxCategoryExample.Criteria;
 import com.hmx.category.dao.HmxCategoryMapper;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Service implementation class
  *
@@ -219,7 +223,8 @@ import com.hmx.category.dao.HmxCategoryMapper;
      * @param hmxCategoryDto
      * @return
      */
-    public Map<String,Object> categoryAdd(HmxCategoryDto hmxCategoryDto){
+    public Map<String,Object> categoryAdd(HmxCategoryDto hmxCategoryDto, HttpServletRequest request){
+		HmxUser userModelLogin = (HmxUser) request.getSession().getAttribute("userInfo");
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	resultMap.put("flag", false);
     	try {
@@ -236,6 +241,7 @@ import com.hmx.category.dao.HmxCategoryMapper;
     		Date date = new Date();
     		hmxCategoryDto.setCreateTime(date);
     		hmxCategoryDto.setNewTime(date);
+			hmxCategoryDto.setCreateid(userModelLogin.getId());
     		if(!insert(hmxCategoryDto)){
     			resultMap.put("content", "添加分类失败");
     			return resultMap;

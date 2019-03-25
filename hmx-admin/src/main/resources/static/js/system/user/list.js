@@ -76,10 +76,15 @@ function TableInit() {
                     field: 'gender',
                     title: '性别',
                     halign: 'center',
-                    align: 'center'
-                    // formatter: function (value, row, index) {
-                    //     return row.organizationId.name;
-                    // }
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        if(value == 1){
+                            return '男';
+                        }else{
+                            return '女';
+                        }
+                        return row.organizationId.name;
+                    }
                 }, {
                     field: 'type',
                     title: '用户类别',

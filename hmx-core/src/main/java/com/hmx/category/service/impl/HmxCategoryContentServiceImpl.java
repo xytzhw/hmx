@@ -293,7 +293,7 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
      * @param categoryContentId
      * @return
      */
-    public Map<String,Object> selectCategoryContentById(Integer categoryContentId){
+    public HmxCategoryContent selectCategoryContentById(Integer categoryContentId){
     	return hmxCategoryContentMapper.selectCategoryContentById(categoryContentId);
     }
     /**

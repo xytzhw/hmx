@@ -324,7 +324,7 @@ createid = #{createid,jdbcType=INTEGER}
     where category_content_id = #{categoryContentId,jdbcType=INTEGER}
   </update>
    <!-- 内容详情 ↓ -->
-   <select id="selectCategoryContentById" resultType="Map">
+   <select id="selectCategoryContentById" resultType="com.hmx.category.entity.HmxCategoryContent">
    select cc.category_content_id as 'categoryContentId',cc.category_id as 'categoryId',
        cc.category_title as 'categoryTitle',cc.category_content as 'categoryContent',
        cc.content_type as 'contentType',cc.content_images as 'contentImages',
