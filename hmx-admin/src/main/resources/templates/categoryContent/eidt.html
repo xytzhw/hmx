@@ -16,7 +16,7 @@
     }
 </style>
 <form id="formUpdate" class="form-horizontal">
-    <input id="article" type="hidden" value="${hmxCategoryContent.categoryContentId!}">
+    <input id="categoryContentId" type="hidden" value="${hmxCategoryContent.categoryContentId!}">
     <div class="form-group" style="margin-top:15px">
         <div class="row">
             <div>
@@ -27,7 +27,7 @@
                 <label class="control-label col-sm-1" for="img">预览</label>
                 <div class="col-lg-4">
                     <#if hmxCategoryContent.img??>
-                        <img name="${hmxCategoryContent.img.id}" src="${hmxCategoryContent.img.url}" id="imgUrl" style="width: 100%;height: 100px">
+                        <img name="imgId" src="${hmxCategoryContent.contentImages}" id="imgUrl" style="width: 100%;height: 100px">
                         <#else>
                             <img id="preview" style="width: 100%;height: 100px"  />
                     </#if>
@@ -37,42 +37,52 @@
         <div class="row">
             <label class="control-label col-sm-1" for="name">标题</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" name="name" id="name" value="${hmxCategoryContent.title!}">
+                <input type="text" class="form-control" name="name" id="name" value="${hmxCategoryContent.categoryTitle!}">
             </div>
             <label class="control-label col-sm-1" for="type01">类型</label>
             <div class="col-lg-4">
-                <!-- <input type="text" class="form-control" name="type" id="type" value="${article.type!}">-->
                 <select class="form-control" name="type01" id="type01">
                     <option value="">请选择</option>
-                    <option>食安头条</option>
-                    <option>要情周报</option>
-                    <option>政策法规</option>
-                    <option>政策解读</option>
-                    <option>办事指南</option>
-                    <option>质量评级</option>
-                    <option>维权案例</option>
-                    <option>红榜</option>
-                    <option>黑榜</option>
+                    <#list category as item>
+                        <option value="${item.categoryId!}">${item.categoryName!}</option>
+                    </#list>
                 </select>
             </div>
 
         </div>
         <div class="row">
-            <label class="control-label col-sm-1" for="description">描述</label>
+            <label class="control-label col-sm-1" for="video">视频</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" name="description" id="description"
-                       value="${hmxCategoryContent.description!}">
+                <select class="form-control" name="video" id="video">
+                    <option value="">请选择</option>
+                    <!--<#list category as item>
+                        <option value="${item.categoryId!}">${item.categoryName!}</option>
+                    </#list>-->
+                    <option value="">视频1</option>
+                    <option value="">视频2</option>
+                    <option value="">视频3</option>
+                    <option value="">视频4</option>
+                </select>
             </div>
-            <label class="control-label col-sm-1" for="grade">排序</label>
+            <label class="control-label col-sm-1" for="mp3">音频</label>
             <div class="col-lg-4">
-                <input type="number" class="form-control" name="grade" id="grade" value="${hmxCategoryContent.grade!}">
+                <select class="form-control" name="mp3" id="mp3">
+                    <option value="">请选择</option>
+                    <!--<#list category as item>
+                        <option value="${item.categoryId!}">${item.categoryName!}</option>
+                    </#list>-->
+                    <option value="">音频1</option>
+                    <option value="">音频2</option>
+                    <option value="">音频3</option>
+                    <option value="">音频4</option>
+                </select>
             </div>
         </div>
         <div class="row">
             <label class="control-label col-sm-1">内容</label>
             <div class="col-lg-9" id="editor">
-                <p id="content">${hmxCategoryContent.content!}</p>
-                <!--<textarea class="form-control" rows="4" name="content" id="content" >${article.content!}</textarea>-->
+                <p id="content">${hmxCategoryContent.categoryContent!}</p>
+
             </div>
         </div>
     </div>

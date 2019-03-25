@@ -52,7 +52,7 @@ public class CategoryContentController {
 		HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.selectCategoryContentById(id);
 		modelAndView.setViewName("/categoryContent/eidt");
 		modelAndView.addObject("category",hmxCategoryList);
-		modelAndView.addObject("hmxCategoryContent",hmxCategoryContent);
+		modelAndView.addObject("hmxCategoryContent",hmxCategoryContent == null? new HmxCategoryContent() : hmxCategoryContent);
 		return modelAndView;
 	}
 
