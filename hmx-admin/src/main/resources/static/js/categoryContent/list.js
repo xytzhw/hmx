@@ -96,7 +96,7 @@ function updateArticle() {
     if(data != null){
         if ($("#formUpdate").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
             $.ajax({
-                url: "/base/article/addArticle",
+                url: "/categoryContent/edit",
                 data: getParameter(),
                 type: "Post",
                 dataType: "json",
@@ -171,10 +171,10 @@ function imgPreview(fileDom){
     var file = fileDom.files[0];
     var imageType = /^image\//;
     //是否是图片
-    if (!imageType.test(file.type)) {
+    /*if (!imageType.test(file.type)) {
         alert("请选择图片！");
         return;
-    }
+    }*/
     //读取完成
     reader.onload = function(e) {
         //获取图片dom
