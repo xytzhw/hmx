@@ -326,6 +326,22 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
 	    page.setPage(data);
     	return page;
     }
+    /**
+     * 内容信息详情查询
+     * 更新内容浏览量+1
+     * @param categoryContentId
+     * @return
+     */
+    public Map<String,Object> selectContentInfoByContentId(Integer categoryContentId){
+    	Map<String,Object> resultMap = hmxCategoryContentMapper.selectContentInfoByContentId(categoryContentId);
+    	if(resultMap != null){
+    		HmxCategoryContent hmxCategoryContent = new HmxCategoryContent();
+    		hmxCategoryContent.setCategoryContentId(categoryContentId);
+    		hmxCategoryContent.setBrowseNum(Integer.parseInt(resultMap.get("browseNum").toString()));
+    		update(hmxCategoryContent);
+    	}
+    	return resultMap;
+    }
 }
  
  

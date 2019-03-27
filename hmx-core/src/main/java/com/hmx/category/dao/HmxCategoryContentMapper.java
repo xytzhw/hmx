@@ -47,4 +47,10 @@ public interface HmxCategoryContentMapper{
      */
     List<Map<String,Object>> selectCategoryContentTable(Map<String,Object> parameter);
     int countCategoryContentTable(Map<String,Object> parameter);
+    /**
+     * 内容信息详情查询
+     * @param categoryContentId
+     * @return
+     */
+    Map<String,Object> selectContentInfoByContentId(Integer categoryContentId);
 }
