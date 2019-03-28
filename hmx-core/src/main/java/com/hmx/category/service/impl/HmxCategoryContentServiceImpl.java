@@ -342,6 +342,36 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
     	}
     	return resultMap;
     }
+    /**
+     * Pc内容列表查询
+     * @return
+     */
+    public PageBean<Map<String,Object>> selectCategoryContentTableByPc(PageBean<Map<String,Object>> page,HmxCategoryContentDto hmxCategoryContentDto){
+    	Map<String,Object> parameter = new HashMap<String,Object>();
+    	parameter.put("offset", page.getStartOfPage());
+    	parameter.put("limit", page.getPageSize());
+    	parameter.put("state", DataState.正常.getState());
+    	if(!StringUtils.isEmpty(hmxCategoryContentDto.getCategoryTitle())){
+    		parameter.put("categoryTitle", hmxCategoryContentDto.getCategoryTitle());
+    	}
+    	if(hmxCategoryContentDto.getBeginDate() != null){
+    		parameter.put("beginDate", hmxCategoryContentDto.getBeginDate());
+    	}
+    	if(hmxCategoryContentDto.getEndDate() != null){
+    		parameter.put("endDate", hmxCategoryContentDto.getEndDate());
+    	}
+    	if(hmxCategoryContentDto.getCategoryId() != null){
+    		parameter.put("categoryId", hmxCategoryContentDto.getCategoryId());
+    	}
+    	Integer count = hmxCategoryContentMapper.countCategoryContentTableByPc(parameter);
+	    Boolean haveData = page.setTotalNum((int)(long)count);
+	    if(!haveData){
+			return page;
+		}
+	    List<Map<String,Object>> data = hmxCategoryContentMapper.selectCategoryContentTableByPc(parameter);
+	    page.setPage(data);
+    	return page;
+    }
 }
  
  

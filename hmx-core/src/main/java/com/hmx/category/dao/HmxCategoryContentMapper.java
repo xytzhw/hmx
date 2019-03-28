@@ -53,4 +53,11 @@ public interface HmxCategoryContentMapper{
      * @return
      */
     Map<String,Object> selectContentInfoByContentId(Integer categoryContentId);
+    /**
+     * PC内容列表查询
+     * @param parameter
+     * @return
+     */
+    List<Map<String,Object>> selectCategoryContentTableByPc(Map<String,Object> parameter);
+    int countCategoryContentTableByPc(Map<String,Object> parameter);
 }

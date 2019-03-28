@@ -90,4 +90,9 @@ public interface HmxCategoryContentService {
      * @return
      */
     Map<String,Object> selectContentInfoByContentId(Integer categoryContentId);
+    /**
+     * Pc内容列表查询
+     * @return
+     */
+    PageBean<Map<String,Object>> selectCategoryContentTableByPc(PageBean<Map<String,Object>> page,HmxCategoryContentDto hmxCategoryContentDto);
 }
