@@ -84,4 +84,15 @@ public interface HmxCategoryContentService {
      * @return
      */
     PageBean<Map<String,Object>> selectCategoryContentTable(PageBean<Map<String,Object>> page,HmxCategoryContentDto hmxCategoryContentDto);
+    /**
+     * 内容信息详情查询
+     * @param categoryContentId
+     * @return
+     */
+    Map<String,Object> selectContentInfoByContentId(Integer categoryContentId);
+    /**
+     * Pc内容列表查询
+     * @return
+     */
+    PageBean<Map<String,Object>> selectCategoryContentTableByPc(PageBean<Map<String,Object>> page,HmxCategoryContentDto hmxCategoryContentDto);
 }
