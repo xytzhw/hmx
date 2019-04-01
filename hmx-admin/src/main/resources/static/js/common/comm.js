@@ -146,7 +146,7 @@
      */
     $.fn.showWindow = function(data, url, completed) {
         var $This = $('body'),
-            w = data.width ? data.width : '80%',
+            w = data.width ? data.width : '60%',
             t = data.title ? data.title : '标题';
 
         var html = '<div class="modal fade in modal-show"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
