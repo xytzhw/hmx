@@ -1,6 +1,8 @@
 package com.hmx.media;
 
+import com.hmx.user.entity.po.Garousel;
 import com.hmx.user.entity.po.Vedio;
+import com.hmx.utils.result.Result;
 import freemarker.ext.beans.HashAdapter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +57,37 @@ public class MediaController {
         map.put("rows", list);
         map.put("total", list.size());
         return map;
+    }
+
+    @RequestMapping("/pic/getList")
+    public Map<String,Object> getPicList(){
+        Map<String,Object> map = new HashMap();
+        Garousel garousel = new Garousel();
+        garousel.setId(1);
+        garousel.setUrl("http://47.107.234.198:8081/app/v1/images/15434866301414495.jpg");
+        garousel.setContentId(1);
+        garousel.setTitle("轮播图1");
+        garousel.setCreateTime(new Date());
+        List<Garousel> list =  new ArrayList<>();
+        list.add(garousel);
+        map.put("rows", list);
+        map.put("total", list.size());
+        return map;
+    }
+
+    @RequestMapping("/pic/update")
+    public Result<Object> updatePicList(){
+        Result<Object> result = new Result<>();
+        result.setStatus(10000);
+        result.setMsg("修改成功");
+        return result;
+    }
+
+    @RequestMapping("/vedio/add")
+    public ModelAndView vedioAdd(Integer id){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/media/vedio/add");
+        return modelAndView;
     }
 
     @RequestMapping("/vedio/show")
