@@ -1,3 +1,4 @@
+<link href="js/common/bootstrap3.3.7/css/fileinput.min.css" rel="stylesheet" />
 <div class="panel panel-default">
     <div class="panel-heading">查询条件</div>
     <div class="panel-body">
@@ -26,11 +27,41 @@
     </div>
 </div>
 <div id="toolbar" class="btn-group" style="float: right;margin: 10px 0;">
-    <button id="btn_add" type="button" class="btn btn-default" onclick="openAdd()">
+    <button id="btn_add" type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>上传视频
     </button>
 </div>
 <table id="vedioList"></table>
 </div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    上传视频
+                </h4>
+            </div>
+            <div class="modal-body">
+                <input id="input-repl-3a" class="file" name="videoFileAddress" type="file" accept="mp4,avi,dat,3gp,mov,rmvb" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="openAdd()">
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script src="js/common/bootstrap3.3.7/js/fileinput.min.js"></script>
+<script src="js/common/bootstrap3.3.7/js/locales/zh.js"></script>
 <script src="js/media/vedio/list.js"></script>
+
 
