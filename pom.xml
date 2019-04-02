@@ -41,6 +41,32 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 	</dependencies>
+	
+	<dependencyManagement>
+        <!-- aliyun-java-vod-upload-1.4.6.jar 还未正式开源，请您直接引入jar包至您的项目中使用 -->
+		<dependencies>
+			<dependency>
+			    <groupId>com.aliyun</groupId>
+			    <artifactId>aliyun-java-vod-upload</artifactId>
+			    <version>1.4.6</version>
+	  		</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<!-- 阿里oss上传  -->
+	 <repositories>
+	      <repository>
+	        <id>sonatype-nexus-staging</id>
+	        <name>Sonatype Nexus Staging</name>
+	        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+	        <releases>
+	            <enabled>true</enabled>
+	        </releases>
+	        <snapshots>
+	            <enabled>true</enabled>
+	        </snapshots>
+	      </repository>
+    </repositories>
 	 
 	  <modules>
 	  	<module>hmx-core</module>
