@@ -1,6 +1,7 @@
 package com.hmx.utils.upload;
 
 import com.aliyun.vod.upload.impl.UploadImageImpl;
+import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.*;
 import com.aliyun.vod.upload.resp.*;
 import com.hmx.utils.logger.LogHelper;
@@ -53,7 +54,7 @@ public class UploadVideoDemo {
     		request.setImageType(imageType);
     		/* 图片文件扩展名（可选）取值范围：png，jpg，jpeg */
     		String[] extArray = fileName.split("\\.");
-    		String ext = extArray[extArray.length-1];
+    		String ext = extArray[extArray.length-1].toLowerCase();
     		boolean flag = imageExt(ext);
     		if(!flag){
     			resultMap.put("content", "图片格式不正确，暂时只支持"+imageExt+"格式!");
@@ -93,6 +94,66 @@ public class UploadVideoDemo {
 			resultMap.put("content", "上传图片异常:"+e.getMessage());
 			return resultMap;
 		}
-    	
+    }
+    
+    /**
+     * 本地文件上传接口
+     *
+     * @param accessKeyId
+     * @param accessKeySecret
+     * @param title
+     * @param fileName
+     */
+    public Map<String,Object> hmxUploadVideo(InputStream inputStream,  String fileName , String title) {
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	resultMap.put("flag", false);
+    	resultMap.put("url", null);
+    	try{
+    		UploadStreamRequest request = new UploadStreamRequest(accessKeyId, accessKeySecret, title, fileName, inputStream);
+            /* 是否使用默认水印(可选)，指定模板组ID时，根据模板组配置确定是否使用默认水印*/
+           //request.setShowWaterMark(true);
+           /* 设置上传完成后的回调URL(可选)，建议通过点播控制台配置消息监听事件，参见文档 https://help.aliyun.com/document_detail/57029.html */
+           //request.setCallback("http://callback.sample.com");
+           /* 自定义消息回调设置，参数说明参考文档 https://help.aliyun.com/document_detail/86952.html#UserData */
+           //request.setUserData(""{\"Extend\":{\"test\":\"www\",\"localId\":\"xxxx\"},\"MessageCallback\":{\"CallbackURL\":\"http://test.test.com\"}}"");
+           /* 视频分类ID(可选) */
+           //request.setCateId(0);
+           /* 视频标签,多个用逗号分隔(可选) */
+           //request.setTags("标签1,标签2");
+           /* 视频描述(可选) */
+           //request.setDescription("视频描述");
+           /* 封面图片(可选) */
+           //request.setCoverURL("http://cover.sample.com/sample.jpg");
+           /* 模板组ID(可选) */
+           //request.setTemplateGroupId("8c4792cbc8694e7084fd5330e56a33d");
+           /* 工作流ID(可选) */
+           //request.setWorkflowId("d4430d07361f0*be1339577859b0177b");
+           /* 存储区域(可选) */
+           //request.setStorageLocation("in-201703232118266-5sejdln9o.oss-cn-shanghai.aliyuncs.com");
+           /* 开启默认上传进度回调 */
+           // request.setPrintProgress(true);
+           /* 设置自定义上传进度回调 (必须继承 VoDProgressListener) */
+           // request.setProgressListener(new PutObjectProgressListener());
+           UploadVideoImpl uploader = new UploadVideoImpl();
+           UploadStreamResponse response = uploader.uploadStream(request);
+    		//请求视频点播服务的请求ID
+    		LogHelper.logger().info("RequestId=" + response.getRequestId());
+    		if (response.isSuccess()) {
+    			LogHelper.logger().info("VideoId=" + response.getVideoId());
+    			resultMap.put("flag", true);
+//    			resultMap.put("url", response.getImageURL());
+    			resultMap.put("content", "上传视频成功");
+    		} else {
+    			/* 如果设置回调URL无效，不影响视频上传，可以返回VideoId同时会返回错误码。其他情况上传失败时，VideoId为空，此时需要根据返回错误码分析具体错误原因 */
+    			LogHelper.logger().info("VideoId=" + response.getVideoId());
+    			LogHelper.logger().info("ErrorCode=" + response.getCode());
+    			LogHelper.logger().info("ErrorMessage=" + response.getMessage());
+    			resultMap.put("content", "上传视频失败"+response.getMessage());
+    		}
+    		return resultMap;
+    	} catch (Exception e) {
+			resultMap.put("content", "上传视频异常:"+e.getMessage());
+			return resultMap;
+		}
     }
 }

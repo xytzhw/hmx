@@ -21,6 +21,10 @@ spring:
       expose-session-attributes: false
       expose-spring-macro-helpers: false
       suffix: .html
+    servlet:
+      multipart:
+        max-file-size : 10mb
+        max-request-size : 100mb
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
   configuration:
