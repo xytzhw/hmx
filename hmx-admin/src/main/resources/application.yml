@@ -45,3 +45,10 @@ SMSVerificationTemplate: "【黄梅戏资源库】您的验证码是code，请�
 #        testOnReturn: false
 #        poolPreparedStatements: true
 #        maxOpenPreparedStatements: 20
+
+#阿里oos accessKeyId accessKeySecret
+accessKeyId: LTAIaeZo5lNZpDBd
+accessKeySecret: HSB7GdPp998ziaGiVK6rgbrHhHSwAl
+imageType: default
+#默认png
+imageExt: png,jpg,jpeg,gif
