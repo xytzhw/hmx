@@ -26,12 +26,14 @@ public class UploadVideoDemo {
 	private String imageType;
 	@Value("${imageExt}")
 	private String imageExt;
+	@Value("${videoExt}")
+	private String videoExt;
 
-	public boolean imageExt(String ext){
-		String[] extArray = imageExt.split(",");
+	public boolean imageExt(String ext,String extArrayStr){
+		String[] extArray = extArrayStr.split(",");
 		if(extArray != null && extArray.length>0){
 			for(String e : extArray){
-				if(ext.equals(e)){
+				if(ext.equals(e.toLowerCase().trim())){
 					return true;
 				}
 			}
@@ -56,7 +58,7 @@ public class UploadVideoDemo {
     		/* 图片文件扩展名（可选）取值范围：png，jpg，jpeg */
     		String[] extArray = fileName.split("\\.");
     		String ext = extArray[extArray.length-1].toLowerCase();
-    		boolean flag = imageExt(ext);
+    		boolean flag = imageExt(ext.trim(),imageExt);
     		if(!flag){
     			resultMap.put("content", "图片格式不正确，暂时只支持"+imageExt+"格式!");
     			return resultMap;
@@ -120,6 +122,13 @@ public class UploadVideoDemo {
     	resultMap.put("videoId", null);
     	try{
     		UploadStreamRequest request = new UploadStreamRequest(accessKeyId, accessKeySecret, title, fileName, inputStream);
+    		String[] extArray = fileName.split("\\.");
+    		String ext = extArray[extArray.length-1].toLowerCase();
+    		boolean flag = imageExt(ext.trim(),videoExt);
+    		if(!flag){
+    			resultMap.put("content", "视频格式不正确，暂时只支持"+videoExt+"格式!");
+    			return resultMap;
+    		}
             /* 是否使用默认水印(可选)，指定模板组ID时，根据模板组配置确定是否使用默认水印*/
            //request.setShowWaterMark(true);
            /* 设置上传完成后的回调URL(可选)，建议通过点播控制台配置消息监听事件，参见文档 https://help.aliyun.com/document_detail/57029.html */
