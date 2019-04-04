@@ -6,6 +6,7 @@ import com.aliyun.vod.upload.req.*;
 import com.aliyun.vod.upload.resp.*;
 import com.hmx.utils.logger.LogHelper;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,6 +94,15 @@ public class UploadVideoDemo {
 		} catch (Exception e) {
 			resultMap.put("content", "上传图片异常:"+e.getMessage());
 			return resultMap;
+		}finally {
+			try {
+				if(inputStream != null){
+					inputStream.close();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
     }
     
@@ -107,7 +117,7 @@ public class UploadVideoDemo {
     public Map<String,Object> hmxUploadVideo(InputStream inputStream,  String fileName , String title) {
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	resultMap.put("flag", false);
-    	resultMap.put("url", null);
+    	resultMap.put("videoId", null);
     	try{
     		UploadStreamRequest request = new UploadStreamRequest(accessKeyId, accessKeySecret, title, fileName, inputStream);
             /* 是否使用默认水印(可选)，指定模板组ID时，根据模板组配置确定是否使用默认水印*/
@@ -141,7 +151,7 @@ public class UploadVideoDemo {
     		if (response.isSuccess()) {
     			LogHelper.logger().info("VideoId=" + response.getVideoId());
     			resultMap.put("flag", true);
-//    			resultMap.put("url", response.getImageURL());
+    			resultMap.put("videoId", response.getVideoId());
     			resultMap.put("content", "上传视频成功");
     		} else {
     			/* 如果设置回调URL无效，不影响视频上传，可以返回VideoId同时会返回错误码。其他情况上传失败时，VideoId为空，此时需要根据返回错误码分析具体错误原因 */
@@ -154,6 +164,15 @@ public class UploadVideoDemo {
     	} catch (Exception e) {
 			resultMap.put("content", "上传视频异常:"+e.getMessage());
 			return resultMap;
+		}finally {
+			try {
+				if(inputStream != null){
+					inputStream.close();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
     }
 }

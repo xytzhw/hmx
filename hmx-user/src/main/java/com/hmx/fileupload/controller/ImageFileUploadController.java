@@ -11,7 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hmx.utils.result.Config;
 import com.hmx.utils.result.ResultBean;
 import com.hmx.utils.upload.UploadVideoDemo;
-
+/**
+ * 用户图片上传
+ * @author liY
+ *
+ */
 @RestController
 @RequestMapping("/imageUpload")
 public class ImageFileUploadController {
