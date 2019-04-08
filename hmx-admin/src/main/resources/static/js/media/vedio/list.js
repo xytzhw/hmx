@@ -3,6 +3,75 @@ $(function () {
     validParam();
 });
 
+//预览视频
+function showVideo(fileDom) {
+    var objUrl = getObjectURL(fileDom.files[0]) ;
+    if (objUrl) {
+        $("#video0").attr("src", objUrl) ;
+    }
+}
+//预览视频中获取url
+function getObjectURL(file) {
+    var url = null ;
+    if (window.createObjectURL!=undefined) { // basic
+        url = window.createObjectURL(file) ;
+    } else if (window.URL!=undefined) { // mozilla(firefox)
+        url = window.URL.createObjectURL(file) ;
+    } else if (window.webkitURL!=undefined) { // webkit or chrome
+        url = window.webkitURL.createObjectURL(file) ;
+    }
+    return url ;
+}
+//关闭模态框时清空预览
+function cleaarPath(){
+    $("#video0").attr("src", "");
+    document.getElementById('img').value='';
+}
+//上传视频
+function uploadVideo(){
+    var para = getUploadParameter();
+    if (para != null) {
+        $.ajax({
+            url: "/media/upload/video",
+            data: para,
+            type: "Post",
+            dataType: "json",
+            cache: false,//上传文件无需缓存
+            processData: false,//用于对data参数进行序列化处理 这里必须false
+            contentType: false, //必须
+            /*xhr:function(){//暂时先不用，进度条
+                var xhr = $.ajaxSettings.xhr();
+                if(onprogress && xhr.upload) {
+                    xhr.upload.addEventListener("progress" , onprogress, false);
+                    return xhr;
+                }
+            },*/
+            success: function (result) {
+                if (result.status == 10000) {
+                    $.fn.messageBox('success', '视频正在处理，请稍后在列表中刷新查看处理状态！', function () {
+                        $("#addModal").modal('hide');  //手动关闭
+                        searchList()
+                    });
+                } else {
+                    $.fn.messageBox('error', '操作失败！', function () {
+                    });
+                }
+            },
+        });
+
+        //方法为上传的进度条
+        // function onprogress(evt){
+        //     var loaded = evt.loaded;     //已经上传大小情况
+        //     var tot = evt.total;      //附件总大小
+        //     var per = Math.floor(100*loaded/tot);  //已经上传的百分比
+        //     if(per>2){
+        //         $('.progress').show();
+        //     }
+        //     $("#progress").css("width" , per +"%").find("span").html( per +"%");
+        // }
+    }
+}
+//初始化列表
 function initTable() {
     var option = {
         url: 'media/vedio/getList',
@@ -14,32 +83,40 @@ function initTable() {
         },//传递参数
         columns: [
             {
-                field: 'id',
+                title: '序列',
+                halign: 'center',
+                align: 'center',
+                formatter: function (value,row,index) {
+                    return index+1;
+                }
+            }, {
+                field: 'movieId',
                 title: '编号',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                visible: false
             }, {
-                field: 'name',
+                field: 'movieName',
                 title: '视频名称',
                 halign: 'center',
                 align: 'center'
             },{
-                field: 'type',
-                title: '视频格式',
+                field: 'ratio',
+                title: '视频清晰度',
                 halign: 'center',
                 align: 'center',
             }, {
-                field: 'size',
-                title: '视频大小',
+                field: 'duration',
+                title: '视频时长',
                 halign: 'center',
                 align: 'center'
             }, {
-                field: 'categoryContentId',
-                title: '对应内容id',
+                field: 'videoStatus',
+                title: '视频处理状态',
                 halign: 'center',
                 align: 'center'
             },{
-                field: 'createDate',
+                field: 'createTime',
                 title: '创建时间',
                 halign: 'center',
                 align: 'center',
@@ -54,16 +131,21 @@ function initTable() {
                 align: 'center',
                 formatter: function (value, row, index) {
                     var isUpdate = '<a href="javascript:void(0)" class="update"  title="修改" onclick="openAdd(this)">修改</a>';
-                    var show = '<a href="javascript:void(0)" class="show"  title="观看" onclick="showVedio(this)">观看</a>';
+                    var show = '<a href="javascript:void(0)" class="show"  title="观看" onclick="showVedio(' + row.movieId + ')">观看</a>';
                     var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteArticle(' + row.id + ')">删除</a>';
-                    return isUpdate + show + isDelete;
+                    if(row.videoStatus == 2 ||  row.videoStatus==3){
+                        return isUpdate + isDelete;
+                    }else {
+                        return isUpdate + show + isDelete;
+                    }
+
                 }
             }
         ]
     };
     $('#vedioList').bootstrapTable($.initTableArg(option));
-} //表格
-
+}
+//获取查询条件
 function getSearchParams() {
     var params = {
         name: $("#name").val(),
@@ -77,24 +159,9 @@ function searchList() {
     $("#vedioList").bootstrapTable('refresh');
 }
 
-//此处做成视频上传
-function uploadAdd(element) {
-    var id = '';
-    if (element != null) {
-        id = $(element).parent().parent().find("td").eq(0).text()
-    }
-    $.fn.showWindow({title: '上传视频'}, 'media/vedio/add?id=' + id, function (model) {
-        $("#vedioList").attr("modelValue", model.attr("id"));
-    });
-}
-
 //播放视频
-function showVedio(element) {
-    var id = '';
-    if (element != null) {
-        id = $(element).parent().parent().find("td").eq(0).text()
-    }
-    $.fn.showWindow({title: '视频展示'}, 'media/vedio/show?id=' + id, function (model) {
+function showVedio(movieId) {
+    $.fn.showWindow({title: '视频展示'}, 'media/vedio/show?movieId=' + movieId, function (model) {
         $("#vedioList").attr("modelValue", model.attr("id"));
     });
 }
@@ -112,58 +179,28 @@ function deleteArticle(id) {
     });
 }
 
-function getParameter() {
+function getUploadParameter() {
     var formFile = new FormData();
     var fileObj = document.getElementById("img").files[0]; // js 获取文件对象
     if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-        var imgUrl = $("#imgUrl").attr("name");
-        if(imgUrl != null && imgUrl != "" && imgUrl != "undefined"){
-            formFile.append("img", imgUrl);
-        }else {
-            alert("请选择图片");
+        var check = document.getElementById('img').value;
+        if(check == null && check == "" && check == "undefined"){
+            alert("请选择视频");
             return;
         }
     }
-
-    var id = $("#category").val();
-    if(id != null && id != "" && id != "undefined"){
-        formFile.append("id", id);
-    }
-    formFile.append("title", $("#name").val());
-    formFile.append("type", $("#type01").val());
-    formFile.append("description", $("#description").val());
-    formFile.append("grade", $("#grade").val());
-    formFile.append("content",editorValue.getValue());
+    var house = parseInt((document.getElementById("video0").duration)/3600);
+    var min = parseInt((document.getElementById("video0").duration%3600)/60);
+    var secd = Math.ceil(document.getElementById("video0").duration%60);
+    var time = house + "时" + min + "分" + secd +"秒";
+    formFile.append("title", $("#title").val());
+    formFile.append("duration", time);
     formFile.append("file", fileObj); //加入文件对象
+    formFile.append("contentType", $("#contentType").val());
     return formFile;
 }
 
-function imgPreview(fileDom) {
-    //判断是否支持FileReader
-    if (window.FileReader) {
-        var reader = new FileReader();
-    } else {
-        alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
-    }
-
-    //获取文件
-    var file = fileDom.files[0];
-    var imageType = /^image\//;
-    //是否是图片
-    if (!imageType.test(file.type)) {
-        alert("请选择图片！");
-        return;
-    }
-    //读取完成
-    reader.onload = function (e) {
-        //获取图片dom
-        var img = document.getElementById("preview");
-        //图片路径设置为读取的图片
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-}
-
+//条件检查
 function validParam() {
     $('#formUpdate').bootstrapValidator({
         message: 'This value is not valid',

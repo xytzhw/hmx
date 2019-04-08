@@ -5,9 +5,9 @@ spring:
     application:
         name: admin
     datasource:
-        url: jdbc:mysql://47.106.117.240:3306/hmx_schema
+        url: jdbc:mysql://localhost:3306/hmx_schema
         username: root
-        password: 1234
+        password: 123456
         # 使用druid数据源
         #type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -23,8 +23,8 @@ spring:
       suffix: .html
     servlet:
       multipart:
-        max-file-size : 10mb
-        max-request-size : 100mb
+        max-file-size : 1024mb
+        max-request-size : 1589mb
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
   configuration:

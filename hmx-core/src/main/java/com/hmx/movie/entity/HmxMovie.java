@@ -8,19 +8,21 @@ public class HmxMovie{
     private Integer movieId;
     private String movieName;
     private String ratio;
-    private Integer duration;
+    private String duration;
     private String movieUrl;
     private Date createTime;
     private Date newTime;
     private Integer state;
     private Integer version;
     private Integer createid;
+	private String videoId;
+	private Integer videoStatus;
 
-    public HmxMovie() {
+	public HmxMovie() {
 		super();
 	}
 
-    public HmxMovie(Integer movieId, String movieName, String ratio, Integer duration, String movieUrl, Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
+    public HmxMovie(Integer movieId, String movieName, String ratio, String duration, String movieUrl, Date createTime, Date newTime, Integer state, Integer version, Integer createid, String videoId, Integer videoStatus ) {
 		super();
 		this.movieId = movieId;
 		this.movieName = movieName;
@@ -32,6 +34,8 @@ public class HmxMovie{
 		this.state = state;
 		this.version = version;
 		this.createid = createid;
+		this.videoId = videoId;
+		this.videoStatus = videoStatus;
 	}
 	
     public Integer getMovieId() {
@@ -57,16 +61,16 @@ public class HmxMovie{
 	public void setRatio(String ratio){
 		this.ratio = ratio;
 	}
-	
-    public Integer getDuration() {
+
+	public String getDuration() {
 		return duration;
 	}
-	
-	public void setDuration(Integer duration){
+
+	public void setDuration(String duration) {
 		this.duration = duration;
 	}
-	
-    public String getMovieUrl() {
+
+	public String getMovieUrl() {
 		return movieUrl;
 	}
 	
@@ -113,5 +117,20 @@ public class HmxMovie{
 	public void setCreateid(Integer createid){
 		this.createid = createid;
 	}
-	
+
+	public String getVideoId() {
+		return videoId;
+	}
+
+	public void setVideoId(String videoId) {
+		this.videoId = videoId;
+	}
+
+	public Integer getVideoStatus() {
+		return videoStatus;
+	}
+
+	public void setVideoStatus(Integer videoStatus) {
+		this.videoStatus = videoStatus;
+	}
 }

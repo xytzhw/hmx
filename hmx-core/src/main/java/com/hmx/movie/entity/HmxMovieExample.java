@@ -357,62 +357,62 @@ public class HmxMovieExample{
             return (Criteria) this;
         }
 
-        public Criteria andDurationEqualTo(Integer value) {
+        public Criteria andDurationEqualTo(String value) {
             addCriterion("duration =", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationNotEqualTo(Integer value) {
+        public Criteria andDurationNotEqualTo(String value) {
             addCriterion("duration <>", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationGreaterThan(Integer value) {
+        public Criteria andDurationGreaterThan(String value) {
             addCriterion("duration >", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDurationGreaterThanOrEqualTo(String value) {
             addCriterion("duration >=", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationLessThan(Integer value) {
+        public Criteria andDurationLessThan(String value) {
             addCriterion("duration <", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationLessThanOrEqualTo(Integer value) {
+        public Criteria andDurationLessThanOrEqualTo(String value) {
             addCriterion("duration <=", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationLike(Integer value) {
+        public Criteria andDurationLike(String value) {
             addCriterion("duration like", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationNotLike(Integer value) {
+        public Criteria andDurationNotLike(String value) {
             addCriterion("duration not like", value, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationIn(List<Integer> values) {
+        public Criteria andDurationIn(List<String> values) {
             addCriterion("duration in", values, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationNotIn(List<Integer> values) {
+        public Criteria andDurationNotIn(List<String> values) {
             addCriterion("duration not in", values, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationBetween(Integer value1, Integer value2) {
+        public Criteria andDurationBetween(String value1, String value2) {
             addCriterion("duration between", value1, value2, "duration");
             return (Criteria) this;
         }
 
-        public Criteria andDurationNotBetween(Integer value1, Integer value2) {
+        public Criteria andDurationNotBetween(String value1, String value2) {
             addCriterion("duration not between", value1, value2, "duration");
             return (Criteria) this;
         }
@@ -846,6 +846,149 @@ public class HmxMovieExample{
 
         public Criteria andCreateidNotBetween(Integer value1, Integer value2) {
             addCriterion("createid not between", value1, value2, "createid");
+            return (Criteria) this;
+        }
+
+
+        public Criteria andVideoIdIsNull() {
+            addCriterion("video_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdIsNotNull() {
+            addCriterion("video_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdEqualTo(String value) {
+            addCriterion("video_id =", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdNotEqualTo(String value) {
+            addCriterion("video_id <>", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdGreaterThan(String value) {
+            addCriterion("video_id >", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdGreaterThanOrEqualTo(String value) {
+            addCriterion("video_id >=", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdLessThan(String value) {
+            addCriterion("video_id <", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdLessThanOrEqualTo(String value) {
+            addCriterion("video_id <=", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdLike(String value) {
+            addCriterion("video_id like", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdNotLike(String value) {
+            addCriterion("video_id not like", value, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdIn(List<String> values) {
+            addCriterion("video_id in", values, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdNotIn(List<String> values) {
+            addCriterion("video_id not in", values, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdBetween(String value1, String value2) {
+            addCriterion("video_id between", value1, value2, "videoId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoIdNotBetween(String value1, String value2) {
+            addCriterion("video_id not between", value1, value2, "videoId");
+            return (Criteria) this;
+        }
+
+
+
+        public Criteria andVideoStatusIsNull() {
+            addCriterion("video_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusIsNotNull() {
+            addCriterion("video_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusEqualTo(Integer value) {
+            addCriterion("video_status =", value, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusNotEqualTo(Integer value) {
+            addCriterion("video_status <>", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusGreaterThan(Integer value) {
+            addCriterion("video_status >", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("video_status >=", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusLessThan(Integer value) {
+            addCriterion("video_status <", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("video_status <=", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusLike(Integer value) {
+            addCriterion("video_status like", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusNotLike(Integer value) {
+            addCriterion("video_status not like", value, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusIn(List<Integer> values) {
+            addCriterion("video_status in", values, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusNotIn(List<Integer> values) {
+            addCriterion("video_status not in", values, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusBetween(Integer value1, Integer value2) {
+            addCriterion("video_status between", value1, value2, "videoStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andVideoStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("video_status not between", value1, value2, "videoStatus");
             return (Criteria) this;
         }
         

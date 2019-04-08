@@ -17,11 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * @author shi
- * @create 2018-07-11  14:20
- * @description 角色管理
- **/
+
 @Controller
 @RequestMapping(value = "/system/roleManage")
 public class RoleController {
@@ -39,13 +35,7 @@ public class RoleController {
         return mv;
     }
 
-    /**
-     *@Author: shi
-     *@Description:  角色编辑页面
-     *@param: roleId
-     *@return 
-     *@Date: 17:01 2018/7/20
-     */
+
     @RequestMapping(value = "/detail")
     public ModelAndView detail(Integer roleId){
         ModelAndView mv = new ModelAndView();
@@ -95,13 +85,7 @@ public class RoleController {
         return result;
     }
 
-    /**
-     *@Author: shi
-     *@Description: 更新角色
-     *@param: roleModel
-     *@return
-     *@Date: 17:06 2018/7/20
-     */
+
     @RequestMapping(value = "/updateRole")
     @ResponseBody
     public Result<Object> updateRole(Role roleModel) {
@@ -112,20 +96,4 @@ public class RoleController {
         return result;
     }
 
-//    /**
-//     *@Author: shi
-//     *@Description: 删除角色
-//     *@param: roleId
-//     *@return
-//     *@Date: 17:06 2018/7/20
-//     */
-//    @RequestMapping(value = "/deleteRole")
-//    @ResponseBody
-//    public Result<Object> deleteRole(Integer roleId) {
-//        Result<Object> result = new Result<Object>();
-//        result.setStatus(StatusMsgConstants.result.code.code10000);
-//        roleDao.delete(roleId);
-//        result.setMsg("删除成功！");
-//        return result;
-//    }
 }

@@ -116,6 +116,7 @@
 		      <dependency>
 			    <groupId>com.aliyun</groupId>
 			    <artifactId>aliyun-java-vod-upload</artifactId>
+				<version>1.4.6</version>
 	  		</dependency>
 		  </dependencies>
 		  <build>

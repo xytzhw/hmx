@@ -6,13 +6,15 @@
     <id column="movie_id" property="movieId" jdbcType="INTEGER" />
   	<result column="movie_name" property="movieName" jdbcType="VARCHAR" />
   	<result column="ratio" property="ratio" jdbcType="VARCHAR" />
-  	<result column="duration" property="duration" jdbcType="INTEGER" />
+  	<result column="duration" property="duration" jdbcType="VARCHAR" />
   	<result column="movie_url" property="movieUrl" jdbcType="VARCHAR" />
   	<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   	<result column="new_time" property="newTime" jdbcType="TIMESTAMP" />
   	<result column="state" property="state" jdbcType="INTEGER" />
   	<result column="version" property="version" jdbcType="INTEGER" />
   	<result column="createid" property="createid" jdbcType="INTEGER" />
+    <result column="video_id" property="videoId" jdbcType="VARCHAR" />
+    <result column="video_status" property="videoStatus" jdbcType="INTEGER" />
   </resultMap>
   
   <sql id="Example_Where_Clause" >
@@ -75,7 +77,7 @@
   </sql>
   
   <sql id="Base_Column_List" >
-    movie_id,movie_name,ratio,duration,movie_url,create_time,new_time,state,version,createid
+    movie_id,movie_name,ratio,duration,movie_url,create_time,new_time,state,version,createid,video_id,video_status
   </sql>
   
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hmx.movie.entity.HmxMovieExample" >
@@ -126,8 +128,8 @@
   
   
   <insert id="insert" parameterType="com.hmx.movie.entity.HmxMovie" keyProperty="movieId" useGeneratedKeys="true">
-    insert into hmx_movie  (movie_id,movie_name,ratio,duration,movie_url,create_time,new_time,state,version,createid)
-    values (#{movieId,jdbcType=INTEGER}, #{movieName,jdbcType=VARCHAR}, #{ratio,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}, #{movieUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{newTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createid,jdbcType=INTEGER})
+    insert into hmx_movie  (movie_id,movie_name,ratio,duration,movie_url,create_time,new_time,state,version,createid,video_id,video_status)
+    values (#{movieId,jdbcType=INTEGER}, #{movieName,jdbcType=VARCHAR}, #{ratio,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR}, #{movieUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{newTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createid,jdbcType=INTEGER}, #{videoId,jdbcType=VARCHAR}, #{videoStatus,jdbcType=INTEGER})
   </insert>
   
   
@@ -164,6 +166,12 @@
       <if test="createid != null" >
         createid,
       </if>
+      <if test="videoId  != null" >
+        video_id,
+      </if>
+      <if test="videoStatus  != null" >
+        video_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="movieId != null" >
@@ -176,7 +184,7 @@
         #{ratio,jdbcType=VARCHAR},
       </if>
       <if test="duration != null" >
-        #{duration,jdbcType=INTEGER},
+        #{duration,jdbcType=VARCHAR},
       </if>
       <if test="movieUrl != null" >
         #{movieUrl,jdbcType=VARCHAR},
@@ -194,7 +202,13 @@
         #{version,jdbcType=INTEGER},
       </if>
       <if test="createid != null" >
-        #{createid,jdbcType=INTEGER},
+      #{createid,jdbcType=INTEGER},
+    </if>
+      <if test="videoId  != null" >
+        #{videoId ,jdbcType=VARCHAR},
+      </if>
+      <if test="videoStatus  != null" >
+        #{videoStatus ,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -204,13 +218,15 @@
     set movie_id = #{movieId,jdbcType=INTEGER},
 movie_name = #{movieName,jdbcType=VARCHAR},
 ratio = #{ratio,jdbcType=VARCHAR},
-duration = #{duration,jdbcType=INTEGER},
+duration = #{duration,jdbcType=VARCHAR},
 movie_url = #{movieUrl,jdbcType=VARCHAR},
 create_time = #{createTime,jdbcType=TIMESTAMP},
 new_time = #{newTime,jdbcType=TIMESTAMP},
 state = #{state,jdbcType=INTEGER},
 version = #{version,jdbcType=INTEGER},
-createid = #{createid,jdbcType=INTEGER}
+createid = #{createid,jdbcType=INTEGER},
+video_id = #{videoId ,jdbcType=VARCHAR},
+video_status = #{videoStatus ,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -236,7 +252,7 @@ createid = #{createid,jdbcType=INTEGER}
         ratio = #{ratio,jdbcType=VARCHAR} ,
       </if>
       <if test="duration != null" >
-        duration = #{duration,jdbcType=INTEGER} ,
+        duration = #{duration,jdbcType=VARCHAR} ,
       </if>
       <if test="movieUrl != null" >
         movie_url = #{movieUrl,jdbcType=VARCHAR} ,
@@ -254,7 +270,13 @@ createid = #{createid,jdbcType=INTEGER}
         version = #{version,jdbcType=INTEGER} ,
       </if>
       <if test="createid != null" >
-        createid = #{createid,jdbcType=INTEGER} ,
+        createid = #{createid ,jdbcType=INTEGER} ,
+      </if>
+      <if test="videoId != null" >
+        video_id = #{videoId ,jdbcType=VARCHAR} ,
+      </if>
+      <if test="videoStatus != null" >
+        video_status = #{videoStatus ,jdbcType=INTEGER} ,
       </if>
     </set >
     where movie_id = #{movieId,jdbcType=INTEGER}
@@ -266,13 +288,15 @@ createid = #{createid,jdbcType=INTEGER}
     set movie_id = #{movieId,jdbcType=INTEGER},
 movie_name = #{movieName,jdbcType=VARCHAR},
 ratio = #{ratio,jdbcType=VARCHAR},
-duration = #{duration,jdbcType=INTEGER},
+duration = #{duration,jdbcType=VARCHAR},
 movie_url = #{movieUrl,jdbcType=VARCHAR},
 create_time = #{createTime,jdbcType=TIMESTAMP},
 new_time = #{newTime,jdbcType=TIMESTAMP},
 state = #{state,jdbcType=INTEGER},
 version = #{version,jdbcType=INTEGER},
-createid = #{createid,jdbcType=INTEGER}
+createid = #{createid,jdbcType=INTEGER},
+video_id = #{videoId ,jdbcType=VARCHAR},
+video_status = #{videoStatus ,jdbcType=INTEGER}
     where movie_id = #{movieId,jdbcType=INTEGER}
   </update>
    
