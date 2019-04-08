@@ -113,16 +113,16 @@ import com.hmx.movie.dao.HmxMovieMapper;
   		if ( hmxMovieDto.getMovieId() != null && hmxMovieDto.getMovieId() != 0 ) {
 			where.andMovieIdEqualTo( hmxMovieDto.getMovieId() );
 		}
-  		if ( StringUtils.isEmpty( hmxMovieDto.getMovieName() ) ) {
+  		if ( !StringUtils.isEmpty( hmxMovieDto.getMovieName() ) ) {
 			where.andMovieNameEqualTo( hmxMovieDto.getMovieName() );
 		}
-  		if ( StringUtils.isEmpty( hmxMovieDto.getRatio() ) ) {
+  		if ( !StringUtils.isEmpty( hmxMovieDto.getRatio() ) ) {
 			where.andRatioEqualTo( hmxMovieDto.getRatio() );
 		}
-  		if ( hmxMovieDto.getDuration() != null && hmxMovieDto.getDuration() != 0 ) {
+  		if ( !StringUtils.isEmpty( hmxMovieDto.getDuration() ) ) {
 			where.andDurationEqualTo( hmxMovieDto.getDuration() );
 		}
-  		if ( StringUtils.isEmpty( hmxMovieDto.getMovieUrl() ) ) {
+  		if ( !StringUtils.isEmpty( hmxMovieDto.getMovieUrl() ) ) {
 			where.andMovieUrlEqualTo( hmxMovieDto.getMovieUrl() );
 		}
   		if ( hmxMovieDto.getCreateTime() != null ) {
@@ -139,6 +139,12 @@ import com.hmx.movie.dao.HmxMovieMapper;
 		}
   		if ( hmxMovieDto.getCreateid() != null && hmxMovieDto.getCreateid() != 0 ) {
 			where.andCreateidEqualTo( hmxMovieDto.getCreateid() );
+		}
+		if ( !StringUtils.isEmpty( hmxMovieDto.getVideoId() ) ) {
+			where.andVideoIdEqualTo(hmxMovieDto.getVideoId());
+		}
+		if ( hmxMovieDto.getVideoStatus() != null && hmxMovieDto.getVideoStatus() != 0 ) {
+			where.andVideoStatusEqualTo(hmxMovieDto.getVideoStatus());
 		}
 		
 		Integer count = hmxMovieMapper.countByExample( hmxMovieExample );
@@ -178,7 +184,7 @@ import com.hmx.movie.dao.HmxMovieMapper;
   		if ( !StringUtils.isEmpty( hmxMovieDto.getRatio() ) ) {
 			where.andRatioEqualTo( hmxMovieDto.getRatio() );
 		}
-  		if ( hmxMovieDto.getDuration() != null && hmxMovieDto.getDuration() != 0 ) {
+  		if ( !StringUtils.isEmpty( hmxMovieDto.getDuration() ) ) {
 			where.andDurationEqualTo( hmxMovieDto.getDuration() );
 		}
   		if ( !StringUtils.isEmpty( hmxMovieDto.getMovieUrl() ) ) {
