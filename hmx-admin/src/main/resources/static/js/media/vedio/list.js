@@ -105,6 +105,15 @@ function initTable() {
                 title: '视频清晰度',
                 halign: 'center',
                 align: 'center',
+                formatter: function (value, row, index) {
+                    if(row.ratio == 1){
+                        return "标清";
+                    }else if(row.ratio == 2){
+                        return "高清";
+                    }else if(row.ratio == 3){
+                        return "超清";
+                    }
+                }
             }, {
                 field: 'duration',
                 title: '视频时长',
@@ -114,7 +123,16 @@ function initTable() {
                 field: 'videoStatus',
                 title: '视频处理状态',
                 halign: 'center',
-                align: 'center'
+                align: 'center',
+                formatter: function (value, row, index) {
+                    if(row.videoStatus == 1){
+                        return "处理成功";
+                    }else if(row.videoStatus == 2){
+                        return "处理中";
+                    }else if(row.videoStatus == 3){
+                        return "失败";
+                    }
+                }
             },{
                 field: 'createTime',
                 title: '创建时间',
@@ -132,11 +150,11 @@ function initTable() {
                 formatter: function (value, row, index) {
                     var isUpdate = '<a href="javascript:void(0)" class="update"  title="修改" onclick="openAdd(this)">修改</a>';
                     var show = '<a href="javascript:void(0)" class="show"  title="观看" onclick="showVedio(' + row.movieId + ')">观看</a>';
-                    var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteArticle(' + row.id + ')">删除</a>';
+                    var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteVideo(' + row.movieId + ')">删除</a>';
                     if(row.videoStatus == 2 ||  row.videoStatus==3){
-                        return isUpdate + isDelete;
+                        return isDelete;
                     }else {
-                        return isUpdate + show + isDelete;
+                        return show + isDelete;
                     }
 
                 }
@@ -148,15 +166,16 @@ function initTable() {
 //获取查询条件
 function getSearchParams() {
     var params = {
-        name: $("#name").val(),
-        type: $("#type").val()
+        movieName: $("#title1").val(),
+        contentId: $("#contentType1").val()
     }
     return params;
 }
 
 //列表搜索
 function searchList() {
-    $("#vedioList").bootstrapTable('refresh');
+    $('#vedioList').bootstrapTable('destroy');
+    initTable();
 }
 
 //播放视频
@@ -166,8 +185,8 @@ function showVedio(movieId) {
     });
 }
 
-function deleteArticle(id) {
-    $.fn.getAjaxJSON('post', '/category/deleteArticle?id='+id, null, function (result, e) {
+function deleteVideo(movieId) {
+    $.fn.getAjaxJSON('post', '/media/delete/video?movieId='+movieId, null, function (result, e) {
         if(result.status == 10000){
             $.fn.messageBox('success', '删除成功！',function () {
                 searchList()
@@ -197,6 +216,7 @@ function getUploadParameter() {
     formFile.append("duration", time);
     formFile.append("file", fileObj); //加入文件对象
     formFile.append("contentType", $("#contentType").val());
+    formFile.append("ratio", $("#ratio").val());
     return formFile;
 }
 

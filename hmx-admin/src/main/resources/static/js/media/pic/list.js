@@ -11,61 +11,43 @@ function initTable() {
         url: '/media/pic/getList',
         queryParams: function (params) {
             var param = {};
-            param.page = params.pageNumber - 1;
-            param.size = params.pageSize;
+            param.pageNum = params.pageNumber;
+            param.pageSize = params.pageSize;
             return param;
         },//传递参数
         columns: [
             {
-                field: 'id',
-                title: '编号',
+                title: '序列',
+                halign: 'center',
+                align: 'center',
+                formatter: function (value,row,index) {
+                    return index+1;
+                }
+            }, {
+                field: 'categoryContentId',
+                title: '内容编号',
+                halign: 'center',
+                align: 'center',
+                visible: false
+            }, {
+                field: 'categoryTitle',
+                title: '所属内容标题',
                 halign: 'center',
                 align: 'center'
             }, {
-                field: 'title',
-                title: '标题',
-                halign: 'center',
-                align: 'center'
-            }, {
-                field: 'url',
+                field: 'contentImages',
                 title: '链接地址',
                 halign: 'center',
                 align: 'center',
-            }, {
-                field: 'isShow',
-                title: '状态',
-                halign: 'center',
-                align: 'center',
-                formatter: function (value, row, index) {
-                    if (value) {
-                        return "显示";
-                    } else {
-                        return "不显示";
-                    }
-                }
-            }, {
-                field: 'createTime',
-                title: '创建时间',
-                halign: 'center',
-                align: 'center',
-                formatter: function (value, row, index) {
-                    var dateee  = new Date(row.createTime).toJSON();
-                    var date = new Date(+new Date(dateee )+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
-                    return date;
-                }
             }, {
                 title: '操作',
                 halign: 'center',
                 align: 'center',
                 formatter: function (value, row, index) {
-                    var isShow;
-                    if (row.isShow) {
-                        isShow = '<a href="javascript:void(0)" class="delete" title="不显示" onclick="isShow(' + row.id + ',0)">不显示</a>';
-                    } else {
-                        isShow = '<a href="javascript:void(0)" class="delete" title="显示" onclick="isShow(' + row.id + ',1)">显示</a>';
-                    }
+                    var showPic;
+                    showPic = '<a href="javascript:void(0)" class="delete" title="显示" onclick="isShow(' + row.categoryContentId + ',1)">展示</a>';
                     var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteModel(' + row.id + ')">删除</a>';
-                    return isShow + isDelete;
+                    return showPic + isDelete;
                 }
             }
         ]
@@ -105,16 +87,9 @@ function imgPreview(fileDom) {
     reader.readAsDataURL(file);
 }
 
-function isShow(id, isShow) {
-    $.fn.getAjaxJSON('post', '/media/pic/update?id=' + id + "&show=" + isShow, null, function (result, e) {
-        if (result.status == 10000) {
-            $.fn.messageBox('success', '修改成功！', function () {
-                searchList();
-            });
-        } else {
-            $.fn.messageBox('error', '修改失败！', function () {
-            });
-        }
+function isShow(categoryContentId) {
+    $.fn.showWindow({title: '轮播图展示'}, 'media/pic/show?categoryContentId=' + categoryContentId, function (model) {
+        $("#garouselList").attr("modelValue", model.attr("categoryContentId"));
     });
 }
 
@@ -135,11 +110,11 @@ $('#addModal').on('hidden.bs.modal', '.modal', function () {
     $("#addModal input").val("");
 });
 
-function openAdd() {
+function uploadPic() {
     var para = getParameter();
     if (para != null) {
         $.ajax({
-            url: "/garousel/addOrUpdate",
+            url: "/media/upload/pic",
             data: para,
             type: "Post",
             dataType: "json",
@@ -173,10 +148,7 @@ function getParameter() {
             return;
         }
     }
-    formFile.append("title", $("#titleAdd").val());
-    formFile.append("grade", $("#gradeAdd").val());
-    formFile.append("url", $("#urlAdd").val());
-    formFile.append("isShow", $("#showAdd").val());
+    formFile.append("contentType", $("#contentType").val());
     formFile.append("file", fileObj); //加入文件对象
     return formFile;
 }

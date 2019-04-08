@@ -1,7 +1,7 @@
 
 <div id="toolbar" class="btn-group" style="float: right;margin: 10px 0;">
     <button id="btn_add" type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>上传图片
     </button>
 </div>
 <table id="garouselList"></table>
@@ -15,7 +15,7 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    轮播
+                    轮播图
                 </h4>
             </div>
             <div class="modal-body">
@@ -31,34 +31,24 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row" style="margin-top: 15px">
-                    <label class="control-label col-sm-1" for="titleAdd">标题</label>
+                    <label class="control-label col-sm-1" for="contentType">关联内容</label>
                     <div class="col-lg-4">
-                        <input class="form-control" rows="4" name="content" id="titleAdd" >
-                    </div>
-                    <label class="control-label col-sm-1" for="gradeAdd">等级</label>
-                    <div class="col-lg-4" >
-                        <input class="form-control" rows="4" name="content" id="gradeAdd" >
-                    </div>
-                </div>
-                <div class="row" style="margin-top: 15px">
-                    <label class="control-label col-sm-1" for="urlAdd">链接地址</label>
-                    <div class="col-lg-4">
-                        <input class="form-control" rows="4" name="content" id="urlAdd" >
-                    </div>
-                    <label class="control-label col-sm-1" for="showAdd">状态</label>
-                    <div class="col-lg-4" >
-                        <select class="form-control" name="type" id="showAdd">
-                            <option value="1">显示</option>
-                            <option value="0">不显示</option>
+                        <select class="selectpicker show-tick form-control" data-live-search="true" id="contentType">
+                            <option value="">请选择</option>
+                            <#list contents as item>
+                                <option value="${item.categoryContentId!}">${item.categoryTitle!}</option>
+                            </#list>
                         </select>
                     </div>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary" onclick="openAdd()">
+                <button type="button" class="btn btn-primary" onclick="uploadPic()">
                     提交
                 </button>
             </div>

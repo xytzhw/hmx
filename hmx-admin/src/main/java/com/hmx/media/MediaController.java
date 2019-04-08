@@ -19,6 +19,7 @@ import com.hmx.utils.upload.UploadVideoDemo;
 import freemarker.ext.beans.HashAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,6 +51,9 @@ public class MediaController {
     @Autowired
     private InitVodClients initVodClients;
 
+    @Autowired
+    private UploadVideoDemo uploadVideoDemo;
+
     @RequestMapping("/vedio/init")
     public ModelAndView vedioInit() {
         HmxCategoryContentDto hmxCategoryContentDto = new HmxCategoryContentDto();
@@ -71,17 +75,44 @@ public class MediaController {
     @RequestMapping("/pic/init")
     public ModelAndView picInit() {
         ModelAndView modelAndView = new ModelAndView();
+        HmxCategoryContentDto hmxCategoryContentDto = new HmxCategoryContentDto();
+        hmxCategoryContentDto.setState(0);
+        List<HmxCategoryContent> hmxCategoryContents = hmxCategoryContentService.list(hmxCategoryContentDto);
         modelAndView.setViewName("/media/pic/list");
+        modelAndView.addObject("contents",hmxCategoryContents);
         return modelAndView;
     }
 
     @RequestMapping("/vedio/getList")
-    public Map<String,Object> getVedioList(PageBean<HmxMovie> page, HmxMovieDto hmxMovieDto){
+    public Map<String,Object> getVedioList(PageBean<HmxMovie> page, HmxMovieDto hmxMovieDto, Integer contentId){
         Map<String,Object> map = new HashMap();
+        Integer movieId = null;
+        if(contentId != null){
+            HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.info(contentId);
+            movieId = hmxCategoryContent.getMovieId();
+        }
+        hmxMovieDto.setMovieId(movieId);
+        hmxMovieDto.setState(0);
         PageBean<HmxMovie> pageBean = hmxMovieService.getPage(page,hmxMovieDto);
         map.put("rows", pageBean.getPage());
         map.put("total", pageBean.getTotalNum());
         return map;
+    }
+
+    @RequestMapping("/upload/pic")
+    public Result<Object> uploadPic(MultipartFile file, Integer contentType) throws IOException {
+        Result<Object> result = new Result<>();
+        Map<String,Object> resultMap = uploadVideoDemo.hmxUploadImageLocalFile(file.getInputStream(), file.getOriginalFilename());
+        if(resultMap.get("url") != null && !resultMap.get("url").equals("")){
+            //保存进内容中
+            HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.info(contentType);
+            hmxCategoryContent.setContentImages((String) resultMap.get("url"));
+            hmxCategoryContentService.update(hmxCategoryContent);
+        }
+        //返回成功
+        result.setMsg("成功");
+        result.setStatus(10000);
+        return result;
     }
 
     @RequestMapping("/upload/video")
@@ -95,7 +126,10 @@ public class MediaController {
         hmxMovie.setRatio(ratio);
         hmxMovie.setCreateTime(new Date());
         hmxMovieService.insert(hmxMovie);
-
+        //更新内容表
+        HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.info(contentType);
+        hmxCategoryContent.setMovieId(hmxMovie.getMovieId());
+        hmxCategoryContentService.update(hmxCategoryContent);
         uploadMovieAsync.uploadVideoAsync(file,title,hmxMovie.getMovieId());
         //返回成功
         result.setMsg("成功");
@@ -103,19 +137,39 @@ public class MediaController {
         return result;
     }
 
+    @RequestMapping("/delete/video")
+    public Result<Object> deleteVideo(Integer movieId) {
+        Result<Object> result = new Result<>();
+        HmxMovie hmxMovie = hmxMovieService.info(movieId);
+        hmxMovie.setState(1);
+        Boolean flag = hmxMovieService.update(hmxMovie);
+        //删除内容中的movieId
+        HmxCategoryContentDto hmxCategoryContentDto = new HmxCategoryContentDto();
+        hmxCategoryContentDto.setMovieId(movieId);
+        List<HmxCategoryContent> list = hmxCategoryContentService.list(hmxCategoryContentDto);
+        if(list != null && list.size()>0){
+            for(HmxCategoryContent hmxCategoryContent : list){
+                hmxCategoryContent.setMovieId(0);
+                hmxCategoryContentService.update(hmxCategoryContent);
+            }
+        }
+        //返回成功
+        if(flag){
+            result.setMsg("成功");
+            result.setStatus(10000);
+        }else {
+            result.setMsg("失败");
+            result.setStatus(20000);
+        }
+        return result;
+    }
+
     @RequestMapping("/pic/getList")
-    public Map<String,Object> getPicList(){
+    public Map<String,Object> getPicList(PageBean<HmxCategoryContent> pageBean,HmxCategoryContentDto hmxCategoryContentDto){
         Map<String,Object> map = new HashMap();
-        Garousel garousel = new Garousel();
-        garousel.setId(1);
-        garousel.setUrl("http://47.107.234.198:8081/app/v1/images/15434866301414495.jpg");
-        garousel.setContentId(1);
-        garousel.setTitle("轮播图1");
-        garousel.setCreateTime(new Date());
-        List<Garousel> list =  new ArrayList<>();
-        list.add(garousel);
-        map.put("rows", list);
-        map.put("total", list.size());
+        PageBean<HmxCategoryContent> page = hmxCategoryContentService.getPage(pageBean,hmxCategoryContentDto);
+        map.put("rows", page.getPage());
+        map.put("total", page.getTotalNum());
         return map;
     }
 
@@ -125,6 +179,16 @@ public class MediaController {
         result.setStatus(10000);
         result.setMsg("修改成功");
         return result;
+    }
+
+    @RequestMapping("/pic/show")
+    public ModelAndView picShow(Integer categoryContentId){
+        ModelAndView modelAndView = new ModelAndView();
+        HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.info(categoryContentId);
+        String picUrl = hmxCategoryContent.getContentImages();
+        modelAndView.addObject("picUrl",picUrl);
+        modelAndView.setViewName("/media/pic/picShow");
+        return modelAndView;
     }
 
     @RequestMapping("/vedio/add")
