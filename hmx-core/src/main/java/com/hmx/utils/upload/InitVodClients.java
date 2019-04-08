@@ -12,6 +12,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoRequest;
 import com.aliyuncs.vod.model.v20170321.GetPlayInfoResponse;
+import com.aliyuncs.vod.model.v20170321.GetPlayInfoResponse.PlayInfo;
 import com.hmx.utils.logger.LogHelper;
 /**
  * 账号AccessKey初始化
@@ -44,7 +45,8 @@ public class InitVodClients {
 	public Map<String,Object> getUrl(String videoId){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
     	resultMap.put("flag", false);
-    	resultMap.put("url", null);
+    	resultMap.put("url", null);//播放时长
+    	resultMap.put("duration", null);//播放时长
         DefaultAcsClient client = null;
 		try {
 			client = initVodClient(accessKeyId, accessKeySecret);
@@ -69,9 +71,11 @@ public class InitVodClients {
             	resultMap.put("content", "获取视频链接失败");
     			return resultMap;
             }else{
+            	PlayInfo playInfo = playInfoList.get(playInfoList.size()-1);
             	resultMap.put("flag", true);
             	//会返回两个url，第一个是m3u8格式的，我们用第二个就好(url有时效)
-            	resultMap.put("url", playInfoList.get(playInfoList.size()-1).getPlayURL());
+            	resultMap.put("url", playInfo.getPlayURL());
+            	resultMap.put("duration", playInfo.getDuration());
             	resultMap.put("content", "获取视频链接成功");
             	return resultMap;
             }
