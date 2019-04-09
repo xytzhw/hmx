@@ -81,6 +81,10 @@
 			      <artifactId>spring-security-web</artifactId>
 		    </dependency>
 		     -->
+		     <!-- <dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+			</dependency> -->
 		</dependencies>  
 		<build>
 			<finalName>hmx-user</finalName>

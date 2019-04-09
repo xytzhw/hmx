@@ -147,7 +147,7 @@
 						  </execution>
 					  </executions>
 					  <configuration>
-						  <!--允许移动生成的文件 -->
+						  <!-- 允许移动生成的文件 -->
 						  <verbose>true</verbose>
 						  <!-- 是否覆盖 -->
 						  <overwrite>false</overwrite>
