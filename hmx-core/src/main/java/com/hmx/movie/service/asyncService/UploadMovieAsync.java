@@ -28,9 +28,6 @@ public class UploadMovieAsync {
     private UploadVideoDemo uploadVideoDemo;
 
     @Autowired
-    private InitVodClients initVodClients;
-
-    @Autowired
     private HmxMovieService hmxMovieService;
 
     @Async(value = "taskExecutorWbswryxx")

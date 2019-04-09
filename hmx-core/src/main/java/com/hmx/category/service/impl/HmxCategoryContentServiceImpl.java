@@ -121,16 +121,16 @@ import com.hmx.category.dao.HmxCategoryContentMapper;
   		if ( hmxCategoryContentDto.getCategoryId() != null && hmxCategoryContentDto.getCategoryId() != 0 ) {
 			where.andCategoryIdEqualTo( hmxCategoryContentDto.getCategoryId() );
 		}
-  		if ( StringUtils.isEmpty( hmxCategoryContentDto.getCategoryTitle() ) ) {
+  		if ( !StringUtils.isEmpty( hmxCategoryContentDto.getCategoryTitle() ) ) {
 			where.andCategoryTitleEqualTo( hmxCategoryContentDto.getCategoryTitle() );
 		}
-  		if ( StringUtils.isEmpty( hmxCategoryContentDto.getCategoryContent() ) ) {
+  		if ( !StringUtils.isEmpty( hmxCategoryContentDto.getCategoryContent() ) ) {
 			where.andCategoryContentEqualTo( hmxCategoryContentDto.getCategoryContent() );
 		}
   		if ( hmxCategoryContentDto.getContentType() != null && hmxCategoryContentDto.getContentType() != 0 ) {
 			where.andContentTypeEqualTo( hmxCategoryContentDto.getContentType() );
 		}
-  		if ( StringUtils.isEmpty( hmxCategoryContentDto.getContentImages() ) ) {
+  		if ( !StringUtils.isEmpty( hmxCategoryContentDto.getContentImages() ) ) {
 			where.andContentImagesEqualTo( hmxCategoryContentDto.getContentImages() );
 		}
   		if ( hmxCategoryContentDto.getMovieId() != null && hmxCategoryContentDto.getMovieId() != 0 ) {

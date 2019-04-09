@@ -5,17 +5,17 @@
     <div class="panel-body">
         <form id="formSearch" class="form-horizontal">
             <div class="form-group" style="margin-top:15px">
-                <label class="control-label col-sm-1" for="name">名称</label>
+                <label class="control-label col-sm-1" for="title1">标题</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control" id="name">
+                    <input type="text" class="form-control" id="title1">
                 </div>
-                <label class="control-label col-sm-1" for="type">类型</label>
+                <label class="control-label col-sm-1" for="contentType1">内容项</label>
                 <div class="col-sm-2">
-                    <select class="form-control" id="type">
+                    <select class="selectpicker show-tick form-control" data-live-search="true" id="contentType1">
                         <option value="">请选择</option>
-                        <option value="1">类型1</option>
-                        <option value="2">类型2</option>
-                        <option value="3">类型3</option>
+                        <#list contents as item>
+                            <option value="${item.categoryContentId!}">${item.categoryTitle!}</option>
+                        </#list>
                     </select>
                 </div>
                 <div class="col-sm-4" style="text-align:left;">

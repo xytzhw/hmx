@@ -131,7 +131,7 @@ import com.hmx.movie.dao.HmxMovieMapper;
   		if ( hmxMovieDto.getNewTime() != null ) {
   			where.andNewTimeEqualTo( hmxMovieDto.getNewTime() );
   		}
-  		if ( hmxMovieDto.getState() != null && hmxMovieDto.getState() != 0 ) {
+  		if ( hmxMovieDto.getState() != null ) {
 			where.andStateEqualTo( hmxMovieDto.getState() );
 		}
   		if ( hmxMovieDto.getVersion() != null && hmxMovieDto.getVersion() != 0 ) {
