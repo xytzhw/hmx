@@ -74,7 +74,9 @@ public class InitVodClients {
             	PlayInfo playInfo = playInfoList.get(playInfoList.size()-1);
             	resultMap.put("flag", true);
             	//会返回两个url，第一个是m3u8格式的，我们用第二个就好(url有时效)
-            	resultMap.put("url", playInfo.getPlayURL());
+            	String url = playInfo.getPlayURL();
+    			url = url.substring(0, url.lastIndexOf("?"));
+            	resultMap.put("url", url);
             	resultMap.put("duration", playInfo.getDuration());
             	resultMap.put("content", "获取视频链接成功");
             	return resultMap;
