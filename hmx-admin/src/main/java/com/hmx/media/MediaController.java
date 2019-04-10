@@ -115,6 +115,23 @@ public class MediaController {
         return result;
     }
 
+    @RequestMapping("/delete/pic")
+    public Result<Object> deletePic(Integer categoryContentId) {
+        Result<Object> result = new Result<>();
+        HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.info(categoryContentId);
+        hmxCategoryContent.setContentImages("");
+        Boolean check = hmxCategoryContentService.update(hmxCategoryContent);
+        //返回成功
+        if(check){
+            result.setMsg("成功");
+            result.setStatus(10000);
+        }else {
+            result.setMsg("失败");
+            result.setStatus(20000);
+        }
+        return result;
+    }
+
     @RequestMapping("/upload/video")
     public Result<Object> uploadVideo(MultipartFile file, String title, String duration, Integer contentType, String ratio) throws IOException {
         Result<Object> result = new Result<>();

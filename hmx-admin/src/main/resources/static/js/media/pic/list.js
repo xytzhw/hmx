@@ -46,7 +46,7 @@ function initTable() {
                 formatter: function (value, row, index) {
                     var showPic;
                     showPic = '<a href="javascript:void(0)" class="delete" title="显示" onclick="isShow(' + row.categoryContentId + ',1)">展示</a>';
-                    var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteModel(' + row.id + ')">删除</a>';
+                    var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteModel(' + row.categoryContentId + ')">删除</a>';
                     return showPic + isDelete;
                 }
             }
@@ -93,8 +93,8 @@ function isShow(categoryContentId) {
     });
 }
 
-function deleteModel(id) {
-    $.fn.getAjaxJSON('post', '/garousel/delete?id=' + id, null, function (result, e) {
+function deleteModel(categoryContentId) {
+    $.fn.getAjaxJSON('post', '/media/delete/pic?categoryContentId=' + categoryContentId, null, function (result, e) {
         if (result.status == 10000) {
             $.fn.messageBox('success', '删除成功！', function () {
                 searchList()

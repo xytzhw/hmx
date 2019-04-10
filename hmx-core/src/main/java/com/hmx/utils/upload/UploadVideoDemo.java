@@ -4,18 +4,20 @@ import com.aliyun.vod.upload.impl.UploadImageImpl;
 import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.*;
 import com.aliyun.vod.upload.resp.*;
-import com.hmx.utils.logger.LogHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UploadVideoDemo {
+	private Logger logger = LoggerFactory.getLogger(UploadVideoDemo.class);
     //账号AK信息请填写(必选)
 	@Value("${accessKeyId}")
     private String accessKeyId;
@@ -44,8 +46,6 @@ public class UploadVideoDemo {
      * 图片上传接口，本地文件上传示例
      * 参数参考文档 https://help.aliyun.com/document_detail/55619.html
      *
-     * @param accessKeyId
-     * @param accessKeySecret
      */
     public Map<String,Object> hmxUploadImageLocalFile(InputStream inputStream,String fileName) {
     	Map<String,Object> resultMap = new HashMap<String,Object>();
@@ -80,18 +80,18 @@ public class UploadVideoDemo {
     		// request.setProgressListener(new PutObjectProgressListener());
     		UploadImageImpl uploadImage = new UploadImageImpl();
     		UploadImageResponse response = uploadImage.upload(request);
-    		LogHelper.logger().info("RequestId=" + response.getRequestId());
+			logger.info("RequestId=" + response.getRequestId());
     		if (response.isSuccess()) {
-    			LogHelper.logger().info("ImageId=" + response.getImageId());
-    			LogHelper.logger().info("ImageURL=" + response.getImageURL() + "\n");
+				logger.info("ImageId=" + response.getImageId());
+				logger.info("ImageURL=" + response.getImageURL() + "\n");
     			resultMap.put("flag", true);
     			String url = response.getImageURL();
     			url = url.substring(0, url.lastIndexOf("?"));
     			resultMap.put("url", url);
     			resultMap.put("content", "上传图片成功");
     		} else {
-    			LogHelper.logger().info("ErrorCode=" + response.getCode() + "\n");
-    			LogHelper.logger().info("ErrorMessage=" + response.getMessage() + "\n");
+				logger.info("ErrorCode=" + response.getCode() + "\n");
+				logger.info("ErrorMessage=" + response.getMessage() + "\n");
     			resultMap.put("content", "上传图片失败:"+response.getMessage());
     		}
     		return resultMap;
@@ -123,6 +123,8 @@ public class UploadVideoDemo {
     	resultMap.put("flag", false);
     	resultMap.put("videoId", null);
     	try{
+			logger.info("--------------------start upload video---------------------");
+			logger.info("--------------------start UploadStreamRequest----------------");
     		UploadStreamRequest request = new UploadStreamRequest(accessKeyId, accessKeySecret, title, fileName, inputStream);
     		String[] extArray = fileName.split("\\.");
     		String ext = extArray[extArray.length-1].toLowerCase();
@@ -156,21 +158,23 @@ public class UploadVideoDemo {
            /* 设置自定义上传进度回调 (必须继承 VoDProgressListener) */
            // request.setProgressListener(new PutObjectProgressListener());
            UploadVideoImpl uploader = new UploadVideoImpl();
+			logger.info("--------------------start UploadStreamResponse----------------");
            UploadStreamResponse response = uploader.uploadStream(request);
     		//请求视频点播服务的请求ID
-    		LogHelper.logger().info("RequestId=" + response.getRequestId());
+			logger.info("RequestId=" + response.getRequestId());
     		if (response.isSuccess()) {
-    			LogHelper.logger().info("VideoId=" + response.getVideoId());
+				logger.info("VideoId=" + response.getVideoId());
     			resultMap.put("flag", true);
     			resultMap.put("videoId", response.getVideoId());
     			resultMap.put("content", "上传视频成功");
     		} else {
     			/* 如果设置回调URL无效，不影响视频上传，可以返回VideoId同时会返回错误码。其他情况上传失败时，VideoId为空，此时需要根据返回错误码分析具体错误原因 */
-    			LogHelper.logger().info("VideoId=" + response.getVideoId());
-    			LogHelper.logger().info("ErrorCode=" + response.getCode());
-    			LogHelper.logger().info("ErrorMessage=" + response.getMessage());
+				logger.info("VideoId=" + response.getVideoId());
+				logger.info("ErrorCode=" + response.getCode());
+				logger.info("ErrorMessage=" + response.getMessage());
     			resultMap.put("content", "上传视频失败"+response.getMessage());
     		}
+			logger.info("--------------------end upload video---------------------");
     		return resultMap;
     	} catch (Exception e) {
 			resultMap.put("content", "上传视频异常:"+e.getMessage());
