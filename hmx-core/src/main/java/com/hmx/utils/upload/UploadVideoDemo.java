@@ -85,7 +85,9 @@ public class UploadVideoDemo {
 				logger.info("ImageId=" + response.getImageId());
 				logger.info("ImageURL=" + response.getImageURL() + "\n");
     			resultMap.put("flag", true);
-    			resultMap.put("url", response.getImageURL());
+    			String url = response.getImageURL();
+    			url = url.substring(0, url.lastIndexOf("?"));
+    			resultMap.put("url", url);
     			resultMap.put("content", "上传图片成功");
     		} else {
 				logger.info("ErrorCode=" + response.getCode() + "\n");
