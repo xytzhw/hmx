@@ -18,7 +18,7 @@
                         connectionURL="jdbc:mysql://localhost:3306/hmx_schema?serverTimezone=UTC" userId="root"
                         password="1234">
         </jdbcConnection>
-        <!-- <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+       <!--  <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://47.106.117.240:3306/hmx_schema?serverTimezone=UTC" userId="root"
                         password="1234">
         </jdbcConnection> -->
