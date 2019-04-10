@@ -25,6 +25,11 @@ spring:
       multipart:
         max-file-size : 1024mb
         max-request-size : 1589mb
+
+logging:
+  file: admin.log
+  path: /logs
+
 mybatis:
   mapper-locations: classpath*:com/hmx/*/mapper/*.xml
   configuration:
