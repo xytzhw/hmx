@@ -48,12 +48,8 @@ public class LoginController {
         ModelAndView mv = new ModelAndView();
         //查询home页统计数据
         Map<String, Integer> statisticsMap = loginService.loadHomeStatistics();
-        Set<String> keySet = statisticsMap.keySet();
-        Iterator<String> keySetIt = keySet.iterator();
-        while(keySetIt.hasNext()){
-            String key = keySetIt.next();
-            mv.addObject(key.toString(),statisticsMap.get(key));
-        }
+        mv.addObject("movieCount",statisticsMap.get("movieCount"));
+        mv.addObject("userCount",statisticsMap.get("userCount"));
         mv.setViewName("/home");
         return mv;
     }
