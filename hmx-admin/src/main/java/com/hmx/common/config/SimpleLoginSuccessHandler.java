@@ -1,7 +1,6 @@
 package com.hmx.common.config;
 
 import com.hmx.user.dao.HmxUserMapper;
-import com.hmx.user.dao.UserModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
