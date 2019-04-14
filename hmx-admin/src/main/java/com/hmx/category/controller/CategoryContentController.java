@@ -111,7 +111,13 @@ public class CategoryContentController {
 		Result<Object> result = new Result<>();
 		boolean flag=true;
 		if(flag){
-			Map<String,Object> resultMap = hmxCategoryContentService.categoryContentUpdate(hmxCategoryContentDto);
+			Map<String,Object> resultMap = null;
+			if(hmxCategoryContentDto.getCategoryContentId() == null){
+				resultMap = hmxCategoryContentService.categoryContentAdd(hmxCategoryContentDto);
+			}else {
+				resultMap = hmxCategoryContentService.categoryContentUpdate(hmxCategoryContentDto);
+			}
+
 			flag=Boolean.parseBoolean(resultMap.get("flag").toString());
 			if(!flag){
 				result.setStatus(20000);

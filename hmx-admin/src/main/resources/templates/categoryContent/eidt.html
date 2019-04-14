@@ -19,13 +19,13 @@
     <input id="categoryContentId" type="hidden" value="${hmxCategoryContent.categoryContentId!}">
     <div class="form-group" style="margin-top:15px">
         <div class="row">
-            <label class="control-label col-sm-1" for="categoryTitle">标题</label>
+            <label class="control-label col-sm-1" for="title">标题</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" name="categoryTitle" id="categoryTitle" value="${hmxCategoryContent.categoryTitle!}">
+                <input type="text" class="form-control" name="title" id="title" value="${hmxCategoryContent.categoryTitle!}">
             </div>
-            <label class="control-label col-sm-1" for="contentType">类型</label>
+            <label class="control-label col-sm-1" for="type">类型</label>
             <div class="col-lg-4">
-                <select class="form-control" name="contentType" id="contentType">
+                <select class="form-control" name="type" id="type">
                     <option value="">请选择</option>
                     <#list category as item>
                         <option value="${item.categoryId!}" <#if hmxCategoryContent.contentType?? && hmxCategoryContent.contentType==item.categoryId>selected="selected"</#if>>${item.categoryName!}</option>
