@@ -14,12 +14,13 @@ public class HmxCategory{
     private Integer state;
     private Integer version;
     private Integer createid;
+	private Integer categoryType;
 
     public HmxCategory() {
 		super();
 	}
 
-    public HmxCategory(Integer categoryId, String categoryName, Integer sort, Integer isClose, Date createTime, Date newTime, Integer state, Integer version, Integer createid) {
+    public HmxCategory(Integer categoryId, String categoryName, Integer sort, Integer isClose, Date createTime, Date newTime, Integer state, Integer version, Integer createid, Integer categoryType) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
@@ -30,6 +31,7 @@ public class HmxCategory{
 		this.state = state;
 		this.version = version;
 		this.createid = createid;
+		this.categoryType = categoryType;
 	}
 	
     public Integer getCategoryId() {
@@ -103,5 +105,12 @@ public class HmxCategory{
 	public void setCreateid(Integer createid){
 		this.createid = createid;
 	}
-	
+
+	public Integer getCategoryType() {
+		return categoryType;
+	}
+
+	public void setCategoryType(Integer categoryType) {
+		this.categoryType = categoryType;
+	}
 }

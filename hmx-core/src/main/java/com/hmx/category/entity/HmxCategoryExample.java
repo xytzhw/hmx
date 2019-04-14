@@ -776,6 +776,78 @@ public class HmxCategoryExample{
             addCriterion("createid not between", value1, value2, "createid");
             return (Criteria) this;
         }
+
+
+
+        public Criteria andCategoryTypeIsNull() {
+            addCriterion("category_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeIsNotNull() {
+            addCriterion("category_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeEqualTo(Integer value) {
+            addCriterion("category_type =", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeNotEqualTo(Integer value) {
+            addCriterion("category_type <>", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeGreaterThan(Integer value) {
+            addCriterion("category_type >", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("category_type >=", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeLessThan(Integer value) {
+            addCriterion("category_type <", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("category_type <=", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeeLike(Integer value) {
+            addCriterion("category_type like", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeNotLike(Integer value) {
+            addCriterion("category_type not like", value, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeIn(List<Integer> values) {
+            addCriterion("category_type in", values, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeNotIn(List<Integer> values) {
+            addCriterion("category_type not in", values, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeBetween(Integer value1, Integer value2) {
+            addCriterion("category_type between", value1, value2, "categoryType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCategoryTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("category_type not between", value1, value2, "categoryType");
+            return (Criteria) this;
+        }
         
     	
     }

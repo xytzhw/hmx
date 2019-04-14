@@ -1,5 +1,6 @@
 $(function () {
     initTable();
+    // initPicTable();
     validParam();
 });
 
@@ -63,6 +64,98 @@ function initTable() {
     $('#contentList').bootstrapTable($.initTableArg(option));
 } //表格
 
+// function initPicTable() {
+//     var option = {
+//         url: 'media/vedio/getList',
+//         queryParams: function (params) {
+//             var param = getSearchParams();
+//             param.pageNum = params.pageNumber;
+//             param.pageSize = params.pageSize;
+//             return param;
+//         },//传递参数
+//         columns: [
+//             {
+//                 title: '序列',
+//                 halign: 'center',
+//                 align: 'center',
+//                 formatter: function (value,row,index) {
+//                     return index+1;
+//                 }
+//             }, {
+//                 field: 'movieId',
+//                 title: '编号',
+//                 halign: 'center',
+//                 align: 'center',
+//                 visible: false
+//             }, {
+//                 field: 'movieName',
+//                 title: '视频名称',
+//                 halign: 'center',
+//                 align: 'center'
+//             },{
+//                 field: 'ratio',
+//                 title: '视频清晰度',
+//                 halign: 'center',
+//                 align: 'center',
+//                 formatter: function (value, row, index) {
+//                     if(row.ratio == 1){
+//                         return "标清";
+//                     }else if(row.ratio == 2){
+//                         return "高清";
+//                     }else if(row.ratio == 3){
+//                         return "超清";
+//                     }
+//                 }
+//             }, {
+//                 field: 'duration',
+//                 title: '视频时长',
+//                 halign: 'center',
+//                 align: 'center'
+//             }, {
+//                 field: 'videoStatus',
+//                 title: '视频处理状态',
+//                 halign: 'center',
+//                 align: 'center',
+//                 formatter: function (value, row, index) {
+//                     if(row.videoStatus == 1){
+//                         return "处理成功";
+//                     }else if(row.videoStatus == 2){
+//                         return "处理中";
+//                     }else if(row.videoStatus == 3){
+//                         return "失败";
+//                     }
+//                 }
+//             },{
+//                 field: 'createTime',
+//                 title: '创建时间',
+//                 halign: 'center',
+//                 align: 'center',
+//                 formatter: function (value, row, index) {
+//                     var dateee  = new Date(row.createTime).toJSON();
+//                     var date = new Date(+new Date(dateee )+8*3600*1000).toISOString().replace(/T/g,' ').replace(/\.[\d]{3}Z/,'');
+//                     return date;
+//                 }
+//             },{
+//                 title: '操作',
+//                 halign: 'center',
+//                 align: 'center',
+//                 formatter: function (value, row, index) {
+//                     var isUpdate = '<a href="javascript:void(0)" class="update"  title="修改" onclick="openAdd(this)">修改</a>';
+//                     var show = '<a href="javascript:void(0)" class="show"  title="观看" onclick="showVedio(' + row.movieId + ')">观看</a>';
+//                     var isDelete = '<a href="javascript:void(0)" class="delete" title="删除" onclick="deleteVideo(' + row.movieId + ')">删除</a>';
+//                     if(row.videoStatus == 2 ||  row.videoStatus==3){
+//                         return isDelete;
+//                     }else {
+//                         return show + isDelete;
+//                     }
+//
+//                 }
+//             }
+//         ]
+//     };
+//     $('#picList').bootstrapTable($.initTableArg(option));
+// } //表格
+
 function getSearchParams() {
     var params = {
         categoryTitle: $("#categoryTitle").val(),
@@ -97,7 +190,7 @@ function updateArticle() {
         if ($("#formUpdate").data('bootstrapValidator').isValid()) {//获取验证结果，如果成功，执行下面代码
             $.ajax({
                 url: "/categoryContent/edit",
-                data: getParameter(),
+                data: data,
                 type: "Post",
                 dataType: "json",
                 cache: false,//上传文件无需缓存
@@ -133,30 +226,50 @@ function deleteArticle(id) {
     });
 }
 
+function selectPic(){
+    var id = '';
+    if (element != null) {
+        id = $(element).parent().parent().find("td").eq(0).text()
+    }
+    $.fn.showWindow({title: '文章信息'}, '/categoryContent/selectPic', function (model) {
+        $("#contentList").attr("modelValue", model.attr("id"));
+    });
+}
+
 function getParameter() {
     var formFile = new FormData();
-    var fileObj = document.getElementById("img").files[0]; // js 获取文件对象
-    if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-        var imgUrl = $("#imgUrl").attr("name");
-        if(imgUrl != null && imgUrl != "" && imgUrl != "undefined"){
-            formFile.append("img", imgUrl);
-        }else {
-            alert("请选择图片");
-            return;
-        }
-    }
+    // var fileObj = document.getElementById("img").files[0]; // js 获取文件对象
+    // if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+    //     var imgUrl = $("#imgUrl").attr("name");
+    //     if(imgUrl != null && imgUrl != "" && imgUrl != "undefined"){
+    //         formFile.append("img", imgUrl);
+    //     }else {
+    //         alert("请选择图片");
+    //         return;
+    //     }
+    // }
 
-    var id = $("#article").val();
+    var id = $("#categoryContentId").val();
     if(id != null && id != "" && id != "undefined"){
-        formFile.append("id", id);
+        formFile.append("categoryContentId", id);
     }
-    formFile.append("title", $("#name").val());
-    formFile.append("type", $("#type01").val());
-    formFile.append("description", $("#description").val());
-    formFile.append("grade", $("#grade").val());
-    formFile.append("content",editorValue.getValue());
-    formFile.append("file", fileObj); //加入文件对象
+    console.log(document.getElementById("categoryTitle").value);
+    formFile.append("categoryTitle", $("#categoryTitle").val());
+    alert($("#contentType").val());
+    formFile.append("contentType", $("#contentType").val());
+    alert( $("#content").val());
+    formFile.append("categoryContent", $("#content").val());
+
     return formFile;
+
+    // var params = {
+    //     categoryContentId: $("#categoryContentId").val(),
+    //     categoryTitle: $("#categoryTitle").val(),
+    //     contentType: $("#contentType").val(),
+    //     categoryContent: $("#content").val()
+    // };
+    // console.log(params);
+    // return params;
 }
 
 function imgPreview(fileDom){
