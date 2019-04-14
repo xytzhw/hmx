@@ -36,7 +36,7 @@
     /*transition-timing-function: ease-out;*/
 }
 .term .active > a{
-    color: rgb(200,217,31);
+    color: rgb(87, 179, 237);
     background-color: rgb(14, 50, 62);
 }
 .term>.active:before,
