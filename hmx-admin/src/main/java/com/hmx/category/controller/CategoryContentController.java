@@ -9,6 +9,7 @@ import com.hmx.category.dto.HmxCategoryDto;
 import com.hmx.category.entity.HmxCategory;
 import com.hmx.category.entity.HmxCategoryContent;
 import com.hmx.category.service.HmxCategoryService;
+import com.hmx.utils.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,13 @@ public class CategoryContentController {
 		List<HmxCategory> hmxCategoryList = hmxCategoryService.list(new HmxCategoryDto());
 		modelAndView.setViewName("/categoryContent/list");
 		modelAndView.addObject("category",hmxCategoryList);
+		return modelAndView;
+	}
+
+	@RequestMapping("/selectPic")
+	public ModelAndView selectPic() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/categoryContent/list");
 		return modelAndView;
 	}
 
@@ -98,26 +106,24 @@ public class CategoryContentController {
 	 * @param model
 	 * @return
 	 */
-	@PostMapping("/edit")
-	public String categoryUpdate(HmxCategoryContentDto hmxCategoryContentDto,Model model){
-		ResultBean resultBean = new ResultBean();
+	@RequestMapping("/edit")
+	public Result<Object> categoryUpdate(HmxCategoryContentDto hmxCategoryContentDto){
+		Result<Object> result = new Result<>();
 		boolean flag=true;
-		if(hmxCategoryContentDto.getCategoryContentId() == null){
-			resultBean.setCode(Config.FAIL_FIELD_EMPTY).setContent("内容编号不能为空");
-			flag=false;
-		}
 		if(flag){
 			Map<String,Object> resultMap = hmxCategoryContentService.categoryContentUpdate(hmxCategoryContentDto);
 			flag=Boolean.parseBoolean(resultMap.get("flag").toString());
 			if(!flag){
-				resultBean.setCode(Config.FAIL_CODE);
+				result.setStatus(20000);
+				result.setMsg("失败");
+				return result;
 			}else{
-				resultBean.setCode(Config.SUCCESS_CODE);
+				result.setStatus(10000);
+				result.setMsg("成功");
+				return result;
 			}
-			resultBean.setContent(resultMap.get("content").toString());
 		}
-		model.addAttribute("resultBean", resultBean);
-		return "hello";
+		return result;
 	}
 	/**
 	 * 内容详情查询

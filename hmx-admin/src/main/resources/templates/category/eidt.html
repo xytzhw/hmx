@@ -25,13 +25,54 @@
             </div>
             <label class="control-label col-sm-1" for="isClose">是否首页展示</label>
             <div class="col-lg-4">
-                <input type="text" class="form-control" name="isClose" id="isClose" value="${category.isClose!}">
+                <select class="form-control" name="isClose" id="isClose">
+                <#if category.isClose?? && category.isClose==0>
+                        <option value="">请选择</option>
+                        <option value="0" selected>是</option>
+                        <option value="1">否</option>
+                    <#elseif category.isClose?? && category.isClose==1>
+                        <option value="">请选择</option>
+                        <option value="0">是</option>
+                        <option value="1" selected>否</option>
+                    <#else>
+                        <option value="">请选择</option>
+                        <option value="0">是</option>
+                        <option value="1">否</option>
+                </#if>
+                </select>
             </div>
         </div>
         <div class="row">
             <label class="control-label col-sm-1" for="version">版本编号</label>
             <div class="col-lg-4">
                 <input type="text" class="form-control" name="version" id="version" value="${category.version!}">
+            </div>
+            <label class="control-label col-sm-1" for="version">展示列表</label>
+            <div class="col-lg-4">
+                <select class="form-control" name="categoryType" id="categoryType">
+                    <#if category.categoryType?? && category.categoryType==1>
+                            <option value="">请选择</option>
+                            <option value="1" selected>文本</option>
+                            <option value="2">图片</option>
+                            <option value="3">视频</option>
+                        <#elseif category.categoryType?? && category.categoryType==2>
+                            <option value="">请选择</option>
+                            <option value="1">文本</option>
+                            <option value="2" selected>图片</option>
+                            <option value="3">视频</option>
+                        <#elseif category.categoryType?? && category.categoryType==3>
+                            <option value="">请选择</option>
+                            <option value="1">文本</option>
+                            <option value="2">图片</option>
+                            <option value="3" selected>视频</option>
+                        <#else>
+                            <option value="">请选择</option>
+                            <option value="1">文本</option>
+                            <option value="2">图片</option>
+                            <option value="3">视频</option>
+                    </#if>
+
+                </select>
             </div>
         </div>
     </div>

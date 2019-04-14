@@ -33,7 +33,8 @@ function getParameter() {
         categoryId: $("#categoryId").val(),
         categoryName: $("#categoryName").val(),
         isClose: $("#isClose").val(),
-        version: $("#version").val()
+        version: $("#version").val(),
+        categoryType: $("#categoryType").val()
     };
     return params;
 }
