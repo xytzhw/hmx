@@ -73,11 +73,19 @@ $(".updatePasswordModel").click(function () {
 });
 
 function getParameter() {
+    var gender = $("#gender").val();
+    if(gender == '男'){
+        gender=1
+    }else if(gender == '女'){
+        gender=2
+    }
     var params = {
-        username: $("#usernameInfo").val(),
-        name: $("#nameInfo").val(),
-        cellPhone: $("#cellPhoneModify").val(),
-        validation: $("#phoneValidation").val(),
+        userName: $("#userName").val(),
+        userAliase: $("#userAliase").val(),
+        userPhone: $("#userPhone").val(),
+        verifyCode: $("#verifyCode").val(),
+        id: $("#userInfoId").val(),
+        gender: gender
     };
     return params;
 }

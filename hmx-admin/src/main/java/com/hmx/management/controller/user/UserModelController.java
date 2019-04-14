@@ -7,19 +7,24 @@ import com.hmx.user.dto.HmxUserDto;
 import com.hmx.user.entity.HmxUser;
 import com.hmx.user.entity.po.UserModel;
 import com.hmx.user.service.HmxUserService;
+import com.hmx.utils.enums.IsVerify;
+import com.hmx.utils.random.RandomHelper;
+import com.hmx.utils.result.Config;
 import com.hmx.utils.result.Result;
+import com.hmx.utils.result.ResultBean;
+import com.hmx.utils.sms.SMSSendOut;
+import com.hmx.verifylog.entity.HmxVerifylog;
+import com.hmx.verifylog.service.HmxVerifylogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 
 @Controller
@@ -33,6 +38,12 @@ public class UserModelController {
 
     @Autowired
     private HmxUserService hmxUserService;
+
+    @Autowired
+    private SMSSendOut smsSendOut;
+
+    @Autowired
+    private HmxVerifylogService hmxVerifylogService;
 
     
     /**
@@ -117,33 +128,68 @@ public class UserModelController {
         return hmxUserService.addOrUpdateUser(hmxUserDto);
     }
 
-    /**
-     *@Author: shi
-     *@Description:  新增或修改用户
-     *@param: username name cellPhone validation
-     *@return
-     *@Date: 10:44 2018/7/23
-     */
-//    @RequestMapping(value = "/updateUser")
-//    @ResponseBody
-//    public Result<Object> updateUser(String username,String name,String cellPhone,String validation){
-//        return userService.updateUser(username,name,cellPhone,validation);
-//    }
 
-    /**
-     *@Author: shi
-     *@Description:  获取验证码
-     *@param: userData
-     *@return
-     *@Date: 10:44 2018/7/25
-     */
-//    @RequestMapping(value = "/getValidation")
-//    @ResponseBody
-//    public Result<Object> getValidation(HttpServletRequest request , String cellPhone){
-//        UserModel userModelLogin = (UserModel) request.getSession().getAttribute("userInfo");
-//        logger.info(userModelLogin.getUsername()+"---获取验证码："+cellPhone);
-//        return userService.getValidation(cellPhone);
-//    }
+    @RequestMapping(value = "/updateUser")
+    @ResponseBody
+    public Result<Object> updateUser(HmxUser hmxUser,@RequestParam(required = false) String verifyCode){
+        Result<Object> result = new Result<>();
+        if(hmxUser.getUserPhone().equals("")){
+            hmxUser.setUserPhone(null);
+        }
+        if(verifyCode != null && !verifyCode.equals("")){
+            HmxVerifylog hmxVerifylog = hmxVerifylogService.selectNewVerifylog(hmxUser.getUserPhone());
+            if(hmxVerifylog == null){
+                result.setMsg("您还没有发送验证码");
+                result.setStatus(20000);
+                return result;
+            }
+            String oldVerifyCode = hmxVerifylog.getVerifyCode();
+            if(hmxVerifylog.getIsVerify() == IsVerify.已使用.getState()){
+                result.setMsg("验证码已被使用");
+                result.setStatus(20000);
+                return result;
+            }
+            if(!verifyCode.equals(oldVerifyCode)){
+                result.setMsg("验证码错误");
+                result.setStatus(20000);
+                return result;
+            }
+        }
+        Boolean flag = hmxUserService.update(hmxUser);
+        if(flag){
+            result.setMsg("success");
+            result.setStatus(10000);
+            return result;
+        }else {
+            result.setMsg("更新失败");
+            result.setStatus(20000);
+            return result;
+        }
+    }
+
+
+    @RequestMapping(value = "/getValidation")
+    @ResponseBody
+    public Result<Object> getValidation(HttpServletRequest request , String cellPhone){
+        HmxUser userModelLogin = (HmxUser) request.getSession().getAttribute("userInfo");
+        String code = RandomHelper.getRandomNum(6);
+        Boolean isSend = smsSendOut.SMSSending(cellPhone,code);
+        HmxVerifylog hmxVerifylog = new HmxVerifylog();
+        hmxVerifylog.setAddTime(new Date());
+        hmxVerifylog.setVerifyCode(code);
+        hmxVerifylog.setVerifyObject(cellPhone);
+        hmxVerifylog.setVerifyType(0);
+        Boolean flag = hmxVerifylogService.insert(hmxVerifylog);
+        Result<Object> result = new Result<>();
+        if(isSend && flag){
+            result.setStatus(10000);
+            result.setMsg("success");
+        }else {
+            result.setStatus(20000);
+            result.setMsg("失败");
+        }
+        return result;
+    }
 
     /**
      *@Author: shi
