@@ -253,12 +253,9 @@ function getParameter() {
     if(id != null && id != "" && id != "undefined"){
         formFile.append("categoryContentId", id);
     }
-    console.log(document.getElementById("categoryTitle").value);
-    formFile.append("categoryTitle", $("#categoryTitle").val());
-    alert($("#contentType").val());
-    formFile.append("contentType", $("#contentType").val());
-    alert( $("#content").val());
-    formFile.append("categoryContent", $("#content").val());
+    formFile.append("categoryTitle", $("#title").val());
+    formFile.append("contentType", $("#type").val());
+    formFile.append("categoryContent", $("#content").text());
 
     return formFile;
 
