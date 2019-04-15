@@ -17,6 +17,8 @@ import com.hmx.utils.result.Result;
 import com.hmx.utils.upload.InitVodClients;
 import com.hmx.utils.upload.UploadVideoDemo;
 import freemarker.ext.beans.HashAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +39,7 @@ import java.util.*;
 @RequestMapping("/media")
 public class MediaController {
 
-
+    private Logger logger = LoggerFactory.getLogger(MediaController.class);
 
     @Autowired
     private HmxMovieService hmxMovieService;
@@ -134,6 +136,7 @@ public class MediaController {
 
     @RequestMapping("/upload/video")
     public Result<Object> uploadVideo(MultipartFile file, String title, String duration, Integer contentType, String ratio) throws IOException {
+        logger.info("get in upload video controller______________________");
         Result<Object> result = new Result<>();
         //保存进move表中
         HmxMovie hmxMovie = new HmxMovie();
@@ -142,11 +145,14 @@ public class MediaController {
         hmxMovie.setMovieName(title);
         hmxMovie.setRatio(ratio);
         hmxMovie.setCreateTime(new Date());
+        logger.info("save hmxMovie______________________");
         hmxMovieService.insert(hmxMovie);
         //更新内容表
+        logger.info("update HmxCategoryContent______________________");
         HmxCategoryContent hmxCategoryContent = hmxCategoryContentService.info(contentType);
         hmxCategoryContent.setMovieId(hmxMovie.getMovieId());
         hmxCategoryContentService.update(hmxCategoryContent);
+        logger.info("start async______________________");
         uploadMovieAsync.uploadVideoAsync(file,title,hmxMovie.getMovieId());
         //返回成功
         result.setMsg("成功");

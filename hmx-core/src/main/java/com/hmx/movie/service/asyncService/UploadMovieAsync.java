@@ -4,6 +4,8 @@ import com.hmx.movie.entity.HmxMovie;
 import com.hmx.movie.service.HmxMovieService;
 import com.hmx.utils.upload.InitVodClients;
 import com.hmx.utils.upload.UploadVideoDemo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Async;
@@ -24,6 +26,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Component
 public class UploadMovieAsync {
 
+    private Logger logger = LoggerFactory.getLogger(UploadMovieAsync.class);
+
     @Autowired
     private UploadVideoDemo uploadVideoDemo;
 
@@ -34,8 +38,10 @@ public class UploadMovieAsync {
     public void uploadVideoAsync(MultipartFile file, String title, Integer movieId)  {
         String videoId = null;
         String url = null;
+        logger.info("start uploadVideoAsync___________________________________");
         try{
             //先上传video
+            logger.info("start hmxUploadVideo___________________________________");
             Map<String,Object> map = uploadVideoDemo.hmxUploadVideo(file.getInputStream(), file.getOriginalFilename(),
                     title.trim());
             if(map != null && !map.get("videoId").equals("")){

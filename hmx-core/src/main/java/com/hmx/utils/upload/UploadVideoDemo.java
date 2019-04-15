@@ -119,6 +119,7 @@ public class UploadVideoDemo {
      * @param fileName
      */
     public Map<String,Object> hmxUploadVideo(InputStream inputStream,  String fileName , String title) {
+		logger.info("--------------------get in hmxUploadVideo---------------------");
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	resultMap.put("flag", false);
     	resultMap.put("videoId", null);
